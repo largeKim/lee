@@ -125,20 +125,22 @@
 							intoHTML+='	<td>';
 							intoHTML+='		<div class="media">';
 							intoHTML+='			<div class="media-left media-middle text-center">';
-							intoHTML+='				<img class="media-object" src="/lee/resources/ebook/book.jpg" style="width: 97px; height: 110px;"><br>';
+							intoHTML+='				<img class="media-object" src=" ' + arr[i].el_path + ' " style="width: 97px; height: 110px;"><br>';
 							intoHTML+='			</div>';
 							intoHTML+='			<div class="media-body">';
-							intoHTML+='				<h4 class="media-heading">진짜 진짜 생생한 동물 낱말 카드 TEST Count : ' + arr[i].el_subject + '</h4>';
+							intoHTML+='				<h4 class="media-heading"> ' + arr[i].el_subject + ' </h4>';
 							intoHTML+='				<div class="row">';
 							intoHTML+='					<div class="col-md-2">저자</div>';
-							intoHTML+='						<div class="col-md-8">편집부 저</div>';
+							intoHTML+='					<div class="col-md-10"> ' + arr[i].el_writer + ' </div>';
+							intoHTML+='					<div class="col-md-2">추천 수</div>';
+							intoHTML+='					<div class="col-md-10"> ' + arr[i].el_recocount + ' </div>';
 							intoHTML+='				</div>';
 							intoHTML+='				<div class="row info">';
 							intoHTML+='					<div class="col-md-12">';
 							intoHTML+='						<dl>';
 							intoHTML+='							<dt>간략소개</dt>';
 							intoHTML+='							<dd>';
-							intoHTML+=' 사람의 일생에서 가장 폭발적인 언어 습득 능력을 구사하는 나이는 생후 18개월. 이 시기의 아이들은 스펀지가 물을 빨아들이듯, 빠른 속도로 언어를 배우기 시작합니다. 사물카드는 주변에서 쉽게 볼 수 있는 사물들을 이름과 함께 보여 주어, 어린이의 어휘력과 함께 사고력의 발달을 도와줍니다.';
+							intoHTML+= arr[i].el_info;
 							intoHTML+='							</dd>';
 							intoHTML+='						</dl>';
 							intoHTML+='					</div>';
@@ -227,20 +229,22 @@
 							intoHTML+='	<td>';
 							intoHTML+='		<div class="media">';
 							intoHTML+='			<div class="media-left media-middle text-center">';
-							intoHTML+='				<img class="media-object" src="/lee/resources/ebook/book.jpg" style="width: 97px; height: 110px;"><br>';
+							intoHTML+='				<img class="media-object" src=" ' + arr[i].el_path + ' " style="width: 97px; height: 110px;"><br>';
 							intoHTML+='			</div>';
 							intoHTML+='			<div class="media-body">';
-							intoHTML+='				<h4 class="media-heading">진짜 진짜 생생한 동물 낱말 카드 TEST Count : ' + arr[i].el_subject + '</h4>';
+							intoHTML+='				<h4 class="media-heading">' + arr[i].el_subject + '</h4>';
 							intoHTML+='				<div class="row">';
 							intoHTML+='					<div class="col-md-2">저자</div>';
-							intoHTML+='					<div class="col-md-8">편집부 저</div>';
+							intoHTML+='					<div class="col-md-10">' + arr[i].el_writer + '</div>';
+							intoHTML+='					<div class="col-md-2">추천 수</div>';
+							intoHTML+='					<div class="col-md-10">' + arr[i].el_recocount + '</div>';
 							intoHTML+='				</div>';
 							intoHTML+='				<div class="row info">';
 							intoHTML+='					<div class="col-md-12">';
 							intoHTML+='						<dl>';
 							intoHTML+='							<dt>간략소개</dt>';
 							intoHTML+='							<dd>';
-							intoHTML+='사람의 일생에서 가장 폭발적인 언어 습득 능력을 구사하는 나이는 생후 18개월. 이 시기의 아이들은 스펀지가 물을 빨아들이듯, 빠른 속도로 언어를 배우기 시작합니다. 사물카드는 주변에서 쉽게 볼 수 있는 사물들을 이름과 함께 보여 주어, 어린이의 어휘력과 함께 사고력의 발달을 도와줍니다.';
+							intoHTML+=arr[i].el_info;
 							intoHTML+='							</dd>';
 							intoHTML+='						</dl>';
 							intoHTML+='					</div>';
@@ -360,20 +364,22 @@
 						intoHTML+='	<td>';
 						intoHTML+='		<div class="media">';
 						intoHTML+='			<div class="media-left media-middle text-center">';
-						intoHTML+='				<img class="media-object" src="/lee/resources/ebook/book.jpg" style="width: 97px; height: 110px;"><br>';
+						intoHTML+='				<img class="media-object" src=" ' + arr[i].el_path + ' " style="width: 97px; height: 110px;"><br>';
 						intoHTML+='			</div>';
 						intoHTML+='			<div class="media-body">';
-						intoHTML+='				<h4 class="media-heading">진짜 진짜 생생한 동물 낱말 카드 TEST Count : ' + arr[i].el_subject + '</h4>';
+						intoHTML+='				<h4 class="media-heading">' + arr[i].el_subject + '</h4>';
 						intoHTML+='				<div class="row">';
 						intoHTML+='					<div class="col-md-2">저자</div>';
-						intoHTML+='					<div class="col-md-8">편집부 저</div>';
+						intoHTML+='					<div class="col-md-10">' + arr[i].el_writer + '</div>';
+						intoHTML+='					<div class="col-md-2">추천 수</div>';
+						intoHTML+='					<div class="col-md-10">' + arr[i].el_recocount + '</div>';
 						intoHTML+='				</div>';
 						intoHTML+='				<div class="row info">';
 						intoHTML+='					<div class="col-md-12">';
 						intoHTML+='						<dl>';
 						intoHTML+='							<dt>간략소개</dt>';
 						intoHTML+='							<dd>';
-						intoHTML+=' 사람의 일생에서 가장 폭발적인 언어 습득 능력을 구사하는 나이는 생후 18개월. 이 시기의 아이들은 스펀지가 물을 빨아들이듯, 빠른 속도로 언어를 배우기 시작합니다. 사물카드는 주변에서 쉽게 볼 수 있는 사물들을 이름과 함께 보여 주어, 어린이의 어휘력과 함께 사고력의 발달을 도와줍니다.';
+						intoHTML+=arr[i].el_info;
 						intoHTML+='							</dd>';
 						intoHTML+='						</dl>';
 						intoHTML+='					</div>';
@@ -434,6 +440,7 @@
 						, dataType : "json"
 						, success: function(data){
 							var arr=data.elibArr;
+							var mem_id=data.mem_id;
 							var intoHeaderHTML="";
 							intoHeaderHTML+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 							intoHeaderHTML+='<h4 class="modal-title" id="myModalLabel">' + arr.el_subject + '</h4>';
@@ -455,11 +462,21 @@
 							intoBodyHTML+='					</div>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='				<div class="text-right">';
+							if(mem_id==null){
+								intoBodyHTML+='					<span data-toggle="tooltip" data-placement="bottom" title="로그인 해야 사용 할 수 있습니다.">';
+								intoBodyHTML+='						<button class="btn btn-default" id="loanButton" type="button" disabled="disabled" >대출하기 </button>';
+								intoBodyHTML+='					</span> ';
+								intoBodyHTML+='					<span data-toggle="tooltip" data-placement="bottom" title="로그인 해야 사용 할 수 있습니다.">';
+								intoBodyHTML+='						<button class="btn btn-default" id="recommendButton" type="button"  disabled="disabled" >추천하기</button> ';
+								intoBodyHTML+='					</span> ';
+							}
+							else{
+								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(1)" >대출하기 </button>';
+								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\' ' + arr.el_idx + '\' )" >추천하기</button>';
+							}
 							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(1)">';
 							intoBodyHTML+='						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span id="refreshSpan">가능</span>';
 							intoBodyHTML+='					</button>';
-							intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(1)" >대출하기 </button>';
-							intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\' ' + arr.el_idx + '\' )" >추천하기</button>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='			</div>';
 							intoBodyHTML+='		</div>';
@@ -477,6 +494,10 @@
 							intoBodyHTML+='</div>';
 							$(".modal-header").html(intoHeaderHTML);
 							$(".modal-body").html(intoBodyHTML);
+							if(mem_id==null){
+								$("#loanButton").parent().tooltip();
+								$("#recommendButton").parent().tooltip();
+							} // null function
 						}
 					});
 					$("#myModal").modal("show");
@@ -539,7 +560,7 @@
 			<!-- 검색바 -->
 			<div class="row" style="background: #3cdbde; padding: 80px 0;">
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="책 검색..." name="simpleSearchText" id="simpleSearchText">
+					<input type="text" class="form-control" placeholder="전자도서" name="simpleSearchText" id="simpleSearchText">
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="button" id="ebookSearch">
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>

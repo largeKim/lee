@@ -98,5 +98,28 @@ public class ElibDAOImple implements ElibDAO {
 		List<ElibDTO> elibArr=sqlMap.selectList("elibSELview", hmap);
 		return elibArr;
 	}
+	
+	/**관리자 검색없는 리스트 보기*/
+	public List<ElibDTO> elibAdminNoList(int startNum, int endNum) {
+		HashMap<String, String> map=new HashMap<String, String>();
+		map.put("startNum", Integer.toString(startNum));
+		map.put("endNum", Integer.toString(endNum));
+		List<ElibDTO> elibArr=sqlMap.selectList("elibSELnoList", map);
+		return elibArr;
+	}
+	
+	/**관리자 검색없는 리스트 보기 갯수*/
+	public int elibAdminNoListCount() {
+		int resultCount=sqlMap.selectOne("elibSELnoListCount");
+		return resultCount;
+	}
+	
+	/**삭제*/
+	public int elibDelete(String el_idx) {
+		HashMap<String, String> hmap=new HashMap<String, String>();
+		hmap.put("el_idx", el_idx);
+		int resultCount=sqlMap.delete("elibDEL", hmap);
+		return resultCount;
+	}
 
 }

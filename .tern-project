@@ -1,0 +1,15 @@
+{
+  "ecmaVersion": 5,
+  "plugins": {
+    "doc_comment": {
+      
+    },
+    "bootstrap": {
+      
+    }
+  },
+  "libs": [
+    "browser",
+    "jquery"
+  ]
+}

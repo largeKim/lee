@@ -33,4 +33,13 @@ public interface ElibDAO {
 	/**뷰어*/
 	public List<ElibDTO> elibViewer(String el_idx);
 	
+	/**관리자 검색없는 리스트 보기*/
+	public List<ElibDTO> elibAdminNoList(int startNum, int endNum);
+	
+	/**관리자 검색없는 리스트 보기 갯수*/
+	public int elibAdminNoListCount();
+	
+	/**삭제*/
+	public int elibDelete(String el_idx);
+	
 }

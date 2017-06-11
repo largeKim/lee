@@ -3,6 +3,8 @@ package ju.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -184,20 +186,29 @@ public class ElibController {
 	
 	/**전자도서 컨텐츠 선택*/
 	@RequestMapping(value="elibContent.ju")
-	public ModelAndView elibContent(@RequestParam(value="el_idx", defaultValue="0")String el_idx) {
+	public ModelAndView elibContent(@RequestParam(value="el_idx", defaultValue="0")String el_idx, HttpSession session) {
+		String mem_id=null;
+		if( !( (String)session.getAttribute("sid")==null || "".equals((String)session.getAttribute("sid")) ) ){
+			mem_id=(String)session.getAttribute("sid");
+		}
+		
 		List<ElibDTO> elibArr=elibDAO.elibContent(el_idx);
 		ModelAndView mav=new ModelAndView();
 		
 		mav.addObject("elibArr", elibArr.get(0));
+		mav.addObject("mem_id", mem_id);
 		mav.setViewName("juJson");
 		return mav;
 	}
 	
 	/**추천 기능 Ajax*/
 	@RequestMapping(value="elibRecommend.ju")
-	public ModelAndView elibRecommend(@RequestParam(value="el_idx", defaultValue="0")String el_idx) {
+	public ModelAndView elibRecommend(
+		@RequestParam(value="el_idx", defaultValue="0")String el_idx
+		, HttpSession session
+		) {
 		/*
-		 * 1. 세션에서 ID받기
+		 * 1. 세션에서 ID받기 
 		 * 	1-1 세션이 없으면 미 로그인 로그인 하라고 리턴 
 		 * 	1-2 세션이 있으면 2번으로
 		 * 2. 해당 ID로 IDX 찾기
@@ -218,7 +229,7 @@ public class ElibController {
 	public ModelAndView ebookRefresh(@RequestParam(value="el_idx", defaultValue="0")int el_idx) {
 		/*
 		 * 1. el_idx를 가지고 loan DB를 가서 현재 대여수를 받아온다
-		 * 2. 5권 까지이므로 계산 후 돌린다
+		 * 2. 5권 까지이므로 계산 후 리턴한다
 		 */
 		int randomNum=(int)(Math.random()*10)+1;
 		ModelAndView mav=new ModelAndView();

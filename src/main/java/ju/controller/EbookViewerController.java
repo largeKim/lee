@@ -25,23 +25,35 @@ public class EbookViewerController{
 	/**뷰어*/
 	@RequestMapping(value="eViewer.ju")
 	public ModelAndView eViewer(@RequestParam(value="el_idx")String el_idx, HttpServletRequest request) {
-		System.out.println("el_idx.indexOf('EA') : " + el_idx.indexOf("EA"));
+		System.out.println(el_idx);
+		System.out.println("el_idx.indexOf('AB') : " + el_idx.indexOf("AB"));
 		System.out.println("el_idx.indexOf('EB') : " + el_idx.indexOf("EB"));
+		System.out.println("el_idx.indexOf('EM') : " + el_idx.indexOf("EM"));
 		System.out.println("el_idx.indexOf('EE') : " + el_idx.indexOf("EE"));
 		
 		List<ElibDTO> elibArr=null;
 		String path=request.getSession().getServletContext().getRealPath("/")+"resources\\elib\\";
+		String viewImgPath="\\lee\\resources\\elib\\";
 		
 		if(el_idx.indexOf("EA")==1){
 			/* 돌려 보내기*/
 		}
-		else if(el_idx.indexOf("EB")==1){
-			/* 회원 검사 */
+		else if(el_idx.indexOf("EB")==0){
+			elibArr=elibDAO.elibViewer(el_idx);
+			path+="eBook\\"+elibArr.get(0).getEl_idx()+"\\";
+			viewImgPath+="eBook\\";
 		}
-		else{
+		else if(el_idx.indexOf("EM")==0){
+			elibArr=elibDAO.elibViewer(el_idx);
+			path+="eMagazine\\"+elibArr.get(0).getEl_idx()+"\\";
+			viewImgPath+="eMagazine\\";
+		}
+		else if(el_idx.indexOf("EE")==0){
 			elibArr=elibDAO.elibViewer(el_idx);
 			path+="eEdu\\"+elibArr.get(0).getEl_idx()+"\\";
+			viewImgPath+="eEdu\\";
 		}
+		System.out.println(viewImgPath);
 		
 		ArrayList<String> imgPath=new ArrayList<String>();
 		
@@ -52,7 +64,7 @@ public class EbookViewerController{
 			}
 		});
 		for(int i=0 ; i<contentPath.length ; i++){
-			imgPath.add("\\lee\\resources\\elib\\eEdu\\"+elibArr.get(0).getEl_idx()+"\\"+contentPath[i].getName());
+			imgPath.add(viewImgPath+elibArr.get(0).getEl_idx()+"\\"+contentPath[i].getName());
 		}
 		System.out.println(imgPath.size());
 		String endPage=Integer.toString(imgPath.size()%2==0?imgPath.size()+1:imgPath.size()+2);

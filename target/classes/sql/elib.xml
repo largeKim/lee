@@ -58,5 +58,24 @@
 	<select id="elibSELview" parameterType="String" resultType="ju.dto.ElibDTO">
 		SELECT * FROM elib WHERE  el_idx=#{el_idx}
 	</select>
+	
+	<select id="elibSELnoList" parameterType="String" resultType="ju.dto.ElibDTO">
+		SELECT * FROM (
+								SELECT rownum rnum, pageData.* FROM (
+																							SELECT * FROM (
+																													SELECT SUBSTR(el_idx, 3) upTime, data.* FROM (
+																																														SELECT * FROM elib WHERE el_idx NOT LIKE 'AB%' )data
+																																													) ORDER BY upTime desc
+																							)pageData
+								) WHERE rnum BETWEEN ${startNum} AND ${endNum}
+	</select>
+	
+	<select id="elibSELnoListCount" resultType="int">
+		SELECT COUNT(*) FROM (	SELECT SUBSTR(el_idx, 3) upTime, data.* FROM (SELECT * FROM elib WHERE el_idx NOT LIKE 'AB%')data)
+	</select>
+	
+	<delete id="elibDEL" parameterType="String">
+		DELETE FROM elib WHERE el_idx=#{el_idx}
+	</delete>
 
 </mapper>
