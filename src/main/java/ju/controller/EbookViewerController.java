@@ -35,7 +35,7 @@ public class EbookViewerController{
 		String path=request.getSession().getServletContext().getRealPath("/")+"resources\\elib\\";
 		String viewImgPath="\\lee\\resources\\elib\\";
 		
-		if(el_idx.indexOf("EA")==1){
+		if(el_idx.indexOf("AB")==0){
 			/* 돌려 보내기*/
 		}
 		else if(el_idx.indexOf("EB")==0){
