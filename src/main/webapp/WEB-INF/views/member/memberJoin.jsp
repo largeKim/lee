@@ -758,7 +758,7 @@
 					<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
 					<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
 					<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
-					<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+					<span class="glyph icon glyphicon-asterisk" aria-hidden="true"></span>
 					<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
 				</td>
 			<tr>
