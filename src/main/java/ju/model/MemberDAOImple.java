@@ -153,6 +153,11 @@ public class MemberDAOImple implements MemberDAO {
 		
 	}
 	
+	public MemberDTO pwCheck(String mem_idx) {
+		MemberDTO dto = sqlMap.selectOne("memSELgetpwd", mem_idx);
+		System.out.println("디비로부터 가져온 pwd :"+ dto.getMem_pwd());
+		return dto;
+	}
 
 	
 	public List<HolidayDTO> getHoliday(int yr, int mon) {

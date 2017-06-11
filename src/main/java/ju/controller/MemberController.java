@@ -3,8 +3,11 @@ package ju.controller;
 
 
 import java.io.IOException;
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 //import ju.dto.*;
 import ju.model.*;
-
 import ju.dto.*;
 
 @Controller
@@ -26,43 +28,57 @@ public class MemberController {
 	MemberDAO memberDao;
 // 단순 화면이동
 	//회원가입 폼 불러오기
-	@RequestMapping("memberJoin.ju")
+	@RequestMapping(value="/memberJoin.ju")
 	public String joinForm(){
 		return "member/memberJoin";	
 	}
 	//도서관 카드
-	@RequestMapping("myCard.ju")
+	@RequestMapping(value="/myCard.ju")
 	public String myCard(){
 		return "member/myCard";
 	}
 	//대출/예약
-	@RequestMapping("aboutMybook.ju")
+	@RequestMapping(value="/aboutMybook.ju")
 	public String aboutMybook(){
 		return "member/aboutMybook";
 	}
 	//전자도서
-	@RequestMapping("aboutEbook.ju")
+	@RequestMapping(value="/aboutEbook.ju")
 	public String aboutEbook(){
 		return "member/aboutEbook";
 	}
 	//회원정보 수정
-	@RequestMapping("changeMe.ju")
-	public String changeMe(){
-		return "member/changeMe";
+	@RequestMapping(value="/changeMe.ju")
+	public ModelAndView changeMe(
+			HttpSession session){
+		ModelAndView mav = new ModelAndView();
+		String mem_idx = ""; 
+		mem_idx = (String)session.getAttribute("sidx");
+		if(mem_idx==null || mem_idx.equals("")){
+			mav.setViewName("member/changeMe");
+		}else{
+			System.out.println("넘어온 mem_idx :" + mem_idx);
+			MemberDTO dto = memberDao.pwCheck(mem_idx);
+			mav.addObject("dto", dto);
+			mav.setViewName("member/changeMe");
+		}
+		
+		return mav;
 	}
+	
 	//나의문의
-	@RequestMapping("myQna.ju")
+	@RequestMapping(value="/myQna.ju")
 	public String myQna(){
 		return "member/myQna";
 	}
 	//회원탈퇴
-	@RequestMapping("memberOut.ju")
+	@RequestMapping(value="/memberOut.ju")
 	public String memberOut(){	
 		return "member/memberOut";
 	}
 	
 //	//이메일(아이디)중복검사
-	@RequestMapping("mailCheck.ju")
+	@RequestMapping(value="/mailCheck.ju")
 	public void mailCheck(
 			@RequestParam(value="email",defaultValue="")
 			String email, HttpServletResponse response){
@@ -82,7 +98,7 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping("checkHp.ju")
+	@RequestMapping(value="/checkHp.ju")
 	public void checkHp(
 			@RequestParam(value="mem_hp",defaultValue="")
 			String mem_hp, HttpServletResponse response){
@@ -100,7 +116,7 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping("mailAccept.ju")
+	@RequestMapping(value="/mailAccept.ju")
 	public void mailAccept(
 			@RequestParam(value="mem_id",defaultValue="")
 			String mem_id, HttpServletResponse response){
@@ -128,7 +144,7 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping("/memberJoinOk.ju")
+	@RequestMapping(value="/memberJoinOk.ju")
 	public String joinSubmit(MemberDTO dto) throws InterruptedException{
 		String idx = "";
 		Long unixTime=System.currentTimeMillis();
@@ -147,17 +163,18 @@ public class MemberController {
 		
 	}
 	
-	@RequestMapping("/login.ju")
+	@RequestMapping(value="/login.ju")
 	public String loginForm(){
 		
 		return "member/memberLogin";
 		
 	}
-	@RequestMapping("/memberLoginOk.ju")
+	@RequestMapping(value="/memberLoginOk.ju")
 	public ModelAndView loginOk(
 			@RequestParam(value="mem_id",defaultValue="")String mem_id,
 			@RequestParam(value="mem_pwd",defaultValue="")String mem_pwd,
 			HttpSession session){
+		
 		ModelAndView mav = new ModelAndView();
 		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
 		
@@ -178,8 +195,20 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping(value="/logout.ju")
+	public ModelAndView logOut(
+			HttpSession session){
+		
+		ModelAndView mav = new ModelAndView();
+		session.invalidate();
+		
+		mav.setViewName("index");
+		
+		return mav;
+	}
 	
-	@RequestMapping("/getHoliday.ju")
+	
+	@RequestMapping(value="/getHoliday.ju")
 	public ModelAndView getHoliday(
 			@RequestParam(value="yr",defaultValue="2017")String yr_s,
 			@RequestParam(value="mon",defaultValue="6")String mon_s){
@@ -199,7 +228,7 @@ public class MemberController {
 		return mav; 
 	}
 	
-	@RequestMapping("/getHolidayFC.ju")
+	@RequestMapping(value="/getHolidayFC.ju")
 	public ModelAndView getHolidayFC(
 			@RequestParam(value="yr")String yr_s){
 		
@@ -218,7 +247,7 @@ public class MemberController {
 		return mav; 
 	}
 	
-	@RequestMapping("/addHoliday.ju")
+	@RequestMapping(value="/addHoliday.ju")
 	public void addHoliday(@RequestParam(value="memo",defaultValue="")String memo,
 			@RequestParam(value="solar_date",defaultValue="")String solar_date,
 			HttpServletResponse response){
@@ -238,7 +267,7 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("/delHoliday.ju")
+	@RequestMapping(value="/delHoliday.ju")
 	public void delHoliday(
 			@RequestParam(value="memo",defaultValue="")String memo,
 			@RequestParam(value="solar_date",defaultValue="")String solar_date,

@@ -43,7 +43,11 @@
 	banlist
 	where MEM_IDX=#{mem_idx} and BAN_START <![CDATA[<=]]> SYSDATE and BAN_END <![CDATA[>=]]> SYSDATE
 </select>
-
+<select id="memSELgetpwd" resultType="ju.dto.MemberDTO" parameterType="String">
+	select * from
+	member
+	where mem_idx=#{mem_idx}
+</select>
 <select id="holidaySELget" parameterType="String" resultType="ju.dto.HolidayDTO">
 	select * from (select * from holiday order by solar_date)a
 	where
