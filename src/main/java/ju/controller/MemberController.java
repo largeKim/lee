@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,8 @@ public class MemberController {
 	
 	@Autowired
 	MemberDAO memberDao;
+	@Autowired
+	LoanDAO loanDao;
 // 단순 화면이동
 	//회원가입 폼 불러오기
 	@RequestMapping(value="/memberJoin.ju")
@@ -37,12 +40,24 @@ public class MemberController {
 	public String myCard(){
 		return "member/myCard";
 	}
-	//대출/예약
+	
+//대출/예약
 	@RequestMapping(value="/aboutMybook.ju")
-	public String aboutMybook(){
-		return "member/aboutMybook";
+	public ModelAndView aboutMybook(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		List<AboutMyBookDTO> loanlist =  memberDao.aboutMybookLoan(mem_idx);
+		List<AboutMyBookDTO> fedexlist = memberDao.aboutMybookfedex(mem_idx);
+		List<AboutMyBookDTO> yeyaklist = memberDao.aboutMybookYeyak(mem_idx);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("loanlist", loanlist);
+		mav.addObject("fedexlist", fedexlist);
+		mav.addObject("yeyaklist", yeyaklist);
+		mav.setViewName("member/aboutMybook");
+		return mav;
 	}
-	//전자도서
+	
+//전자도서
 	@RequestMapping(value="/aboutEbook.ju")
 	public String aboutEbook(){
 		return "member/aboutEbook";
@@ -65,17 +80,70 @@ public class MemberController {
 		
 		return mav;
 	}
+	@RequestMapping(value="/changeMeOk.ju")
+	public ModelAndView changeMeOk(MemberDTO dto,
+			HttpSession session){
+		
+		String mem_idx = (String)session.getAttribute("sidx");
+		dto.setMem_idx(mem_idx);
+		int result = memberDao.changeMeSubmit(dto);
+		ModelAndView mav = new ModelAndView();
+		
+		if(result>0){
+			mav.setViewName("index");
+		}else{
+			mav.setViewName("changeMe.ju");
+		}
+		
+		
+		return mav;
+	}
 	
 	//나의문의
 	@RequestMapping(value="/myQna.ju")
 	public String myQna(){
 		return "member/myQna";
 	}
+	
 	//회원탈퇴
 	@RequestMapping(value="/memberOut.ju")
-	public String memberOut(){	
-		return "member/memberOut";
+	public ModelAndView memberOut(
+			HttpSession session){
+		ModelAndView mav = new ModelAndView();
+		String mem_idx = ""; 
+		mem_idx = (String)session.getAttribute("sidx");
+		
+		if(mem_idx==null || mem_idx.equals("")){
+			mav.setViewName("member/memberOut");
+			
+		}else{
+			System.out.println("out 에서 mem_idx :"+mem_idx);
+			List<LoanDTO> list = loanDao.loanList(mem_idx);
+			System.out.println("out 에서 받아온 list길이 :"+list.size());
+			MemberDTO dto = memberDao.pwCheck(mem_idx);
+			mav.addObject("list",list.size());
+			mav.addObject("dto", dto);
+			mav.setViewName("member/memberOut");		
+		}
+		return mav;
 	}
+	
+	@RequestMapping(value="/memberOutOk.ju")
+	public ModelAndView memberOutOk(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		int result = memberDao.memberDel(mem_idx);
+		ModelAndView mav = new ModelAndView();
+		if(result>0){
+			session.invalidate();
+			mav.setViewName("index");
+		}else{
+			mav.setViewName("index");
+		}
+		return mav;
+		
+	}
+	
 	
 //	//이메일(아이디)중복검사
 	@RequestMapping(value="/mailCheck.ju")
@@ -113,6 +181,37 @@ public class MemberController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
+		
+	}
+	
+//비밀번호 체크(회원정보수정, 회원탈퇴)
+	@RequestMapping(value="/checkPw.ju")
+	public void checkPw(
+			@RequestParam(value="input_pwd",defaultValue="")String input_pwd,
+			@RequestParam(value="mem_idx",defaultValue="")String mem_idx,
+			HttpServletResponse response){
+		
+		MemberDTO dto = memberDao.pwCheck(mem_idx);
+		String pwd = dto.getMem_pwd();
+		System.out.println("input_pwd : "+input_pwd+"/ pwd : "+pwd);
+		int result;
+		if(input_pwd.equals(pwd)){
+			System.out.println("//암호검사 통과");
+			result = 1;
+			
+		}else{
+			
+			System.out.println("//암호검사 불!!!! 통과");
+			result = 2;
+		}
+		
+		try {
+			response.getWriter().print(result);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}  
+		
 		
 	}
 	
@@ -178,8 +277,7 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
 		
-		
-		if(dto.getMem_name().equals("nolog")||dto.getMem_name().equals("black")){
+		if(dto==null || dto.getMem_name().equals("black")){
 			
 			mav.setViewName("member/memberLogin");
 			return mav;

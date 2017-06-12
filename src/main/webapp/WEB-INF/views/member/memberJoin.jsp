@@ -871,7 +871,7 @@
 		</div>
         
         <!-- 비밀번호 찾기 답 -->
-        <div class="row" id="selfinput" required >
+        <div class="row" id="selfinput">
         	
        		<label class="col-md-12" for="sel1">비밀번호 답변</label>
        		<div class="col-md-4">
