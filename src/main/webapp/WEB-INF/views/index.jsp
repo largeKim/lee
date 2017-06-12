@@ -278,7 +278,7 @@ table {
   <div class="indexbt1row">
 	    <div class="col-sm-3">
 	      <p>마이페이지</p>
-	      <a href="changeMe.ju">
+	      <a href="/lee/changeMe.ju">
 	      <img src="/lee/resources/index/button.gif" class="img-responsive" style="width:100%" alt="Image">
 	      </a>
 	    </div>

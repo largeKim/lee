@@ -24,6 +24,8 @@ public interface MemberDAO {
 		public MemberDTO loginSubmit(String mem_id, String mem_pwd);
 		
 		public int checkHp(String mem_hp);
+		
+		public MemberDTO pwCheck(String mem_idx);
 	//캘린더 관련
 		public List<HolidayDTO> getHoliday(int yr, int mon);
 		

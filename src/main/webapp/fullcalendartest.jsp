@@ -32,11 +32,7 @@
  
  $(document).ready(function() {
   
-  
   var d = new Date();
-  
-  
-  
   
   var calendar = $('#calendar').fullCalendar({
    header: {
@@ -44,7 +40,7 @@
     center: 'title',
     right: 'month'
    },
-   defaultDate: d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDay(),
+   defaultDate: d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(),
    monthNames:['01', '02', '03', '04', '05', '06', '07',
      '08', '09', '10', '11', '12'],
    editable: true,
@@ -174,6 +170,7 @@
                     if(!datedata){
                      alert("데이터를 받지 못함");
                     }else{
+                    	
                       var events = [];
                       for(var i=0 ; i < datedata.length ; i++){
                        

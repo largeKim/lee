@@ -26,6 +26,13 @@
 <!-- 바코드 생성기 끝 -->
 <script>
 
+$("body").ready(function(){
+	var sidx = "${sessionScope.sidx}";
+	var idxcode = sidx.substr(2);
+	alert(idxcode);
+	$("#barcode_input").val(idxcode);
+});
+
 
 $(function(){
 	
@@ -164,7 +171,7 @@ if(qs.barcode) {
 					<div class="col-md-12" id="displaybarcode" style="padding:10px;">
 						<form>
 							 
-							<input type="hidden" name="barcode" id="barcode_input" value="1234567890123">	<!-- 	추후 value에 회원 idx 입력 -->
+							<input type="hidden" name="barcode" id="barcode_input" value="">	<!-- 	추후 value에 회원 idx 입력 -->
 							<button class="btn btn-primary" id="generate">
 								회원증 발급/재발급
 								<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span>
