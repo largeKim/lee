@@ -374,9 +374,15 @@
 				</tr>
 				<tr>
 					<td colspan="2" class="text-center">
-						<input type="radio" name="group" value="7"> 전자도서
-						<input type="radio" name="group" value="8"> 전자잡지
-						<input type="radio" name="group" value="9"> E-교육
+						<label class="checkbox-inline">
+							<input type="radio" name="group" value="7"> 전자도서
+						</label>
+						<label class="checkbox-inline">
+							<input type="radio" name="group" value="8"> 전자잡지
+						</label>
+						<label class="checkbox-inline">
+							<input type="radio" name="group" value="9"> E-교육
+						</label>
 					</td>
 				</tr>
 				<tr>

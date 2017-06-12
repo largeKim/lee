@@ -212,14 +212,36 @@ public class ElibController {
 		 * 	1-1 세션이 없으면 미 로그인 로그인 하라고 리턴 
 		 * 	1-2 세션이 있으면 2번으로
 		 * 2. 해당 ID로 IDX 찾기
-		 * 3. 해당 책 el_recocount가 0인지 아닌지 판단
+		 * -----3. 해당 책 el_recocount가 0인지 아닌지 판단
 		 *  3-1 0이면 el_recommend를 삭제하고 해당 mem_idx~를 넣는다(=)
 		 *  3-2 0이 아니면 el_recommend에 +mem_idx~를 추가 한다(+=)
-		 * 4. el_recocount를 1 증가 시킨다
+		 * -----4. el_recocount를 1 증가 시킨다
 		 */
-		System.out.println("추천 : " + el_idx);
+		List<ElibDTO> elibArr=elibDAO.elibContent(el_idx);
+		String el_recommend=null;
+		if(elibArr.get(0).getEl_recocount()==0){
+			el_recommend="맴버 아이디엑스"; // 수정~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		}
+		else{
+			String[] recoMem=elibArr.get(0).getEl_recommend().split("~");
+			boolean before=true;
+			for(int i=0 ; i<recoMem.length ; i++){
+				if(recoMem[i].equals(el_idx)){ before=false; break;}
+			}
+			if(before){
+				el_recommend="~" + "맴버 아이디엑스";
+			}
+		}
+		int resultCount=0;
+		if(el_recommend!=null){
+			resultCount=elibDAO.elibRecommend(el_idx, el_recommend);
+		}
+		int recommend=elibDAO.elibContent(el_idx).get(0).getEl_recocount();
+		
+		System.out.println("추천 : " + recommend);
 		ModelAndView mav=new ModelAndView();
-		mav.addObject("recommend", el_idx);
+		mav.addObject("recommend", recommend);
+		mav.addObject("resultCount", resultCount);
 		mav.setViewName("juJson");
 		return mav;
 	}

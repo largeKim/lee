@@ -53,8 +53,6 @@ public class EbookViewerController{
 			path+="eEdu\\"+elibArr.get(0).getEl_idx()+"\\";
 			viewImgPath+="eEdu\\";
 		}
-		System.out.println(viewImgPath);
-		
 		ArrayList<String> imgPath=new ArrayList<String>();
 		
 		File elibFile=new File(path);
@@ -66,7 +64,6 @@ public class EbookViewerController{
 		for(int i=0 ; i<contentPath.length ; i++){
 			imgPath.add(viewImgPath+elibArr.get(0).getEl_idx()+"\\"+contentPath[i].getName());
 		}
-		System.out.println(imgPath.size());
 		String endPage=Integer.toString(imgPath.size()%2==0?imgPath.size()+1:imgPath.size()+2);
 		
 		ModelAndView mav=new ModelAndView();
@@ -79,8 +76,22 @@ public class EbookViewerController{
 	
 	/**뷰어 북마크 등록*/
 	@RequestMapping(value="eViewerBookMakerAdd.ju")
-	public ModelAndView eViewerBookMakerAdd(@RequestParam(value="page", defaultValue="a")String page) {
-		System.out.println("추가 : " + page);
+	public ModelAndView eViewerBookMakerAdd(
+		@RequestParam(value="page", defaultValue="1")String page
+		, @RequestParam(value="el_idx", defaultValue="1")String el_idx
+		, @RequestParam(value="lb_idx", defaultValue="1")String lb_idx
+		) {
+		if(el_idx.indexOf("EB")==0){
+			/*
+			 * 1. SELECT * FROM loanbook WHERE lb_idx=#{lb_idx}; 을 가져온다
+			 * 2. String lb_etc=lbArr.get(0).getLb_etc;
+			 * 3. 
+			 */
+			String lb_etc="";
+			lb_etc+="~"+page;
+			/*newLb_etc 업데이트 본내기
+			 * */
+		} // 아닌경우는 필요없음
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("juJson");
 		return mav;
@@ -88,7 +99,8 @@ public class EbookViewerController{
 	
 	/**뷰어 북마크 삭제*/
 	@RequestMapping(value="eViewerBookMakerDel.ju")
-	public ModelAndView eViewerBookMakerDel(@RequestParam(value="page", defaultValue="a")String page) {
+	public ModelAndView eViewerBookMakerDel(@RequestParam(value="page", defaultValue="1")String page) {
+		//준비
 		System.out.println("삭제 : " + page);
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("juJson");
@@ -97,8 +109,28 @@ public class EbookViewerController{
 	
 	/**뷰어 마지막 페이지 저장*/
 	@RequestMapping(value="eViewerEndMaker.ju")
-	public ModelAndView eViewerEndMaker(@RequestParam(value="endPage", defaultValue="a")String endPage) {
-		System.out.println("마지막 : " + endPage);
+	public ModelAndView eViewerEndMaker(
+		@RequestParam(value="endPage", defaultValue="#/page/1")String endPage
+		, @RequestParam(value="el_idx", defaultValue="")String el_idx
+		, @RequestParam(value="lb_idx", defaultValue="")String lb_idx
+		) {
+		if(el_idx.indexOf("EB")==0){
+			System.out.println("마지막 : " + endPage);
+			/*
+			 * 1. SELECT * FROM loanbook WHERE lb_idx=#{lb_idx}; 을 가져온다
+			 * 2. String lb_etc=lbArr.get(0).getLb_etc;
+			 * 3. 
+			 */
+			String lb_etc="";
+			String[] etcs=lb_etc.split("~");
+			etcs[0]=endPage;
+			String newLb_etc=etcs[0];
+			for(int i=1 ; i<etcs.length ; i++){
+				newLb_etc+="~"+etcs[i];
+			}
+			/*newLb_etc 업데이트 본내기
+			 * */
+		} // 아닌경우는 필요없음
 		ModelAndView mav=new ModelAndView();
 		mav.setViewName("juJson");
 		return mav;
