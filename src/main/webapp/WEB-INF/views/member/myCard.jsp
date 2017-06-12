@@ -29,7 +29,7 @@
 $("body").ready(function(){
 	var sidx = "${sessionScope.sidx}";
 	var idxcode = sidx.substr(2);
-	alert(idxcode);
+	
 	$("#barcode_input").val(idxcode);
 });
 
@@ -110,7 +110,7 @@ if(qs.barcode) {
 	margin:150px;
 	width: 550px;
 	height:350px;
-	padding: 20px;
+	padding-left: 93px;
 	border: 1px solid grey;
 	border-radius: 24px;
 	}
@@ -134,13 +134,18 @@ if(qs.barcode) {
 	
 	#memberIdcardDiv{
 		transform:rotate(90deg);
-		margin:0px 0px 0px 0px;
+		margin:0px 100px 0px 100px;
+		
+	}
+	#memberIdcard{
+		width: 450px;
 	}
 	#displaybarcode{
 		margin-bottom:200px;
 	}
 	
 }
+
 	
 
 </style>
@@ -195,7 +200,7 @@ if(qs.barcode) {
 					
 					
 			</div>	
-			<div class="col-md-12" style="margin: 50px;">
+			<div class="col-md-12" style="margin: 150px;">
 					
 					</div>
 			

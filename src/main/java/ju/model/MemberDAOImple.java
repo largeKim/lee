@@ -127,10 +127,9 @@ public class MemberDAOImple implements MemberDAO {
 		map.put("mem_pwd", mem_pwd);
 		MemberDTO dto = sqlMap.selectOne("memSELlogin", map);
 		
-		if(dto==null || dto.getMem_idx().equals("")){
-			//로그인 실패시
-			dto.setMem_name("nolog");
-			return dto;
+		if(dto==null){
+			
+			return null;
 		}else{
 			
 			System.out.println("로그인 성공");
@@ -157,6 +156,27 @@ public class MemberDAOImple implements MemberDAO {
 		MemberDTO dto = sqlMap.selectOne("memSELgetpwd", mem_idx);
 		System.out.println("디비로부터 가져온 pwd :"+ dto.getMem_pwd());
 		return dto;
+	}
+	
+	public int changeMeSubmit(MemberDTO dto){
+		int result = sqlMap.update("memUPDchangeme", dto);
+		System.out.println("개인정보 수정 결과 : "+ result);
+		return result;
+	}
+	
+//일반책 대출/예약 관련 	
+	public List<AboutMyBookDTO> aboutMybookLoan(String mem_idx) {
+		List<AboutMyBookDTO> lblist = sqlMap.selectList("memSELaboutmybookLoan", mem_idx);
+		return lblist;
+	}
+	public List<AboutMyBookDTO> aboutMybookfedex(String mem_idx){
+		List<AboutMyBookDTO> fdlist = sqlMap.selectList("memSELaboutmyboofedex", mem_idx);
+		return fdlist;
+	}
+	
+	public List<AboutMyBookDTO> aboutMybookYeyak(String mem_idx) {
+		List<AboutMyBookDTO> yylist = sqlMap.selectList("memSELaboutmybookLoan", mem_idx);
+		return yylist;
 	}
 
 	
