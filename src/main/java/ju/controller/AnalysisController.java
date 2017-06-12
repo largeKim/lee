@@ -263,11 +263,9 @@ public class AnalysisController {
 		// age
 		String age = "[['','Member'],['20세미만',"+map.get("20세미만")+"],['20대',"+map.get("20대")+"],['30대',"+map.get("30대")+"],['40대',"+map.get("40대")+"],['50대이상',"+map.get("50대이상")+"]]";
 		// like
-		String like = "[['','like'],['나의존재',"+map.get("like0")+"],['삶과죽음',"+map.get("like1")+"],['사회',"+map.get("like2")+"],['과학',"+map.get("like3")+"],['문화생활',"+map.get("like4")+"],['지구촌',"+map.get("like5")+"],['갈등',"+map.get("like6")+"],['과거 현재 미래',"+map.get("like7")+"],['새로배움',"+map.get("like8")+"]]";
-		System.out.println(like);
+		String like = "[['','Like'],['나의존재',"+map.get("like0")+"],['삶과죽음',"+map.get("like1")+"],['사회',"+map.get("like2")+"],['과학',"+map.get("like3")+"],['문화생활',"+map.get("like4")+"],['지구촌',"+map.get("like5")+"],['갈등',"+map.get("like6")+"],['과거 현재 미래',"+map.get("like7")+"],['새로배움',"+map.get("like8")+"]]";
 		// email
 		String email = "[['Hanmail',"+map.get("mail0")+"],['Naver',"+map.get("mail1")+"],['Gmail',"+map.get("mail2")+"],['Nate',"+map.get("mail3")+"],['Hotmail',"+map.get("mail4")+"],['Msn',"+map.get("mail5")+"],['Etc',"+map.get("mail6")+"]]";
-		System.out.println(email);
 		ModelAndView mav = new ModelAndView("/anal/analUser");
 		mav.addObject("gender", gender);
 		mav.addObject("age", age);

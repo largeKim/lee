@@ -59,6 +59,18 @@
             <param name="ConversionPattern" value="%d %m %n" />
         </layout>  
     </appender>
+    
+    <!-- 음성인식 관련 로그 -->
+    <appender name="disableInfo" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/LOG/disable/mdisableInfo.log"/>
+        <param name="Append" value="true"/>
+        <!-- param name="MaxFileSize" value="100MB"/ -->
+        <!-- param name="MaxBackupIndex" value="2"></param -->
+        <param name="DatePattern" value="'.'yyyy-MM"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m" />
+        </layout>  
+    </appender>
      
     <!-- 날짜별 로그 파일 생성(에러만) -->
     <appender name="errFile" class="org.apache.log4j.DailyRollingFileAppender">
@@ -95,7 +107,11 @@
         <appender-ref ref="memberInfo" />
         <level value="INFO"/>
         <appender-ref ref="loginInfo" />
-        
+    </logger>
+<!--    disable -->
+    <logger name="ju.controller.IndexController">
+        <level value="INFO"/>
+        <appender-ref ref="disableInfo" />
     </logger>
 
  

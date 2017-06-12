@@ -28,13 +28,12 @@
 <style>
   .bubbleChart {
     min-width: 100px;
-    max-width: 700px;
-    height: 300px;
+    max-width: 1000px;
+    height: 700px;
     margin: 0 auto;
   }
   .bubbleChart svg{
-    background: black;
-    border: 7px groove white;
+    background: white;
   }
 </style>
 <!-- 검색어부분 js -->
