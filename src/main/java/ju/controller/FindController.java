@@ -1,13 +1,8 @@
 package ju.controller;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -129,7 +124,6 @@ public class FindController {
 	
 	@RequestMapping(value="/bkRefresh.ju")
 	public ModelAndView bkRefresh(@RequestParam(value="bk_subject")String bk_subject){
-		List<String> chkBook = FindDao.chkBook(bk_subject);
 		int sumBktake = FindDao.sumBktake(bk_subject);
 		int countBkSubject = FindDao.countBkSubject(bk_subject);
 		sumBktake = countBkSubject-sumBktake;

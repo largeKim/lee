@@ -263,15 +263,9 @@ public class MemberController {
 			//birth 파싱
 			String birth[] = dto.getMem_birth().split("~");
 			
-			String s = "{ip:"+ip+",mail:"+mail[0]+",birth:"+birth[0]+",gender:"+birth[1]+",like:"+dto.getMem_like()+"}";
-			System.out.println(s);
+			String s = "join{ip:"+ip+",mail:"+mail[0]+",birth:"+birth[0]+",gender:"+birth[1]+",like:"+dto.getMem_like()+"}";
 			log.info(s);
 		}
-		
-		
-		
-		
-		
 		String idx = "";
 		Long unixTime=System.currentTimeMillis();
         idx="MB"+unixTime;
@@ -315,8 +309,8 @@ public class MemberController {
 			mav.setViewName("member/memberLogin");
 			return mav;
 		}else{
-			String s = "{ip:"+ip+",id:"+dto.getMem_id()+"}";
-			log.debug(s);
+			String s = "login{ip:"+ip+",id:"+dto.getMem_id()+"}";
+			log.info(s);
 			session.setAttribute("sid", dto.getMem_id());
 			session.setAttribute("sname", dto.getMem_name());
 			session.setAttribute("sidx", dto.getMem_idx());
