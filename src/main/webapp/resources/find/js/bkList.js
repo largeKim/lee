@@ -87,7 +87,8 @@ $.ajax({
 	dataType: "json",
 	success: function(list){
 		var values = list.list;
-		var str = ""
+		var str = "";
+		var str2 = "";
 			if(values.length==0){
 				str = '<tr><td>검색 결과가 없습니다.</td></tr>'
 			}else{
@@ -115,18 +116,16 @@ $.ajax({
 						+'</td>'
 						+'</tr>';
 				})
-				str+='<tr>'
-					+'<td class="text-center">'
-					+'<nav>'
+				str2+='<nav>'
 					+'  <ul class="pagination">';
 				if(list.page<=1){
-					str+='<li class="disabled">'
+					str2+='<li class="disabled">'
 						+'      <a  aria-label="Previous">'
 						+'        <span aria-hidden="true">&laquo;</span>'
 						+'      </a>'
 						+'    </li>';
 				}else{
-					str+='  <li>'
+					str2+='  <li>'
 						+'      <a  aria-label="Previous" onclick="pageMove('+(list.page-1)+')">'
 						+'        <span aria-hidden="true">&laquo;</span>'
 						+'      </a>'
@@ -135,34 +134,33 @@ $.ajax({
 				
 				for(i=list.startPage; i<= list.endPage; i=i+1){
 					if(i==list.page){
-						str += '<li class="active"><a>'+i+'</a></li>';
+						str2 += '<li class="active"><a>'+i+'</a></li>';
 					}else{
-						str+='    			<li><a  onclick="pageMove('+i+')">'+i+'</a></li>';
+						str2+='    			<li><a  onclick="pageMove('+i+')">'+i+'</a></li>';
 					}
 				}
 				
 				if(list.page>=list.endPage){
-					str+='    <li class="disabled">'
+					str2+='    <li class="disabled">'
 						+'      <a  aria-label="Next">'
 						+'        <span aria-hidden="true">&raquo;</span>'
 						+'      </a>'
 						+'    </li>';
 				}else{
-					str+='  	<li>'
+					str2+='  	<li>'
 						+'      <a  aria-label="Next" onclick="pageMove('+(list.page+1)+')">'
 						+'        <span aria-hidden="true">&raquo;</span>'
 						+'      </a>'
 						+'    </li>';
 				}
-				str+='  </ul>'
-					+'						</nav>'
-					+'</td>'
-					+'</tr>';
+				str2+='  </ul>'
+					+'						</nav>';
 				
 			} //else 
 		
 		
 		$('#tbody').html(str);
+		$('#page').html(str2);
 		bkView();
 	}
 });
