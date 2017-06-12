@@ -43,10 +43,45 @@
 	banlist
 	where MEM_IDX=#{mem_idx} and BAN_START <![CDATA[<=]]> SYSDATE and BAN_END <![CDATA[>=]]> SYSDATE
 </select>
+<select id="memSELgetpwd" resultType="ju.dto.MemberDTO" parameterType="String">
+	select * from
+	member
+	where mem_idx=#{mem_idx}
+</select>
+<update id="memUPDchangeme" parameterType="ju.dto.MemberDTO">
+	update member
+	set
+	mem_pwd=#{mem_pwd},
+	mem_hp=#{mem_hp},
+	mem_addr=#{mem_addr},
+	mem_hint=#{mem_hint},
+	mem_answer=#{mem_answer}
+	where
+	mem_idx = #{mem_idx}
+</update>
+<select id="memSELaboutmybookLoan" parameterType="String" resultType="ju.dto.AboutMyBookDTO">
+select a.*, b.*
+from
+book a, (select * from loanbook where mem_idx=#{mem_idx} and lb_return=1)b
+where
+b.book_idx = a.bk_idx
+</select>
+<select id="memSELaboutmyboofedex" parameterType="String" resultType="ju.dto.AboutMyBookDTO">
+select a.*,b.*, c.fedex_idx, c.fedex_num from book a, (select * from loanbook where mem_idx=#{mem_idx} and lb_return=2)b, fedex c
+where b.book_idx = a.bk_idx
+and b.book_idx = c.bk_idx
+</select>
+<select id="memSELaboutmebookyeyak" parameterType="String" resultType="ju.dto.AboutMyBookDTO">
+
+</select>
 
 <select id="holidaySELget" parameterType="String" resultType="ju.dto.HolidayDTO">
 	select * from (select * from holiday order by solar_date)a
 	where
 	${wh}
 </select>
+
+
+
+
   </mapper>
