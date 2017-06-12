@@ -71,15 +71,40 @@ select a.*,b.*, c.fedex_idx, c.fedex_num from book a, (select * from loanbook wh
 where b.book_idx = a.bk_idx
 and b.book_idx = c.bk_idx
 </select>
-<select id="memSELaboutmebookyeyak" parameterType="String" resultType="ju.dto.AboutMyBookDTO">
 
+
+<select id="memSELaboutmebookyeyaklist" parameterType="String" resultType="ju.dto.YeyakDTO">
+select * from yeyakbook where mem_idx=#{mem_idx} order by ye_idx
 </select>
+<select id="memSELaboutmybook" parameterType="String" resultType="ju.dto.BookDTO">
+select * from book where bk_isbn=#{bk_isbn}
+</select>
+
+
 
 <select id="holidaySELget" parameterType="String" resultType="ju.dto.HolidayDTO">
 	select * from (select * from holiday order by solar_date)a
 	where
 	${wh}
 </select>
+<insert id="holidayINSadd" parameterType="map">
+	insert into holiday
+	values(
+	0,
+	SYSDATE,
+	 to_date(#{solarDate},'YYYY-MM-DD'),
+	0,
+	'',
+	#{memo}
+	)
+</insert>
+<delete id="holidayDELdel" parameterType="map">
+	delete from holiday
+	where
+	solar_date = to_date(#{solarDate},'YYYY-MM-DD')
+	and
+	memo = #{memo}
+</delete>
 
 
 

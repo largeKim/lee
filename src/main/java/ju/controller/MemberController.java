@@ -49,6 +49,7 @@ public class MemberController {
 		List<AboutMyBookDTO> loanlist =  memberDao.aboutMybookLoan(mem_idx);
 		List<AboutMyBookDTO> fedexlist = memberDao.aboutMybookfedex(mem_idx);
 		List<AboutMyBookDTO> yeyaklist = memberDao.aboutMybookYeyak(mem_idx);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("loanlist", loanlist);
 		mav.addObject("fedexlist", fedexlist);

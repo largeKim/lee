@@ -175,8 +175,40 @@ public class MemberDAOImple implements MemberDAO {
 	}
 	
 	public List<AboutMyBookDTO> aboutMybookYeyak(String mem_idx) {
-		List<AboutMyBookDTO> yylist = sqlMap.selectList("memSELaboutmybookLoan", mem_idx);
-		return yylist;
+		List<YeyakDTO> yylist = sqlMap.selectList("memSELaboutmebookyeyaklist", mem_idx);
+		
+		if(yylist==null || yylist.size()==0){
+			return null;
+		}else{
+			
+			List<AboutMyBookDTO> resultlist = new ArrayList<AboutMyBookDTO>();
+			for(int i=0; i< yylist.size() ; i++){
+				
+				AboutMyBookDTO ambdto = new AboutMyBookDTO();
+				
+				List<BookDTO> bdto = sqlMap.selectList("memSELaboutmybook",yylist.get(i).getBk_isbn());
+				
+					for(int j=0 ; j< bdto.size() ; j++){
+						if(bdto.get(j).getBk_take()==0){
+							
+							ambdto.setBk_subject(bdto.get(j).getBk_subject());
+							ambdto.setBk_url(bdto.get(j).getBk_url());
+							ambdto.setYe_sunbun(yylist.get(i).getYe_sunbun());
+							break;
+						}else{
+							ambdto.setBk_subject(bdto.get(j).getBk_subject());
+							ambdto.setBk_url(bdto.get(j).getBk_url());
+							ambdto.setYe_sunbun(yylist.get(i).getYe_sunbun());
+						}
+						
+					}
+					resultlist.add(ambdto);
+			}
+			
+			return resultlist;
+		}
+		
+		
 	}
 
 	
