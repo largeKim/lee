@@ -60,8 +60,8 @@
 
 	<div class="well" style="width:500px;height:500px; margin:auto;  font-size:x-large; background-color:white;">
 <form action="memberLoginOk.ju">	
-	  <input id="mem_id" name="mem_id" type="text" class="form-control" placeholder="아이디" style="height:60px; width:400px; margin-bottom:20px;margin-left: auto;margin-right: auto; font-size:x-large;">
-	  <input id="mem_id" name="mem_pwd" type="password" class="form-control" placeholder="비밀번호" style="height:60px; width:400px; margin-bottom:20px;margin-left: auto;margin-right: auto; font-size:x-large;">
+	  <input id="mem_id" name="mem_id" type="text" class="form-control" required="required" placeholder="아이디" style="height:60px; width:400px; margin-bottom:20px;margin-left: auto;margin-right: auto; font-size:x-large;">
+	  <input id="mem_id" name="mem_pwd" type="password" class="form-control" required="required" placeholder="비밀번호" style="height:60px; width:400px; margin-bottom:20px;margin-left: auto;margin-right: auto; font-size:x-large;">
 	  <div style="width:400px; height:160px; margin:auto;">
 		  <input type="submit" class="btn btn-primary" style="border-color:#1AA4AC; background-color:#1AA4AC;height:60px; width:400px; margin-bottom:20px;margin-left: 30px auto;margin-right: 30px auto; font-size:x-large;" value="로그인">
 		  <span id="saveid" class="glyphicon glyphicon-unchecked"></span>&ensp;아이디저장

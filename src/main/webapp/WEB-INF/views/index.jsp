@@ -23,11 +23,11 @@
   $(function(){
 	  $("#search-input").focus( function() {
 		  
-	      $("#search-status").css("display","none");
+	      $("#search-statusBar").css("display","none");
 	  });
 	  $("#search-input").blur( function() {
 		  
-	      $("#search-status").css("display","inline");
+	      $("#search-statusBar").css("display","inline");
 	  });
   });
   </script>
@@ -37,13 +37,17 @@
   body {
 	font-family: Arial, Helvetica, sans-serif;
 }
+
 table {
 	font-size: 1em;
 }
+
 .ui-draggable, .ui-droppable {
 	background-position: top;
 }
+
 /* 캘린더관련 css */
+
   
   </style>
 </head>
@@ -58,7 +62,7 @@ table {
 				 	 <span class="input-group-addon" id="sizing-addon1">
 					 	 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
 					 	 </span>
-				 	 <input id="search-input" type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+				 	 <input id="search-input" type="text" class="form-control" placeholder="검색어 입력" aria-describedby="sizing-addon1">
 				 	 <span id="search-statusBar">
 				 	 	<span id="search-status" class="glyphicon glyphicon-search btn-lg"></span>
 				 	 </span> 
@@ -68,7 +72,7 @@ table {
 </div>
   
   <!-- 첫번째줄 -->
-<div class="container-fluid bg-3 text-center" style="margin-top: 10%;">    
+<div class="container-fluid bg-3 text-center">    
   <!-- <h3>Some of my Work</h3><br> -->
   
   <div class="row">
@@ -105,9 +109,8 @@ table {
 				            		if(datedata[k].memo){
 				            			document.getElementById("datepickerdetail").innerText = document.getElementById("datepickerdetail").innerText +"\n"+ datedata[k].memo;
 				            		}else{
+					   					document.getElementById("datepickerdetail").innerText = day_s[2]+"년"+day_s[0]+"월"+day_s[1]+"일\n";
 					   					
-					   					document.getElementById("datepickerdetail").innerText =day_s[2]+"년"+day_s[0]+"월"+day_s[1]+"일\n일정이 없습니다.";
-					   					return false;
 					   				}
 				            		
 				            	}
@@ -125,12 +128,14 @@ table {
 			            		
 			            		var bb = datedata[k].solar_Date.split('-');
 				            	var dd = parseInt(bb[2])-1; 
-				            	var change = document.getElementsByClassName('ui-datepicker-calendar')[0].getElementsByClassName('ui-state-default')[dd];
-				            	$(change).css('border-color','red');
+				            	var change = document.getElementsByClassName('ui-state-default')[dd];
+				            	$(change).css('border','3px solid red');
+				            	
 			            		
 			            	}else{
-			            		var change = document.getElementsByClassName('ui-datepicker-calendar')[0].getElementsByClassName('ui-state-default')[k];
-				            	$(change).css('border-color','');
+			            		var change = document.getElementsByClassName('ui-state-default')[k];
+				            	
+				            	$(change).css('border','1px solid #c5c5c5');
 			            	}
 		            }
    					return;
@@ -178,11 +183,14 @@ table {
 	   				            		var bb = datedata[i].solar_Date.split('-');
 		   				            	var dd = parseInt(bb[2])-1; 
 		   				            	var change = document.getElementsByClassName('ui-datepicker-calendar')[0].getElementsByClassName('ui-state-default')[dd];
-		   				            	$(change).css('border-color','red');
+		   				            	
+		   				            	$(change).css('border','3px solid red');
+		   				            	
 	   				            		
 	   				            	}else{
 	   				            		var change = document.getElementsByClassName('ui-datepicker-calendar')[0].getElementsByClassName('ui-state-default')[i];
-		   				            	$(change).css('border-color','');
+		   				            	
+		   				            	$(change).css('border','1px solid #c5c5c5');
 	   				            	}
 	   				            }
 	   			            }
@@ -224,13 +232,17 @@ table {
 			            for(var i = 0 ; i < datedata.length ; i++){
 			            	if(datedata[i].memo){
 				            		
-				            		var bb = datedata[i].solar_Date.split('-');
+				            	var bb = datedata[i].solar_Date.split('-');
    				            	var dd = parseInt(bb[2])-1; 
    				            	var change = document.getElementsByClassName('ui-datepicker-calendar')[0].getElementsByClassName('ui-state-default')[dd];
+   				            	$(change).css('border','3px solid');
    				            	$(change).css('border-color','red');
+   				            	
 				            		
 				            	}
 			            }
+			            $(".ui-datepicker-today")[0].click();
+			            
 		            }
 		           	
 		        },
@@ -266,7 +278,7 @@ table {
   <div class="indexbt1row">
 	    <div class="col-sm-3">
 	      <p>마이페이지</p>
-	      <a href="changeMe.ju">
+	      <a href="/lee/changeMe.ju">
 	      <img src="/lee/resources/index/button.gif" class="img-responsive" style="width:100%" alt="Image">
 	      </a>
 	    </div>
