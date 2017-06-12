@@ -179,7 +179,7 @@
 					intoHTML+='						</tr>';
 					intoHTML+='						<tr>';
 					intoHTML+='							<th>추천인 IDX</th>';
-					intoHTML+='							<td>' + elibArr[i].el_recommend + '</td>';
+					intoHTML+='							<td>' + elibArr[i].el_recommend.replace("~", "\n") + '</td>';
 					intoHTML+='						</tr>';
 					intoHTML+='						<tr>';
 					intoHTML+='							<th>추천수</th>';
@@ -495,7 +495,7 @@
 					intoHTML+='						</tr>';
 					intoHTML+='						<tr>';
 					intoHTML+='							<th>추천인 IDX</th>';
-					intoHTML+='							<td>' + elibArr[i].el_recommend + '</td>';
+					intoHTML+='							<td>' + elibArr[i].el_recommend.replace("~", "\n") + '</td>';
 					intoHTML+='						</tr>';
 					intoHTML+='						<tr>';
 					intoHTML+='							<th>추천수</th>';

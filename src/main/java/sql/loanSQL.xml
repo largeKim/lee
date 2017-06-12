@@ -81,4 +81,13 @@
  	<delete id="feDEL" parameterType="String" >
  		DELETE FEDEX where bk_idx=#{bk_idx}
  	</delete>
+ 	
+ 	<select id="loanSELinfo" parameterType="String" resultType="ju.dto.LoanDTO">
+ 		SELECT * FROM loan WHERE lb_idx=#{lb_idx}
+ 	</select>
+ 	
+ 	<update id="loanUPDbookMarkUp" parameterType="String">
+ 		UPDATE loan SET lb_etc=#{lb_etc} WHERE lb_idx=#{lb_idx}
+ 	</update>
+ 	
  </mapper>

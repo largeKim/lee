@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ju.dto.ElibDTO;
+import ju.dto.LoanDTO;
 import ju.elib.model.ElibDAO;
+import ju.model.LoanDAO;
 
 @Controller
 public class EbookViewerController{
 	
 	@Autowired
 	private ElibDAO elibDAO;
+	@Autowired
+	private LoanDAO loandao;
 	
 	/**뷰어*/
 	@RequestMapping(value="eViewer.ju")
@@ -77,32 +81,52 @@ public class EbookViewerController{
 	/**뷰어 북마크 등록*/
 	@RequestMapping(value="eViewerBookMakerAdd.ju")
 	public ModelAndView eViewerBookMakerAdd(
-		@RequestParam(value="page", defaultValue="1")String page
-		, @RequestParam(value="el_idx", defaultValue="1")String el_idx
-		, @RequestParam(value="lb_idx", defaultValue="1")String lb_idx
+		@RequestParam(value="page", defaultValue="#/page/1")String page
+		, @RequestParam(value="el_idx", defaultValue="")String el_idx
+		, @RequestParam(value="lb_idx", defaultValue="")String lb_idx
+		, HttpServletRequest request
 		) {
-		if(el_idx.indexOf("EB")==0){
-			/*
-			 * 1. SELECT * FROM loanbook WHERE lb_idx=#{lb_idx}; 을 가져온다
-			 * 2. String lb_etc=lbArr.get(0).getLb_etc;
-			 * 3. 
-			 */
-			String lb_etc="";
+		String mem_idx=(String)request.getAttribute("sidx");
+		if(mem_idx==null){
+			mem_idx="";
+		}
+		int resultCount=0;
+		if(el_idx.indexOf("EB")==0 && mem_idx.indexOf("MB")==0){
+			List<LoanDTO> loanArr=loandao.loanInfo(lb_idx);
+			String lb_etc=loanArr.get(0).getLb_etc();
 			lb_etc+="~"+page;
-			/*newLb_etc 업데이트 본내기
-			 * */
+			resultCount=loandao.loanBookMarkUp(lb_idx, lb_etc);
 		} // 아닌경우는 필요없음
 		ModelAndView mav=new ModelAndView();
+		mav.addObject("resultCount", resultCount);
 		mav.setViewName("juJson");
 		return mav;
 	}
 	
 	/**뷰어 북마크 삭제*/
 	@RequestMapping(value="eViewerBookMakerDel.ju")
-	public ModelAndView eViewerBookMakerDel(@RequestParam(value="page", defaultValue="1")String page) {
-		//준비
-		System.out.println("삭제 : " + page);
+	public ModelAndView eViewerBookMakerDel(
+		@RequestParam(value="page", defaultValue="#/page/1")String page
+		, @RequestParam(value="el_idx", defaultValue="")String el_idx
+		, @RequestParam(value="lb_idx", defaultValue="")String lb_idx
+		, HttpServletRequest request
+		) {
+		String mem_idx=(String)request.getAttribute("sidx");
+		if(mem_idx==null){
+			mem_idx="";
+		}
+		int resultCount=0;
+		if(el_idx.indexOf("EB")==0 && mem_idx.indexOf("MB")==0){
+			List<LoanDTO> loanArr=loandao.loanInfo(lb_idx);
+			String[] etcArr=loanArr.get(0).getLb_etc().split("~");
+			String lb_etc=etcArr[0];
+			for(int i=1 ; i<etcArr.length ; i++){
+				if(!etcArr[i].equals(page)){ lb_etc+="~"+etcArr[i]; }
+			}
+			resultCount=loandao.loanBookMarkUp(lb_idx, lb_etc);
+		} // 아닌경우는 필요없음
 		ModelAndView mav=new ModelAndView();
+		mav.addObject("resultCount", resultCount);
 		mav.setViewName("juJson");
 		return mav;
 	}
@@ -113,25 +137,25 @@ public class EbookViewerController{
 		@RequestParam(value="endPage", defaultValue="#/page/1")String endPage
 		, @RequestParam(value="el_idx", defaultValue="")String el_idx
 		, @RequestParam(value="lb_idx", defaultValue="")String lb_idx
+		, HttpServletRequest request
 		) {
-		if(el_idx.indexOf("EB")==0){
+		String mem_idx=(String)request.getAttribute("sidx");
+		if(mem_idx==null){
+			mem_idx="";
+		}
+		int resultCount=0;
+		if(el_idx.indexOf("EB")==0 && mem_idx.indexOf("MB")==0){
 			System.out.println("마지막 : " + endPage);
-			/*
-			 * 1. SELECT * FROM loanbook WHERE lb_idx=#{lb_idx}; 을 가져온다
-			 * 2. String lb_etc=lbArr.get(0).getLb_etc;
-			 * 3. 
-			 */
-			String lb_etc="";
-			String[] etcs=lb_etc.split("~");
-			etcs[0]=endPage;
-			String newLb_etc=etcs[0];
-			for(int i=1 ; i<etcs.length ; i++){
-				newLb_etc+="~"+etcs[i];
+			List<LoanDTO> loanArr=loandao.loanInfo(lb_idx);
+			String[] etcArr=loanArr.get(0).getLb_etc().split("~");
+			String lb_etc=etcArr[0];
+			for(int i=1 ; i<etcArr.length ; i++){
+				lb_etc+="~"+etcArr[i];
 			}
-			/*newLb_etc 업데이트 본내기
-			 * */
+			resultCount=loandao.loanBookMarkUp(lb_idx, lb_etc);
 		} // 아닌경우는 필요없음
 		ModelAndView mav=new ModelAndView();
+		mav.addObject("resultCount", resultCount);
 		mav.setViewName("juJson");
 		return mav;
 	}

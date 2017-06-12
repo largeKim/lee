@@ -173,6 +173,9 @@
 			function bookMakerDelet() {
 				$(".btn-link").click(
 					function() {
+						var el_idx=$("body").data("idx");
+						var lb_idx=$("body").data("loan");
+						
 						var deletMakerNum=$(".btn-link").index(this);
 						var thisPage=$(".form-group:eq(" + deletMakerNum + ")>button").eq(0).data("maker");
 						var deletBoolean=confirm("해당 북마크가 삭제 됩니다.\n삭제하시겠습니까?");
@@ -180,7 +183,7 @@
 							$.ajax({
 								type : "GET"
 				    			, url : "eViewerBookMakerDel.ju"
-				    			, data : {page : thisPage}
+				    			, data : {page : thisPage, el_idx : el_idx, lb_idx : lb_idx}
 				    			, dataType : "json"
 				    			, success: function(data){
 									$(".form-group").eq(deletMakerNum).remove();

@@ -471,7 +471,7 @@
 								intoBodyHTML+='					</span> ';
 							}
 							else{
-								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(1)" >대출하기 </button>';
+								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(\' ' + arr.el_idx + '\' )" >대출하기 </button>';
 								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\' ' + arr.el_idx + '\' )" >추천하기</button>';
 							}
 							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(1)">';
@@ -487,7 +487,7 @@
 							intoBodyHTML+='		<tr>';
 							intoBodyHTML+='			<td>';
 							intoBodyHTML+='				<h4>작품소개</h4>';
-							intoBodyHTML+='				(강추!) 『나의 고독한 두리안 나무』 『라구나 이야기 외전』 『영우한테 잘해줘』의 박영란 작가의 신작 열 살 소년이 그곳에서 당신을 기다립니다 위험이 닥칠 땐 개다리춤을 추는 소년과 귀차니 아줌마의 인생 이야기! 『나의 고독한 두리안 나무』『라구나 이야기 외전』『영우한테 잘해줘』에서 자신만의 확실한 작품세계와 문장으로 청소년을 만났던 박영란 작가가 들려주는 또다른 삶의 이야기이다. 세상에서 어슬렁거리는 사람을 내쫓지 않는 것은 광장뿐. 그곳에서 사는 사람들과 어울리면서 열 살 소년이 알아버린 삶의 무서운 진실, 인생 이야기. 절대 무너지지 마! 우리가 삶을 함부로 대하지 않으면 그 무엇도 우리를 함부로 대할 수 없다!';
+							intoBodyHTML+=arr.el_info;
 							intoBodyHTML+='			</td>';
 							intoBodyHTML+='		</tr>';
 							intoBodyHTML+='	</table>';

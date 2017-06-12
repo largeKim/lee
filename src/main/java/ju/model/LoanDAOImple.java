@@ -1,5 +1,6 @@
 package ju.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -50,7 +51,22 @@ public class LoanDAOImple implements LoanDAO {
 		return result;
 	}
 	
+	/**정보 가져오기*/
+	public List<LoanDTO> loanInfo(String lb_idx) {
+		HashMap<String, String> hmap=new HashMap<String, String>();
+		hmap.put("lb_idx", lb_idx);
+		List<LoanDTO> loanArr=sqlMap.selectList("loanSELinfo", hmap);
+		return loanArr;
+	}
 	
+	/**마지막 읽은 쪽 북마크 등록&삭제*/
+	public int loanBookMarkUp(String lb_idx, String lb_etc) {
+		HashMap<String, String> hmap=new HashMap<String, String>();
+		hmap.put("lb_idx", lb_idx);
+		hmap.put("lb_etc", lb_etc);
+		int resultCount=sqlMap.update("loanUPDbookMarkUp", hmap);
+		return resultCount;
+	}
 
 	
 }
