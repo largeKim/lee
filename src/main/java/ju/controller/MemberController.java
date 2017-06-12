@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 //import ju.dto.*;
@@ -24,6 +27,7 @@ import ju.dto.*;
 
 @Controller
 public class MemberController {
+	Logger log = Logger.getLogger(this.getClass());
 	
 	@Autowired
 	MemberDAO memberDao;
@@ -245,6 +249,29 @@ public class MemberController {
 	
 	@RequestMapping(value="/memberJoinOk.ju")
 	public String joinSubmit(MemberDTO dto) throws InterruptedException{
+        //client ip
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null)
+            ip = req.getRemoteAddr();
+		
+		//log 넣는 부분
+		if( dto.getMem_id()!=null ){
+			//mail파싱
+			String mail[] = dto.getMem_id().split("@");
+			mail = mail[1].split("\\.");
+			//birth 파싱
+			String birth[] = dto.getMem_birth().split("~");
+			
+			String s = "{ip:"+ip+",mail:"+mail[0]+",birth:"+birth[0]+",gender:"+birth[1]+",like:"+dto.getMem_like()+"}";
+			System.out.println(s);
+			log.info(s);
+		}
+		
+		
+		
+		
+		
 		String idx = "";
 		Long unixTime=System.currentTimeMillis();
         idx="MB"+unixTime;
@@ -273,6 +300,12 @@ public class MemberController {
 			@RequestParam(value="mem_id",defaultValue="")String mem_id,
 			@RequestParam(value="mem_pwd",defaultValue="")String mem_pwd,
 			HttpSession session){
+		//get client ip
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null){
+        	ip = req.getRemoteAddr();
+        }
 		
 		ModelAndView mav = new ModelAndView();
 		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
@@ -281,8 +314,9 @@ public class MemberController {
 			
 			mav.setViewName("member/memberLogin");
 			return mav;
-			
 		}else{
+			String s = "{ip:"+ip+",id:"+dto.getMem_id()+"}";
+			log.debug(s);
 			session.setAttribute("sid", dto.getMem_id());
 			session.setAttribute("sname", dto.getMem_name());
 			session.setAttribute("sidx", dto.getMem_idx());
