@@ -147,7 +147,6 @@ var a = ${list};
 					<ul class="nav nav-tabs">
 					  <li role="presentation" class="active"><a href="analSearch.ju">검색어통계</a></li>
 					  <li role="presentation"><a href="analUser.ju">이용자통계</a></li>
-					  <li role="presentation"><a href="analLogin.ju">접속통계</a></li>
 					</ul>
 				</div>
 				<div class="col-md">
