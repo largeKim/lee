@@ -1,7 +1,12 @@
 package ju.model;
+<<<<<<< HEAD
 import java.util.List;
 
 import ju.dto.LoanDTO;
+=======
+import java.util.*;
+import ju.dto.*;
+>>>>>>> Daewon
 
 public interface LoanDAO {
 

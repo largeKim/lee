@@ -31,6 +31,10 @@
 	<bean id="findDAO" class="ju.find.model.FindDAOImple">
 		<constructor-arg name="sqlMap" ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+<<<<<<< HEAD
+=======
+	<!-- service -->
+>>>>>>> Daewon
 	<bean id="memberDao" class="ju.model.MemberDAOImple">
 		<constructor-arg ref="sqlSessionTemplate" />
 	</bean>
