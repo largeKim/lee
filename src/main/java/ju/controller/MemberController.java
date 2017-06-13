@@ -2,28 +2,33 @@ package ju.controller;
 
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 //import ju.dto.*;
 import ju.model.*;
+import ju.controller.AnalysisController.ValueComparator;
 import ju.dto.*;
 
 @Controller
 public class MemberController {
+	Logger log = Logger.getLogger(this.getClass());
 	
 	@Autowired
 	MemberDAO memberDao;
@@ -49,6 +54,7 @@ public class MemberController {
 		List<AboutMyBookDTO> loanlist =  memberDao.aboutMybookLoan(mem_idx);
 		List<AboutMyBookDTO> fedexlist = memberDao.aboutMybookfedex(mem_idx);
 		List<AboutMyBookDTO> yeyaklist = memberDao.aboutMybookYeyak(mem_idx);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("loanlist", loanlist);
 		mav.addObject("fedexlist", fedexlist);
@@ -59,8 +65,17 @@ public class MemberController {
 	
 //전자도서
 	@RequestMapping(value="/aboutEbook.ju")
-	public String aboutEbook(){
-		return "member/aboutEbook";
+	public ModelAndView aboutEbook(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		List<AboutMyBookDTO> eblist =  memberDao.aboutEbookLoan(mem_idx);
+		List<AboutMyBookDTO> ablist =  memberDao.aboutAudiobook(mem_idx);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("eblist", eblist);
+		mav.addObject("ablist", ablist);
+		mav.setViewName("member/aboutEbook");
+		return mav;
 	}
 	//회원정보 수정
 	@RequestMapping(value="/changeMe.ju")
@@ -101,8 +116,14 @@ public class MemberController {
 	
 	//나의문의
 	@RequestMapping(value="/myQna.ju")
-	public String myQna(){
-		return "member/myQna";
+	public ModelAndView myQna(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		ModelAndView mav = new ModelAndView();
+		List<AboutMyQnaDTO> list = memberDao.memQna(mem_idx);
+		mav.addObject("qnalist", list);
+		mav.setViewName("member/myQna");
+		return mav;
 	}
 	
 	//회원탈퇴
@@ -245,6 +266,23 @@ public class MemberController {
 	
 	@RequestMapping(value="/memberJoinOk.ju")
 	public String joinSubmit(MemberDTO dto) throws InterruptedException{
+        //client ip
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null)
+            ip = req.getRemoteAddr();
+		
+		//log 넣는 부분
+		if( dto.getMem_id()!=null ){
+			//mail파싱
+			String mail[] = dto.getMem_id().split("@");
+			mail = mail[1].split("\\.");
+			//birth 파싱
+			String birth[] = dto.getMem_birth().split("~");
+			
+			String s = "join{ip:"+ip+",mail:"+mail[0]+",birth:"+birth[0]+",gender:"+birth[1]+",like:"+dto.getMem_like()+"}";
+			log.info(s);
+		}
 		String idx = "";
 		Long unixTime=System.currentTimeMillis();
         idx="MB"+unixTime;
@@ -273,6 +311,12 @@ public class MemberController {
 			@RequestParam(value="mem_id",defaultValue="")String mem_id,
 			@RequestParam(value="mem_pwd",defaultValue="")String mem_pwd,
 			HttpSession session){
+		//get client ip
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null){
+        	ip = req.getRemoteAddr();
+        }
 		
 		ModelAndView mav = new ModelAndView();
 		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
@@ -281,8 +325,9 @@ public class MemberController {
 			
 			mav.setViewName("member/memberLogin");
 			return mav;
-			
 		}else{
+			String s = "login{ip:"+ip+",id:"+dto.getMem_id()+"}";
+			log.info(s);
 			session.setAttribute("sid", dto.getMem_id());
 			session.setAttribute("sname", dto.getMem_name());
 			session.setAttribute("sidx", dto.getMem_idx());
@@ -385,4 +430,124 @@ public class MemberController {
 		}
 	}
 	
+<<<<<<< HEAD
+	@RequestMapping(value="/moveHolidayFC.ju")
+	public void moveHoliday(
+			@RequestParam(value="memo",defaultValue="")String memo,
+			@RequestParam(value="beforedate",defaultValue="")String beforeDate,
+			@RequestParam(value="afterdate",defaultValue="")String afterDate,
+			HttpServletResponse response){
+		
+		int result = memberDao.moveHoliday(memo, beforeDate, afterDate);
+		
+		try{
+			
+			if(result > 0){
+				response.getWriter().print("삭제성공");
+			}else{
+				response.getWriter().print("삭제실패");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+=======
+	@RequestMapping(value="/loginLog.ju")
+	public ModelAndView loginLog(HttpSession session){
+		if(session.getAttribute("sid") != null){
+			String sid = (String)session.getAttribute("sid");
+			
+			File f = new File("../LOG/member/memberInfo.log");
+	        String country = "";
+			if(f.exists()){
+				try {
+					BufferedReader in = new BufferedReader(new FileReader(f));
+					String s;
+					while ((s = in.readLine()) != null) {
+						if(s.contains("login") && s.contains(sid)){
+							String arr[] = s.split("login");
+							String dayArr[] = arr[0].split(",");
+							//접속 일시
+							String day = dayArr[0];
+							arr = arr[1].split(",");
+							//접속 IP
+							String ip = arr[0].substring(4);
+							//IP 국가
+							country = getGlobalIp(ip);
+							
+							if( "KR".equals(country) ){
+								country = "대한한국";
+							}else if( "KP".equals(country) ){
+								country = "북한";
+							}else if( "CN".equals(country) ){
+								country = "중국";
+							}else if( "JP".equals(country) ){
+								country = "일본";
+							}else{
+								country = "그 외 국가";
+							}
+							
+							System.out.println("접속일 : " + day + ", 접속 IP : " + ip + ", 국가 : " + country);
+						}
+					}
+					in.close();
+				} catch (Exception e) {
+				}
+			}
+		}else{
+			System.out.println("로그인해야함");
+		}
+		
+		ModelAndView mav = new ModelAndView("index");
+		return mav;
+	}
+	
+	
+	public String getGlobalIp(String ipAddress){
+		try {
+			File f = new File("../LOG/ip/ip.csv");
+			
+			BufferedReader in = new BufferedReader(new FileReader(f));
+			String s;
+			while( (s=in.readLine()) != null ){
+				String arr[] = s.split(",");
+				long min = 0;
+				long max = 0;
+				long ipAddr = 0;
+				String minIpArr[] = arr[0].split("\\.");
+				String maxIpArr[] = arr[1].split("\\.");
+				String ipArr[] = ipAddress.split("\\.");
+				
+				for (int i = 0; i < ipArr.length; i++) {
+					int power = 3-i;
+					int ip = Integer.parseInt(ipArr[i]);
+					ipAddr += ip * Math.pow(256, power);
+				}
+				for (int i = 0; i < minIpArr.length; i++) {
+					int power = 3-i;
+					int ip = Integer.parseInt(minIpArr[i]);
+					min += ip * Math.pow(256, power);
+				}
+				for (int i = 0; i < maxIpArr.length; i++) {
+					int power = 3-i;
+					int ip = Integer.parseInt(maxIpArr[i]);
+					max += ip * Math.pow(256, power);
+				}
+				
+				for (long i = min; i <= max; i++) {
+					if(i==ipAddr){
+						return arr[2];
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "Etc";
+	}
+	
+>>>>>>> sanghoon
 }
