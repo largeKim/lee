@@ -31,7 +31,9 @@
  var datedata;
  var count=0;
  var eventDropStart;
+ var eventDropStartmemo;
  var eventDropStop;
+ var eventDropStopmemo;
  $(document).ready(function() {
   
   var d = new Date();
@@ -95,16 +97,11 @@
    },
    //일정선택
    eventClick: function(event,jsEvent,view){
-    alert('이벤트 선택'+event.title);
-     
-           /* alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY); */
-           alert('event 정보 (id): ' + event.id);
-     /*   $('#myCalendar').fullCalendar('removeEventSource',event.start); */
-     
+
    },
    
    //삭제하기...
-   eventDrop:function(event, jsEvent, ui, view , revertFunc){
+   eventDragStop:function(event, jsEvent, ui, view , revertFunc){
 	/* drop:function(date, jsEvent, ui, resourceId)  { */ 		
 	   		var x = $('#calendarTrash').position().left;
 	   		var y = $('#calendarTrash').position().top;
@@ -112,12 +109,12 @@
 	   		var wid =  $('#calendarTrash').outerWidth();
 	   		var ex = jsEvent.pageX;
 	   		var ey = jsEvent.pageY;
-		   alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+		   /* alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvsent.pageY); */
 		    
 		    if( (ex >= x && ex <= x+wid) && (ey >= y && ey <= y+hei) ){
 		    	
 		    	var id = event.id;
-		    	alert(event.id);
+		    	/* alert(event.id); */
 			    	 $.ajax({
 			              url : "delHoliday.ju",
 			              type: "get",
@@ -146,15 +143,37 @@
 		    
    },
    eventDragStart: function(event, jsEvent, ui, view ){
-	 
+	  
+	  eventDropStart = event.start.format();
+	  eventDropStartmemo = event.title;
    },
    //이벤트 드래그로 이동
    eventDrop: function(event, delta, revertFunc) {
 	
-       alert(event+"일자의 "+event.title + "이 " + event.start.format() +" 일자로 이동됩니다."+delta);
+       
 
        if (!confirm("정말 이동하시겠습니까 ?")) {
            revertFunc();
+       }else{
+	    	   $.ajax({
+	               url : "moveHolidayFC.ju",
+	               type: "get",
+	               data : {"memo":eventDropStartmemo,"beforedate":eventDropStart,"afterdate":event.start.format()},
+	               dataType:"json",
+	               success : function(responseData){
+	                   
+	                $("#ajax").remove();
+	                   result = responseData;
+	                   
+	                     if(!result){
+	                      alert("데이터를 받지 못함");
+	                     }else{
+	                         console.log('이벤트 이동성공!');
+	                     }
+	                      
+	                  
+	               }
+	            });
        }
 
    },

@@ -60,8 +60,17 @@ public class MemberController {
 	
 //전자도서
 	@RequestMapping(value="/aboutEbook.ju")
-	public String aboutEbook(){
-		return "member/aboutEbook";
+	public ModelAndView aboutEbook(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		List<AboutMyBookDTO> eblist =  memberDao.aboutEbookLoan(mem_idx);
+		List<AboutMyBookDTO> ablist =  memberDao.aboutAudiobook(mem_idx);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("eblist", eblist);
+		mav.addObject("ablist", ablist);
+		mav.setViewName("member/aboutEbook");
+		return mav;
 	}
 	//회원정보 수정
 	@RequestMapping(value="/changeMe.ju")
@@ -102,8 +111,14 @@ public class MemberController {
 	
 	//나의문의
 	@RequestMapping(value="/myQna.ju")
-	public String myQna(){
-		return "member/myQna";
+	public ModelAndView myQna(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		ModelAndView mav = new ModelAndView();
+		List<AboutMyQnaDTO> list = memberDao.memQna(mem_idx);
+		mav.addObject("qnalist", list);
+		mav.setViewName("member/myQna");
+		return mav;
 	}
 	
 	//회원탈퇴
@@ -385,5 +400,27 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
+	
+	@RequestMapping(value="/moveHolidayFC.ju")
+	public void moveHoliday(
+			@RequestParam(value="memo",defaultValue="")String memo,
+			@RequestParam(value="beforedate",defaultValue="")String beforeDate,
+			@RequestParam(value="afterdate",defaultValue="")String afterDate,
+			HttpServletResponse response){
+		
+		int result = memberDao.moveHoliday(memo, beforeDate, afterDate);
+		
+		try{
+			
+			if(result > 0){
+				response.getWriter().print("삭제성공");
+			}else{
+				response.getWriter().print("삭제실패");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

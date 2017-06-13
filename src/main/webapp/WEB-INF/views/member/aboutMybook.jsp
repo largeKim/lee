@@ -171,40 +171,40 @@
         대출하신 책이 없습니다.    
    </c:when>
    <c:when test="${yylist ne null}">
-   <c:forEach items="${yylist}" var="list">
-		   	<div class="col-sm-6 col-md-4">
-			    <div class="thumbnail ">
-			      <div class="text-center" style="margin:auto; width:100%;height:200px; position:relative " id="imgpannel">
-			      <img src="${list.bk_url }" style="width:200px;height:200px; position:absolute; z-index:0; ">
-				      <c:if test="${list.ye_sunbun == 1}">
-			      		<c:choose>
-				      		<c:when test="${list.bk_take==0}">
-				      		 	<img src="/lee/resources/member/img/canloan.png" alt="..." style="opacity:0.5; width:200px;height:200px; z-index:1; ">
-				      	 	</c:when>
-				      	 	<c:when test="${list.bk_take==1}">
-				      	 		<img src="/lee/resources/member/img/loaning.png" alt="..." style="opacity:0.5; width:200px;height:200px; z-index:1; ">
-				      	 	</c:when>
-			      	 	</c:choose>
-				      </c:if>
-				      <c:if test="${list.ye_sunbun > 1}">
-			      		
-				      	 		<img src="/lee/resources/member/img/loaning.png" alt="..." style="opacity:0.5; width:200px;height:200px; z-index:1; ">
-				      	
-				      </c:if>
+	   <c:forEach items="${yylist}" var="list">
+			   	<div class="col-sm-6 col-md-4">
+				    <div class="thumbnail ">
+				      <div class="text-center" style="margin:auto; width:100%;height:200px; position:relative " id="imgpannel">
+				      <img src="${list.bk_url}" style="width:200px;height:200px; position:absolute; z-index:0; ">
+					      <c:if test="${list.ye_sunbun == 1}">
+				      		<c:choose>
+					      		<c:when test="${list.bk_take==0}">
+					      		 	<img src="/lee/resources/member/img/canloan.png" alt="..." style="opacity:0.5; width:200px;height:200px; z-index:1; ">
+					      	 	</c:when>
+					      	 	<c:when test="${list.bk_take==1}">
+					      	 		<img src="/lee/resources/member/img/loaning.png" alt="..." style="opacity:0.5; width:200px;height:200px; z-index:1; ">
+					      	 	</c:when>
+				      	 	</c:choose>
+					      </c:if>
+					      <c:if test="${list.ye_sunbun > 1}">
+				      		
+					      	 		<img src="/lee/resources/member/img/loaning.png" alt="..." style="opacity:0.5; width:200px;height:200px; z-index:1; ">
+					      	
+					      </c:if>
+					      
+				      </div>
 				      
-			      </div>
-			      
-			      <div class="caption">
-			        <h3>${list.bk_subject}</h3>
-			        <p>
-			        예약순번 : ${list.ye_sunbun}<br>
-			        
-			        </p>
-			        <p><a href="#" class="btn btn-primary" role="button">예약취소하기</a></p>
-			      </div>
-			    </div>
-			  </div>
-   </c:forEach>
+				      <div class="caption">
+				        <h3>${list.bk_subject}</h3>
+				        <p>
+				        예약순번 : ${list.ye_sunbun}<br>
+				        
+				        </p>
+				        <p><a href="#" class="btn btn-primary" role="button">예약취소하기</a></p>
+				      </div>
+				    </div>
+				  </div>
+	   </c:forEach>
    </c:when>
 </c:choose>
 
