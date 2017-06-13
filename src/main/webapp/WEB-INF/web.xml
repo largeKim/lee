@@ -39,4 +39,18 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/resources/log4j.xml</param-value>
 	</context-param>
+	
+	<!-- error-page -->
+	<error-page>
+		<exception-type>Exception</exception-type>
+		<location>/WEB-INF/test.jsp</location>
+	</error-page>
+	<error-page>
+		<exception-type>404</exception-type>
+		<location>/WEB-INF/test.jsp</location>
+	</error-page>
+	<error-page>
+		<exception-type>500</exception-type>
+		<location>/WEB-INF/test.jsp</location>
+	</error-page>
 </web-app>
