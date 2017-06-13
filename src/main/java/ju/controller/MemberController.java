@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +21,15 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import ju.dto.AboutMyBookDTO;
+import ju.dto.AboutMyQnaDTO;
+import ju.dto.HolidayDTO;
+import ju.dto.LoanDTO;
+import ju.dto.MemberDTO;
 //import ju.dto.*;
-import ju.model.*;
-import ju.controller.AnalysisController.ValueComparator;
-import ju.dto.*;
+import ju.model.EmailDAO;
+import ju.model.LoanDAO;
+import ju.model.MemberDAO;
 
 @Controller
 public class MemberController {
@@ -430,30 +435,7 @@ public class MemberController {
 		}
 	}
 	
-<<<<<<< HEAD
-	@RequestMapping(value="/moveHolidayFC.ju")
-	public void moveHoliday(
-			@RequestParam(value="memo",defaultValue="")String memo,
-			@RequestParam(value="beforedate",defaultValue="")String beforeDate,
-			@RequestParam(value="afterdate",defaultValue="")String afterDate,
-			HttpServletResponse response){
-		
-		int result = memberDao.moveHoliday(memo, beforeDate, afterDate);
-		
-		try{
-			
-			if(result > 0){
-				response.getWriter().print("삭제성공");
-			}else{
-				response.getWriter().print("삭제실패");
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-=======
+
 	@RequestMapping(value="/loginLog.ju")
 	public ModelAndView loginLog(HttpSession session){
 		if(session.getAttribute("sid") != null){
@@ -549,5 +531,4 @@ public class MemberController {
 		return "Etc";
 	}
 	
->>>>>>> sanghoon
 }
