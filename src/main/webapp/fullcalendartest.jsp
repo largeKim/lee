@@ -29,7 +29,11 @@
  <script type="text/javascript">
  
  var datedata;
- 
+ var count=0;
+ var eventDropStart;
+ var eventDropStartmemo;
+ var eventDropStop;
+ var eventDropStopmemo;
  $(document).ready(function() {
   
   var d = new Date();
@@ -61,7 +65,7 @@
 		       end:start,
 		       allDay: allDay,
 		       id: title+start+end,
-		       
+		       color: '#1AA4AC'
 	      },
 	      true // make the event "stick"
 	     );
@@ -70,14 +74,13 @@
 		             url : "addHoliday.ju",
 		             type: "get",
 		             data : {"memo":title,"solar_date":start.format('YYYY-MM-DD')},
-		             success : function(){
+		             success : function(datedata){
 		              $("#ajax").remove();
 		              	
 		                   if(!datedata){
 		                    alert("데이터를 받지 못함");
 		                   }else{
 		                     
-		                	   
 		                	   calendar.fullCalendar('unselect');
 		                   	
 		                   }   
@@ -94,32 +97,29 @@
    },
    //일정선택
    eventClick: function(event,jsEvent,view){
-    alert('이벤트 선택'+event.title);
-     
-           /* alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY); */
-           alert('event 정보 (id): ' + event.id);
-     /*   $('#myCalendar').fullCalendar('removeEventSource',event.start); */
-     
+
    },
+   
    //삭제하기...
    eventDragStop:function(event, jsEvent, ui, view , revertFunc){
+	/* drop:function(date, jsEvent, ui, resourceId)  { */ 		
 	   		var x = $('#calendarTrash').position().left;
 	   		var y = $('#calendarTrash').position().top;
 	   		var hei = $('#calendarTrash').outerHeight();
 	   		var wid =  $('#calendarTrash').outerWidth();
 	   		var ex = jsEvent.pageX;
 	   		var ey = jsEvent.pageY;
-		   /*  alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY); */
+		   /* alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvsent.pageY); */
 		    
 		    if( (ex >= x && ex <= x+wid) && (ey >= y && ey <= y+hei) ){
 		    	
 		    	var id = event.id;
-		    	alert(event.id);
+		    	/* alert(event.id); */
 			    	 $.ajax({
 			              url : "delHoliday.ju",
 			              type: "get",
 			              data : {"memo":event.title,"solar_date":event.start.format('YYYY-MM-DD')},
-			              success : function(){
+			              success : function(datedata){
 			               $("#ajax").remove();
 			               
 			               
@@ -137,16 +137,43 @@
 			                }
 			           });
   			
+		    }else{
+		    	
 		    }
 		    
+   },
+   eventDragStart: function(event, jsEvent, ui, view ){
+	  
+	  eventDropStart = event.start.format();
+	  eventDropStartmemo = event.title;
    },
    //이벤트 드래그로 이동
    eventDrop: function(event, delta, revertFunc) {
 	
-       alert(event+"일자의 "+event.title + "이 " + event.start.format() +" 일자로 이동됩니다."+delta);
+       
 
        if (!confirm("정말 이동하시겠습니까 ?")) {
            revertFunc();
+       }else{
+	    	   $.ajax({
+	               url : "moveHolidayFC.ju",
+	               type: "get",
+	               data : {"memo":eventDropStartmemo,"beforedate":eventDropStart,"afterdate":event.start.format()},
+	               dataType:"json",
+	               success : function(responseData){
+	                   
+	                $("#ajax").remove();
+	                   result = responseData;
+	                   
+	                     if(!result){
+	                      alert("데이터를 받지 못함");
+	                     }else{
+	                         console.log('이벤트 이동성공!');
+	                     }
+	                      
+	                  
+	               }
+	            });
        }
 
    },
@@ -156,6 +183,8 @@
     
     var calendar = $("#calendar").fullCalendar("getDate");
     
+    $('#calendar').fullCalendar('removeEvents');
+   
           $.ajax({
               url : "getHolidayFC.ju",
               type: "get",
@@ -171,19 +200,23 @@
                      alert("데이터를 받지 못함");
                     }else{
                     	
+                     	
                       var events = [];
                       for(var i=0 ; i < datedata.length ; i++){
                        
                        if(datedata[i].memo){
+                    	   
                         events.push({
                           title:datedata[i].memo,
                           start:datedata[i].solar_Date,
                           editable:true,
+                          id: datedata[i].memo+datedata[i].solar_Date+datedata[i].solar_Date,
                           color: '#1AA4AC'
                         });
                         
                        }
                       }
+                      count=1;
                       callback(events);
                     }   
               },
@@ -193,7 +226,7 @@
                 }
            });
        
-    
+   
     
    }
   }); 

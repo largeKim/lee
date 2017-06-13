@@ -139,7 +139,7 @@ public class MemberDAOImple implements MemberDAO {
 			//String whe = "MEM_IDX='"+mem_idx+"' and BAN_START<=SYSDATE and BAN_END>=SYSDATE";
 			int count = sqlMap.selectOne("memSELcheckban",mem_idx);
 			System.out.println("count : "+count);
-			
+
 
 			if(count>0){
 				dto.setMem_name("black");
@@ -175,10 +175,59 @@ public class MemberDAOImple implements MemberDAO {
 	}
 	
 	public List<AboutMyBookDTO> aboutMybookYeyak(String mem_idx) {
-		List<AboutMyBookDTO> yylist = sqlMap.selectList("memSELaboutmybookLoan", mem_idx);
-		return yylist;
+		List<YeyakDTO> yylist = sqlMap.selectList("memSELaboutmebookyeyaklist", mem_idx);
+		
+		if(yylist==null || yylist.size()==0){
+			return null;
+		}else{
+			
+			List<AboutMyBookDTO> resultlist = new ArrayList<AboutMyBookDTO>();
+			for(int i=0; i< yylist.size() ; i++){
+				
+				AboutMyBookDTO ambdto = new AboutMyBookDTO();
+				
+				List<BookDTO> bdto = sqlMap.selectList("memSELaboutmybook",yylist.get(i).getBk_isbn());
+				
+					for(int j=0 ; j< bdto.size() ; j++){
+						if(bdto.get(j).getBk_take()==0){
+							ambdto.setBk_idx(bdto.get(j).getBk_idx());
+							ambdto.setBk_subject(bdto.get(j).getBk_subject());
+							ambdto.setBk_url(bdto.get(j).getBk_url());
+							ambdto.setYe_sunbun(yylist.get(i).getYe_sunbun());
+							
+							break;
+						}else{
+							
+							ambdto.setBk_idx(bdto.get(j).getBk_idx());
+							ambdto.setBk_subject(bdto.get(j).getBk_subject());
+							ambdto.setBk_url(bdto.get(j).getBk_url());
+							ambdto.setYe_sunbun(yylist.get(i).getYe_sunbun());
+						}
+						
+					}
+					System.out.println("저장하기전 : "+ambdto.getBk_idx());
+					resultlist.add(ambdto);
+			}
+			
+			return resultlist;
+		}
+		
+		
 	}
-
+//전재책 오디오북 대출관련
+	public List<AboutMyBookDTO> aboutEbookLoan(String mem_idx) {
+		List<AboutMyBookDTO> eblist = sqlMap.selectList("memSELaboutebookLoan", mem_idx);
+		return eblist;
+	}
+	public List<AboutMyBookDTO> aboutAudiobook(String mem_idx){
+		List<AboutMyBookDTO> ablist = sqlMap.selectList("memSELaboutabbookLoan", mem_idx);
+		return ablist;
+	}
+	
+	public List<AboutMyQnaDTO> memQna(String mem_idx) {
+			List<AboutMyQnaDTO> qnalist = sqlMap.selectList("memSELmyqnalist", mem_idx);
+		return qnalist;
+	}
 	
 	public List<HolidayDTO> getHoliday(int yr, int mon) {
 		String wh = "";
@@ -226,6 +275,14 @@ public class MemberDAOImple implements MemberDAO {
 		return result;
 	}
 	
+	public int moveHoliday(String memo, String beforeDate, String afterDate) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("memo", memo);
+		map.put("beforeDate", beforeDate);
+		map.put("afterDate", afterDate);
+		int result = sqlMap.update("holidayUPDmove", map);
+		return result;
+	}
 	
 //	대원 추가 6월 11일 일 끝
 }

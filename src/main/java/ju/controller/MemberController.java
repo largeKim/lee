@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +21,15 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import ju.dto.AboutMyBookDTO;
+import ju.dto.AboutMyQnaDTO;
+import ju.dto.HolidayDTO;
+import ju.dto.LoanDTO;
+import ju.dto.MemberDTO;
 //import ju.dto.*;
-import ju.model.*;
-import ju.controller.AnalysisController.ValueComparator;
-import ju.dto.*;
+import ju.model.EmailDAO;
+import ju.model.LoanDAO;
+import ju.model.MemberDAO;
 
 @Controller
 public class MemberController {
@@ -54,6 +59,7 @@ public class MemberController {
 		List<AboutMyBookDTO> loanlist =  memberDao.aboutMybookLoan(mem_idx);
 		List<AboutMyBookDTO> fedexlist = memberDao.aboutMybookfedex(mem_idx);
 		List<AboutMyBookDTO> yeyaklist = memberDao.aboutMybookYeyak(mem_idx);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("loanlist", loanlist);
 		mav.addObject("fedexlist", fedexlist);
@@ -64,8 +70,17 @@ public class MemberController {
 	
 //전자도서
 	@RequestMapping(value="/aboutEbook.ju")
-	public String aboutEbook(){
-		return "member/aboutEbook";
+	public ModelAndView aboutEbook(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		List<AboutMyBookDTO> eblist =  memberDao.aboutEbookLoan(mem_idx);
+		List<AboutMyBookDTO> ablist =  memberDao.aboutAudiobook(mem_idx);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("eblist", eblist);
+		mav.addObject("ablist", ablist);
+		mav.setViewName("member/aboutEbook");
+		return mav;
 	}
 	//회원정보 수정
 	@RequestMapping(value="/changeMe.ju")
@@ -106,8 +121,14 @@ public class MemberController {
 	
 	//나의문의
 	@RequestMapping(value="/myQna.ju")
-	public String myQna(){
-		return "member/myQna";
+	public ModelAndView myQna(
+			HttpSession session){
+		String mem_idx = (String)session.getAttribute("sidx");
+		ModelAndView mav = new ModelAndView();
+		List<AboutMyQnaDTO> list = memberDao.memQna(mem_idx);
+		mav.addObject("qnalist", list);
+		mav.setViewName("member/myQna");
+		return mav;
 	}
 	
 	//회원탈퇴
@@ -414,6 +435,7 @@ public class MemberController {
 		}
 	}
 	
+
 	@RequestMapping(value="/loginLog.ju")
 	public ModelAndView loginLog(HttpSession session){
 		if(session.getAttribute("sid") != null){
