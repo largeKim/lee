@@ -346,10 +346,9 @@ function bkYeyak(){
 	var bk_subject = $('#media-heading').html();
 	if(result==1){
 		alert('대출가능 도서입니다. 도서관에 방문하시거나 택배대출기능을 이용해주세요');
-	}else if(result==99){
-		alert('로그인이 필요한 서비스 입니다');
 	}else if(result==0){
 		alert('대출가능여부를 확인해주세요');
+		
 	}else if(result==3){
 		$.ajax({
 			type: "GET",
@@ -360,8 +359,6 @@ function bkYeyak(){
 			success: function(list){
 				if(list.count==1){
 					alert('대출예약이 되었습니다 순번 : ' + list.ye_sunbun);
-				}else if(list.count==99){
-					alert('로그인이 필요한 서비스 입니다');
 				}else if(list.count==80){
 					alert('예약 회원이 많아 예약이 불가합니다');
 //					$('#refreshSpan_1').text('예약실패');
@@ -391,8 +388,6 @@ function bkFedex(){
 				if(list.count==1){
 					alert('택배대출신청했습니다. 마이페이지에서 현황을 확인해주세요');
 					result2 = 1;
-				}else if(list.count==99){
-					alert('로그인이 필요한 서비스입니다');
 				}else if(list.count==0){
 					alert('오류가 발생했습니다. 관리자에게 문의 바랍니다.');
 				}else if(list.count==90){
@@ -401,18 +396,18 @@ function bkFedex(){
 					alert('대출된 도서');
 				}else if(list.count==70){
 					alert('이미 신청하셨습니다');
+					
 				}
 			}
 		});
 		
-	}else if(result==99){
-		alert('로그인이 필요한 서비스입니다');
 	}else if(result==0){
 		alert('대출가능여부를 확인해주세요');
 	}else if(result==3){
 		alert('대출중인 도서입니다. 대출이 가능하면 신청해주세요');
 	}else if(result2==1){
 		alert('이미 예약하셨습니다. 마이페이지에서 확인 바랍니다');
+		
 	}
 }
 

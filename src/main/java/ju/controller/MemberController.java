@@ -2,9 +2,6 @@ package ju.controller;
 
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 //import ju.dto.*;
 import ju.model.*;
-import ju.controller.AnalysisController.ValueComparator;
 import ju.dto.*;
 
 @Controller
@@ -412,101 +408,6 @@ public class MemberController {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	@RequestMapping(value="/loginLog.ju")
-	public ModelAndView loginLog(HttpSession session){
-		if(session.getAttribute("sid") != null){
-			String sid = (String)session.getAttribute("sid");
-			
-			File f = new File("../LOG/member/memberInfo.log");
-	        String country = "";
-			if(f.exists()){
-				try {
-					BufferedReader in = new BufferedReader(new FileReader(f));
-					String s;
-					while ((s = in.readLine()) != null) {
-						if(s.contains("login") && s.contains(sid)){
-							String arr[] = s.split("login");
-							String dayArr[] = arr[0].split(",");
-							//접속 일시
-							String day = dayArr[0];
-							arr = arr[1].split(",");
-							//접속 IP
-							String ip = arr[0].substring(4);
-							//IP 국가
-							country = getGlobalIp(ip);
-							
-							if( "KR".equals(country) ){
-								country = "대한한국";
-							}else if( "KP".equals(country) ){
-								country = "북한";
-							}else if( "CN".equals(country) ){
-								country = "중국";
-							}else if( "JP".equals(country) ){
-								country = "일본";
-							}else{
-								country = "그 외 국가";
-							}
-							
-							System.out.println("접속일 : " + day + ", 접속 IP : " + ip + ", 국가 : " + country);
-						}
-					}
-					in.close();
-				} catch (Exception e) {
-				}
-			}
-		}else{
-			System.out.println("로그인해야함");
-		}
-		
-		ModelAndView mav = new ModelAndView("index");
-		return mav;
-	}
-	
-	
-	public String getGlobalIp(String ipAddress){
-		try {
-			File f = new File("../LOG/ip/ip.csv");
-			
-			BufferedReader in = new BufferedReader(new FileReader(f));
-			String s;
-			while( (s=in.readLine()) != null ){
-				String arr[] = s.split(",");
-				long min = 0;
-				long max = 0;
-				long ipAddr = 0;
-				String minIpArr[] = arr[0].split("\\.");
-				String maxIpArr[] = arr[1].split("\\.");
-				String ipArr[] = ipAddress.split("\\.");
-				
-				for (int i = 0; i < ipArr.length; i++) {
-					int power = 3-i;
-					int ip = Integer.parseInt(ipArr[i]);
-					ipAddr += ip * Math.pow(256, power);
-				}
-				for (int i = 0; i < minIpArr.length; i++) {
-					int power = 3-i;
-					int ip = Integer.parseInt(minIpArr[i]);
-					min += ip * Math.pow(256, power);
-				}
-				for (int i = 0; i < maxIpArr.length; i++) {
-					int power = 3-i;
-					int ip = Integer.parseInt(maxIpArr[i]);
-					max += ip * Math.pow(256, power);
-				}
-				
-				for (long i = min; i <= max; i++) {
-					if(i==ipAddr){
-						return arr[2];
-					}
-				}
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "Etc";
 	}
 	
 }
