@@ -62,7 +62,7 @@
     
     <!-- 음성인식 관련 로그 -->
     <appender name="disableInfo" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="/LOG/disable/mdisableInfo.log"/>
+        <param name="File" value="/LOG/disable/disableInfo.log"/>
         <param name="Append" value="true"/>
         <!-- param name="MaxFileSize" value="100MB"/ -->
         <!-- param name="MaxBackupIndex" value="2"></param -->
