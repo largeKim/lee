@@ -83,11 +83,23 @@
  	</delete>
  	
  	<select id="loanSELinfo" parameterType="String" resultType="ju.dto.LoanDTO">
- 		SELECT * FROM loan WHERE lb_idx=#{lb_idx}
+ 		SELECT * FROM loanbook WHERE lb_idx=#{lb_idx}
  	</select>
  	
  	<update id="loanUPDbookMarkUp" parameterType="String">
- 		UPDATE loan SET lb_etc=#{lb_etc} WHERE lb_idx=#{lb_idx}
+ 		UPDATE loanbook SET lb_etc=#{lb_etc} WHERE lb_idx=#{lb_idx}
  	</update>
+ 	
+ 	<select id="loanSELmemCount" parameterType="String" resultType="int">
+	 	SELECT COUNT(*) FROM loanbook WHERE mem_idx=#{mem_idx} AND lb_end>sysdate
+ 	</select>
+ 	
+ 	<select id="loanSELebookOverlap" parameterType="String" resultType="int">
+	 	SELECT COUNT(*) FROM loanbook WHERE mem_idx=#{mem_idx} AND book_idx=#{el_idx} AND lb_end>sysdate
+ 	</select>
+ 	
+ 	<insert id="loanINSelib" parameterType="String">
+	 	INSERT INTO loanbook VALUES(#{lb_idx}, #{mem_idx}, #{bk_idx}, SYSDATE, SYSDATE+14, #{lb_etc}, 1, 0)
+ 	</insert>
  	
  </mapper>

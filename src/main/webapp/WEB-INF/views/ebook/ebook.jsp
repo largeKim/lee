@@ -440,7 +440,7 @@
 						, dataType : "json"
 						, success: function(data){
 							var arr=data.elibArr;
-							var mem_id=data.mem_id;
+							var mem=data.mem;
 							var intoHeaderHTML="";
 							intoHeaderHTML+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 							intoHeaderHTML+='<h4 class="modal-title" id="myModalLabel">' + arr.el_subject + '</h4>';
@@ -457,12 +457,12 @@
 							intoBodyHTML+='					<div class="text-left">';
 							intoBodyHTML+='						<div class="col-md-2">저자</div><div class="col-md-10">' + arr.el_writer + '</div>';
 							intoBodyHTML+='						<div class="col-md-2">출판사</div><div class="col-md-10">' + arr.el_pub + '</div>';
-							intoBodyHTML+='						<div class="col-md-2">추천 수</div><div class="col-md-10">' + arr.el_recocount + '</div>';
-							intoBodyHTML+='						<div class="col-md-2">대출</div><div class="col-md-10">0/5</div>';
+							intoBodyHTML+='						<div class="col-md-2">추천 수</div><div class="col-md-10" id="reco"">' + arr.el_recocount + '</div>';
+							intoBodyHTML+='						<div class="col-md-2">대출</div><div class="col-md-10" id="loan">0/5</div>';
 							intoBodyHTML+='					</div>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='				<div class="text-right">';
-							if(mem_id==null){
+							if(mem==0){
 								intoBodyHTML+='					<span data-toggle="tooltip" data-placement="bottom" title="로그인 해야 사용 할 수 있습니다.">';
 								intoBodyHTML+='						<button class="btn btn-default" id="loanButton" type="button" disabled="disabled" >대출하기 </button>';
 								intoBodyHTML+='					</span> ';
@@ -474,8 +474,8 @@
 								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(\' ' + arr.el_idx + '\' )" >대출하기 </button>';
 								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\' ' + arr.el_idx + '\' )" >추천하기</button>';
 							}
-							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(1)">';
-							intoBodyHTML+='						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span id="refreshSpan">가능</span>';
+							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(\' ' + arr.el_idx + '\' )">';
+							intoBodyHTML+='						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span id="refreshSpan">대여 가능</span>';
 							intoBodyHTML+='					</button>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='			</div>';
@@ -494,13 +494,14 @@
 							intoBodyHTML+='</div>';
 							$(".modal-header").html(intoHeaderHTML);
 							$(".modal-body").html(intoBodyHTML);
-							if(mem_id==null){
+							if(mem==0){
 								$("#loanButton").parent().tooltip();
 								$("#recommendButton").parent().tooltip();
 							} // null function
-						}
+						$("#myModal").modal("show");
+						$("#refreshSpan").parent().click();
+						} // success
 					});
-					$("#myModal").modal("show");
 				}
 			);
 		}
@@ -513,9 +514,16 @@
 				, data : {el_idx : el_idx}
 				, dataType : "json"
 				, success: function(data){
-					$("#refreshSpan").text(data.msg);
-				}
-			})
+					var resultCount=data.resultCount;
+					if(resultCount==5){
+						$("#refreshSpan").text("대여 불가능");
+					}
+					else{
+						$("#refreshSpan").text("대여 가능");
+					}
+					$("#loan").text(resultCount + "/5");
+				} // success: function
+			}) // ajax
 		}
 		/*대출*/
 		function ebookLoan(el_idx) {
@@ -525,9 +533,15 @@
 				, data : {el_idx : el_idx}
 				, dataType : "json"
 				, success: function(data){
-					alert(data.loan);
-				}
-			})
+					var resultCount=data.resultCount;
+					if(resultCount==0){
+						alert("대출이 불가능 합니다.");
+					}
+					else if(resultCount>0){
+						alert("대여기간은 " + data.endDate + "까지 입니다.");
+					}
+				} // success: function
+			});
 		}
 		/*추천*/
 		function elibRecommend(el_idx) {
@@ -537,9 +551,13 @@
 				, data : {el_idx : el_idx}
 				, dataType : "json"
 				, success: function(data){
-					alert(data.recommend);
+					var resultCount=data.resultCount;
+					var recommend=data.recommend;
+					if(resultCount>1){
+						$("#reco").text(recommend);
+					}
 				}
-			})
+			}); // success: function
 		}
 		
 	</script>
