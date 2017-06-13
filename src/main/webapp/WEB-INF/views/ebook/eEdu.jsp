@@ -142,6 +142,7 @@
 						}
 						$("#contentTbody").html(intoHTML);
 						$("#pagingNav").html(data.paging);
+						$("#pagingNav").removeClass().addClass("simple");
 						contentClick();
 						
 						$("#pagingNav>ul>li").removeClass("active");
@@ -252,6 +253,7 @@
 						}
 						$("#contentTbody").html(intoHTML);
 						$("#pagingNav").html(data.paging);
+						$("#pagingNav").removeClass().addClass("detail");
 						contentClick();
 						
 						$("#pagingNav>ul>li").removeClass("active");
@@ -387,6 +389,7 @@
 					}
 					$("#contentTbody").html(intoHTML);
 					$("#pagingNav").html(data.paging);
+					$("#pagingNav").removeClass().addClass("noSearch");
 					contentClick();
 					
 					$("#pagingNav>ul>li").removeClass("active");

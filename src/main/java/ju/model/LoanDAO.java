@@ -23,5 +23,8 @@ public interface LoanDAO {
 	public int ebookOverlap(String mem_idx, String el_idx);
 	/**전자도서 대여 */
 	public int elibLoan(String lb_idx, String mem_idx, String book_idx, String lb_etc);
+	/**전자도서 빌린책인지 확인*/
+	public int elibLoanCheck(String el_idx, String mem_idx);
+	
 	
 }

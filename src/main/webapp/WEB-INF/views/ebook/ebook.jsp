@@ -54,11 +54,12 @@
 					detailWrite="";
 					detailPub="";
 					cateLg=$(event.target).eq(0).data("lg");
-					cateMd="";
-					
-					$(".order>span").eq(1).click();
-					elibDetailAjax(detailSubject, detailWrite, detailPub, cateLg, cateMd, 1, orderName);
-				}
+					cateMd="99";
+					if(!$(this).parent().hasClass("open")){ // 닫기는 작동안함
+						$(".order>span").eq(1).click();
+						elibDetailAjax(detailSubject, detailWrite, detailPub, cateLg, cateMd, 1, orderName);
+					}
+				} // click function
 			);
 			$("#ebList>ul>li>ul>li>a").click(
 				function(event) {
@@ -152,6 +153,7 @@
 						}
 						$("#contentTbody").html(intoHTML);
 						$("#pagingNav").html(data.paging);
+						$("#pagingNav").removeClass().addClass("simple");
 						contentClick();
 						
 						$("#pagingNav>ul>li").removeClass("active");
@@ -199,6 +201,9 @@
 				function() {
 					simpleSearchText=$("#simpleSearchText").val();
 					elibSearchAjax(simpleSearchText, 1, orderName);
+					$("#pagingNav").removeClass().addClass("simple");
+					$("#pagingNav>ul>li").removeClass("active");
+					$("#pagingNav>ul>li").eq(1).addClass("active");
 				}
 			);
 			
@@ -256,6 +261,7 @@
 						}
 						$("#contentTbody").html(intoHTML);
 						$("#pagingNav").html(data.paging);
+						$("#pagingNav").removeClass().addClass("detail");
 						contentClick();
 						
 						$("#pagingNav>ul>li").removeClass("active");
@@ -391,6 +397,7 @@
 					}
 					$("#contentTbody").html(intoHTML);
 					$("#pagingNav").html(data.paging);
+					$("#pagingNav").removeClass().addClass("noSearch");
 					contentClick();
 					
 					$("#pagingNav>ul>li").removeClass("active");

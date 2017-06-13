@@ -96,4 +96,13 @@ public class LoanDAOImple implements LoanDAO {
 		return resultCount;
 	}
 	
+	/**전자도서 빌린책인지 확인*/
+	public int elibLoanCheck(String el_idx, String mem_idx){
+		HashMap<String, String> hmap=new HashMap<String, String>();
+		hmap.put("el_idx", el_idx);
+		hmap.put("mem_idx", mem_idx);
+		int resultCount=sqlMap.insert("loanSELcheck", hmap);
+		return resultCount;
+	}
+	
 }

@@ -29,11 +29,10 @@ public class EbookViewerController{
 	/**뷰어*/
 	@RequestMapping(value="eViewer.ju")
 	public ModelAndView eViewer(@RequestParam(value="el_idx")String el_idx, HttpServletRequest request) {
-		System.out.println(el_idx);
-		System.out.println("el_idx.indexOf('AB') : " + el_idx.indexOf("AB"));
-		System.out.println("el_idx.indexOf('EB') : " + el_idx.indexOf("EB"));
-		System.out.println("el_idx.indexOf('EM') : " + el_idx.indexOf("EM"));
-		System.out.println("el_idx.indexOf('EE') : " + el_idx.indexOf("EE"));
+		String mem_idx=(String)request.getAttribute("sidx");
+		if(mem_idx==null){
+			mem_idx="MB";
+		}
 		
 		List<ElibDTO> elibArr=null;
 		String path=request.getSession().getServletContext().getRealPath("/")+"resources\\elib\\";
@@ -41,11 +40,29 @@ public class EbookViewerController{
 		
 		if(el_idx.indexOf("AB")==0){
 			/* 돌려 보내기*/
+			ModelAndView mav=new ModelAndView();
+			mav.addObject("msg", "잘못된 접근입니다.");
+			mav.setViewName("ebook/eViewerMsg");
+			return mav;
 		}
 		else if(el_idx.indexOf("EB")==0){
-			elibArr=elibDAO.elibViewer(el_idx);
-			path+="eBook\\"+elibArr.get(0).getEl_idx()+"\\";
-			viewImgPath+="eBook\\";
+			int resultCount=0;
+			if(mem_idx.indexOf("MB")!=0){ resultCount=1; }
+			else{
+				resultCount=loandao.elibLoanCheck(el_idx, mem_idx);
+			}
+			if(resultCount<=0){
+				/* 돌려 보내기*/
+				ModelAndView mav=new ModelAndView();
+				mav.addObject("msg", "대여한 책이 아닙니다.");
+				mav.setViewName("ebook/eViewerMsg");
+				return mav;
+			}
+			else if(resultCount>0) {
+				elibArr=elibDAO.elibViewer(el_idx);
+				path+="eBook\\"+elibArr.get(0).getEl_idx()+"\\";
+				viewImgPath+="eBook\\";
+			}
 		}
 		else if(el_idx.indexOf("EM")==0){
 			elibArr=elibDAO.elibViewer(el_idx);
