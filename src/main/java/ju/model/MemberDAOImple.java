@@ -219,11 +219,7 @@ public class MemberDAOImple implements MemberDAO {
 		List<AboutMyBookDTO> eblist = sqlMap.selectList("memSELaboutebookLoan", mem_idx);
 		return eblist;
 	}
-	public List<AboutMyBookDTO> aboutAudiobook(String mem_idx){
-		List<AboutMyBookDTO> ablist = sqlMap.selectList("memSELaboutabbookLoan", mem_idx);
-		return ablist;
-	}
-	
+
 	public List<AboutMyQnaDTO> memQna(String mem_idx) {
 			List<AboutMyQnaDTO> qnalist = sqlMap.selectList("memSELmyqnalist", mem_idx);
 		return qnalist;

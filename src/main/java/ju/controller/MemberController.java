@@ -74,11 +74,11 @@ public class MemberController {
 			HttpSession session){
 		String mem_idx = (String)session.getAttribute("sidx");
 		List<AboutMyBookDTO> eblist =  memberDao.aboutEbookLoan(mem_idx);
-		List<AboutMyBookDTO> ablist =  memberDao.aboutAudiobook(mem_idx);
+		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("eblist", eblist);
-		mav.addObject("ablist", ablist);
+		
 		mav.setViewName("member/aboutEbook");
 		return mav;
 	}

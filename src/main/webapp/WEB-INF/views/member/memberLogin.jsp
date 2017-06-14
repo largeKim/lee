@@ -53,8 +53,7 @@
 
 <div class="row">
 <div class="col-md-12" style="margin-top: 10%; margin-bottom:15%;">
-<h1 style="text-align: center;">도서관로고올자리</h1>
-<h1 style="text-align: center;">LIB Service</h1>
+<h1 style="text-align: center;"><img src="/lee/resources/index/logo2.png" style="width:500px;height:"></h1>
 <br>
 <br>
 

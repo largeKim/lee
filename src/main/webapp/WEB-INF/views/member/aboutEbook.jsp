@@ -119,42 +119,7 @@
 				
 					
 				</div>
-				<hr>
-				<h3>Audio-book</h3>
-				<!-- 오디오북 -->	
-				<div class="row" id="loanbook">
-<c:set var="ablist" value="${ablist}"/>					  
-						     <c:choose>
-							    <c:when test="${empty ablist}">
-							        대출하신 Audio-book이 없습니다.    
-							    </c:when>
-							    <c:when test="${ablist ne null}">
-							            <c:forEach items="${ablist}" var="list">
-							           			 <div class="col-sm-6 col-md-4">
-												     <div class="thumbnail ">
-												     <div class="text-center" style="margin:auto; width:100%;height:200px;" id="imgpannel">
-												      <img src="${list.el_path}" style="width:200px;height:200px;">
-												     
-												      </div>
-												      <div class="caption ">
-												        <h3>${list.el_subject}</h3>
-												        <p>
-												        대출일 : ${list.lb_sd}<br>
-												        반납예정일 : ${list.lb_ed}<br>
-												        기타사항 : ${list.lb_etc }<br>
-												        연장횟수 : ${list.lb_delay}<br>
-												        </p>
-												        <p><a href="#" class="btn btn-primary" role="button">대출연장</a></p>
-												      </div>
-												    </div>
-												  </div>
-							        	</c:forEach>
-							    </c:when>
-							    
-							</c:choose>
-				
-					
-				</div>
+
 				<hr>
 
 		</div>

@@ -17,18 +17,16 @@
 	<script type="text/javascript">
 	</script>
 
-   <!--  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; connect-src 'self'; form-action 'self'; img-src data:; script-src 'self'; style-src 'unsafe-inline'"> -->
+   
     <meta content="origin" name="referrer">
-    <title>Page not found &middot; GitHub</title>
+    <title>Page not found</title>
     <style type="text/css" media="screen">
       body {
         background-color: #f1f1f1;
         margin: 0;
       }
       body,
-      input,
-      button {
+      input{
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
       .container { margin: 30px auto 40px auto; width: 800px; text-align: center; }
@@ -62,32 +60,12 @@
         transition: all 0.15s ease-in;
         vertical-align: middle;
       }
-      .btn {
-        position: relative;
-        display: inline-block;
-        padding: 6px 12px;
-        font-size: 13px;
-        font-weight: bold;
-        line-height: 20px;
-        color: #333;
-        white-space: nowrap;
-        vertical-align: middle;
-        cursor: pointer;
-        background-color: #EEE;
-        background-image: -webkit-linear-gradient(#FCFCFC, #EEE);
-        background-image: linear-gradient(#FCFCFC, #EEE);
-        background-repeat: repeat-x;
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-        user-select: none;
-        -webkit-appearance: none;
-      }
-
+ 
       .btn:focus,
       input[type=text]:focus,
       input[type=password]:focus {
         text-decoration: none;
-        border-color: #51a7e8;
+        border-color: #0BD392;
         outline: none;
         box-shadow: 0 0 5px rgba(81, 167, 232, 0.5);
       }
@@ -141,12 +119,7 @@
         background-color: #fff;
         box-shadow: 0 0 5px rgba(255,255,255,.5);
       }
-      #auth .btn {
-        border: 0;
-      }
-      #auth .btn:focus {
-        box-shadow: 0 0 5px rgba(255,255,255,.5);
-      }
+      
       label[for=search] {
         display: block;
         text-align: left;
@@ -256,10 +229,18 @@
         z-index: 4;
       }
     </style>
+    <script>
+    function goIndex() {
+    	location.href="index.jsp";
+    	} 
+
+    
+    </script>
   </head>
   <body>
 
-    <div id="parallax_wrapper">
+    <div id="parallax_wrapper" style="margin-top:200px;">
+    
       <div id="parallax_field">
         <img alt="" class="js-plaxify" data-invert="true" data-xrange="0" data-yrange="20" height="415" id="parallax_bg" width="940"
         src="/lee/resources/index/e/e1.png">
@@ -290,9 +271,12 @@
       </div>
 
     </div>
-
-   
-
+<div style="text-align:center;">
+	<div style="display:inline-block;">
+   			<button class="btn btn-primary col-md-4"
+											onclick="goIndex()" style="margin-top:50px;width:400px;background-color:#0BD392;border-color: #0BD392;">메인페이지로 가기</button>
+	</div>
+</div>
     <script type="text/javascript" src="/lee/resources/index/_error.js"></script>
   </body>
 </html>
