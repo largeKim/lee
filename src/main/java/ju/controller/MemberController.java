@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -468,7 +469,8 @@ public class MemberController {
 				}
 			}
 		}
-		
+ 		
+ 		
 		ModelAndView mav = new ModelAndView("member/loginLog");
 		mav.addObject("date", totalDate);
 		mav.addObject("ip", totalIp);
@@ -507,17 +509,17 @@ public class MemberController {
 					int ip = Integer.parseInt(maxIpArr[i]);
 					max += ip * Math.pow(256, power);
 				}
-				
 				for (long i = min; i <= max; i++) {
 					if(i==ipAddr){
 						return arr[2];
 					}
 				}
-			}
-			
+			}//end while
+		in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "Etc";
-	}
+	}// end method
+	
 }
