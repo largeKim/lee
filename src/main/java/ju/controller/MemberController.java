@@ -6,6 +6,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+>>>>>>> origin/sanghoon
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +28,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import ju.dto.AboutMyBookDTO;
+<<<<<<< HEAD
 import ju.dto.AboutMyQnaDTO;
+=======
+>>>>>>> origin/sanghoon
 import ju.dto.HolidayDTO;
 import ju.dto.LoanDTO;
 import ju.dto.MemberDTO;
@@ -434,35 +443,41 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 	
 
+=======
+>>>>>>> origin/sanghoon
 	@RequestMapping(value="/loginLog.ju")
-	public ModelAndView loginLog(HttpSession session){
-		if(session.getAttribute("sid") != null){
-			String sid = (String)session.getAttribute("sid");
-			
-			File f = new File("../LOG/member/memberInfo.log");
-	        String country = "";
-			if(f.exists()){
-				try {
-					BufferedReader in = new BufferedReader(new FileReader(f));
-					String s;
-					while ((s = in.readLine()) != null) {
-						if(s.contains("login") && s.contains(sid)){
-							String arr[] = s.split("login");
-							String dayArr[] = arr[0].split(",");
-							//접속 일시
-							String day = dayArr[0];
-							arr = arr[1].split(",");
-							//접속 IP
-							String ip = arr[0].substring(4);
-							//IP 국가
-							country = getGlobalIp(ip);
-							
-							if( "KR".equals(country) ){
-								country = "대한한국";
-							}else if( "KP".equals(country) ){
-								country = "북한";
+ 	public ModelAndView loginLog(HttpSession session){
+		List<String> totalIp = new ArrayList<String>();
+		List<String> totalDate = new ArrayList<String>();
+		List<String> totalCty = new ArrayList<String>();
+ 		if(session.getAttribute("sid") != null){
+ 			String sid = (String)session.getAttribute("sid");
+ 			
+ 			File f = new File("../LOG/member/memberInfo.log");
+ 	        String country = "";
+ 			if(f.exists()){
+ 				try {
+ 					BufferedReader in = new BufferedReader(new FileReader(f));
+ 					String s;
+ 					while ((s = in.readLine()) != null) {
+ 						if(s.contains("login") && s.contains(sid)){
+ 							String arr[] = s.split("login");
+ 							String dayArr[] = arr[0].split(",");
+ 							//접속 일시
+ 							String day = dayArr[0];
+ 							arr = arr[1].split(",");
+ 							//접속 IP
+ 							String ip = arr[0].substring(4);
+ 							//IP 국가
+ 							country = getGlobalIp(ip);
+ 							
+ 							if( "KR".equals(country) ){
+ 								country = "대한한국";
+ 							}else if( "KP".equals(country) ){
+ 								country = "북한";
 							}else if( "CN".equals(country) ){
 								country = "중국";
 							}else if( "JP".equals(country) ){
@@ -472,21 +487,26 @@ public class MemberController {
 							}
 							
 							System.out.println("접속일 : " + day + ", 접속 IP : " + ip + ", 국가 : " + country);
+							totalDate.add(day);
+							totalIp.add(ip);
+							totalCty.add(country);
 						}
 					}
 					in.close();
 				} catch (Exception e) {
 				}
 			}
-		}else{
-			System.out.println("로그인해야함");
 		}
-		
-		ModelAndView mav = new ModelAndView("index");
+ 		
+ 		
+		ModelAndView mav = new ModelAndView("member/loginLog");
+		mav.addObject("date", totalDate);
+		mav.addObject("ip", totalIp);
+		mav.addObject("country", totalCty);
 		return mav;
 	}
-	
-	
+		
+	/* ip 국가 비교 */
 	public String getGlobalIp(String ipAddress){
 		try {
 			File f = new File("../LOG/ip/ip.csv");
@@ -517,18 +537,17 @@ public class MemberController {
 					int ip = Integer.parseInt(maxIpArr[i]);
 					max += ip * Math.pow(256, power);
 				}
-				
 				for (long i = min; i <= max; i++) {
 					if(i==ipAddr){
 						return arr[2];
 					}
 				}
-			}
-			
+			}//end while
+		in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "Etc";
-	}
+	}// end method
 	
 }
