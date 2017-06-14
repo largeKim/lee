@@ -439,7 +439,7 @@
 						, dataType : "json"
 						, success: function(data){
 							var arr=data.elibArr;
-							var mem_id=data.mem_id;
+							var mem=data.mem;
 							var intoHeaderHTML="";
 							intoHeaderHTML+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 							intoHeaderHTML+='<h4 class="modal-title" id="myModalLabel">' + arr.el_subject + '</h4>';
@@ -456,17 +456,17 @@
 							intoBodyHTML+='					<div class="text-left">';
 							intoBodyHTML+='						<div class="col-md-2">저자</div><div class="col-md-10">' + arr.el_writer + '</div>';
 							intoBodyHTML+='						<div class="col-md-2">출판사</div><div class="col-md-10">' + arr.el_pub + '</div>';
-							intoBodyHTML+='						<div class="col-md-2">추천 수</div><div class="col-md-10">' + arr.el_recocount + '</div>';
+							intoBodyHTML+='						<div class="col-md-2">추천 수</div><div class="col-md-10" id="reco">' + arr.el_recocount + '</div>';
 							intoBodyHTML+='					</div>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='				<div class="text-right">';
-							if(mem_id==null){
+							if(mem==0){
 								intoBodyHTML+='					<span data-toggle="tooltip" data-placement="bottom" title="로그인 해야 사용 할 수 있습니다.">';
 								intoBodyHTML+='						<button class="btn btn-default" id="recommendButton" type="button"  disabled="disabled" >추천하기</button> ';
 								intoBodyHTML+='					</span> ';
 							}
 							else{
-								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\' ' + arr.el_idx + '\' )" >추천하기</button>';
+								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\'' + arr.el_idx + '\' )" >추천하기</button>';
 							}
 							intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibViwer(\'' + arr.el_idx + '\')" >뷰어로보기</button>';
 							intoBodyHTML+='				</div>';
@@ -486,7 +486,7 @@
 							intoBodyHTML+='</div>';
 							$(".modal-header").html(intoHeaderHTML);
 							$(".modal-body").html(intoBodyHTML);
-							if(mem_id==null){
+							if(mem==0){
 								$("#recommendButton").parent().tooltip();
 							} // null function
 						}
@@ -504,9 +504,23 @@
 				, data : {el_idx : el_idx}
 				, dataType : "json"
 				, success: function(data){
-					alert("추천 : " + data.recommend);
+					var resultCount=data.resultCount;
+					var recommend=data.recommend;
+					if(resultCount>=1){
+						$("#reco").text(recommend);
+						alert("추천 되었습니다.");
+						var num=$("#contentTbody>tr").length;
+						for(var i=0 ; i<num ; i++){
+							if($("#contentTbody>tr").eq(i).data("idx")==el_idx){
+								$("#contentTbody>tr:eq(" + i + ")>td>.media>.media-body>.row>div").eq(3).text(recommend);
+							}
+						}
+					}
+					else{
+						alert("이미 추천 했습니다.");
+					}
 				}
-			})
+			}); // success: function
 		}
 		
 		function elibViwer(el_idx) {
@@ -625,15 +639,6 @@
 						<tr>
 							<td>
 								<nav id="pagingNav" class="noSearch">
-									<!-- <ul class="pagination">
-										<li data-page="before"><a href="#" onclick="return false" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-										<li data-page="1"><a href="#" onclick="return false">1</a></li>
-										<li data-page="2"><a href="#" onclick="return false">2</a></li>
-										<li data-page="3"><a href="#" onclick="return false">3</a></li>
-										<li data-page="4" class="disabled"><a href="#" onclick="return false">4</a></li>
-										<li data-page="5"><a href="#" onclick="return false">5</a></li>
-										<li data-page="after"><a href="#" onclick="return false" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>	</li>
-									</ul> -->
 								</nav>
 							</td>
 						</tr>

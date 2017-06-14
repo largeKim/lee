@@ -162,6 +162,8 @@ public class ElibDAOImple implements ElibDAO {
 		HashMap<String, String> hmap=new HashMap<String, String>();
 		hmap.put("el_idx", el_idx);
 		hmap.put("el_recommend", el_recommend);
+		System.out.println(el_idx);
+		System.out.println(el_recommend);
 		int resultCount=sqlMap.update("elibUPDrec",  hmap);
 		return resultCount;
 	}

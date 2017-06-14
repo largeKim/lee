@@ -99,19 +99,7 @@
 	</select>
 	
 	<update id="elibUPDrec">
-		UPDATE elib SET el_recommend=#{el_recommend}, el_recocount=el_recommend+1 WHERE el_idx=#{el_idx}
+		UPDATE elib SET el_recommend=#{el_recommend}, el_recocount=el_recocount+1 WHERE el_idx=#{el_idx}
 	</update>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
 	
 </mapper>

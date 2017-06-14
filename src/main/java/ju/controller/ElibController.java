@@ -1,10 +1,11 @@
 package ju.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ju.dto.ElibDTO;
-import ju.dto.LoanDTO;
+import ju.dto.OriginalLoanDTO;
 import ju.elib.model.ElibDAO;
 import ju.model.LoanDAO;
 import ju.modul.BookCateModul;
@@ -192,7 +193,8 @@ public class ElibController {
 	/**전자도서 컨텐츠 선택*/
 	@RequestMapping(value="elibContent.ju")
 	public ModelAndView elibContent(@RequestParam(value="el_idx", defaultValue="0")String el_idx, HttpServletRequest request) {
-		String mem_idx=(String)request.getAttribute("sidx");
+		HttpSession session=request.getSession();
+		String mem_idx=(String) session.getAttribute("sidx");
 		String mem="1";
 		if(mem_idx==null || "".equals(mem_idx)){
 			mem="0";
@@ -213,7 +215,8 @@ public class ElibController {
 		@RequestParam(value="el_idx", defaultValue="0")String el_idx
 		, HttpServletRequest request
 		) {
-		String mem_idx=(String)request.getAttribute("sidx");
+		HttpSession session=request.getSession();
+		String mem_idx=(String) session.getAttribute("sidx");
 		List<ElibDTO> elibArr=elibDAO.elibContent(el_idx);
 		int resultCount=-1;
 		int recommend=elibArr.get(0).getEl_recocount();
@@ -222,17 +225,18 @@ public class ElibController {
 		}
 		else{
 			String el_recommend=null;
-			if(elibArr.get(0).getEl_recocount()==0){
+			if(recommend==0){
 				el_recommend=mem_idx;
 			}
 			else{
 				String[] recoMem=elibArr.get(0).getEl_recommend().split("~");
 				boolean before=true;
 				for(int i=0 ; i<recoMem.length ; i++){
-					if(recoMem[i].equals(el_idx)){ before=false; break;}
+					if(recoMem[i].equals(mem_idx)){ before=false; break;}
 				}
 				if(before){
 					el_recommend="~" + mem_idx;
+					el_recommend=elibArr.get(0).getEl_recommend()+el_recommend;
 				}
 			}
 			if(el_recommend!=null){
@@ -261,9 +265,10 @@ public class ElibController {
 	/**전자도서 대출신청 기능 Ajax*/
 	@RequestMapping(value="ebookLoan.ju")
 	public ModelAndView ebookLoan(@RequestParam(value="el_idx", defaultValue="0")String el_idx, HttpServletRequest request) {
-		String mem_idx=(String)request.getAttribute("sidx");
+		HttpSession session=request.getSession();
+		String mem_idx=(String) session.getAttribute("sidx");
 		int resultCount=0;
-		Date endDate=null;
+		String endDate=null;
 		if(mem_idx==null || "".equals(mem_idx)){ /*미로그인*/ }
 		else{
 			int memCount=loandao.memCount(mem_idx); // 회원 최대치
@@ -272,8 +277,8 @@ public class ElibController {
 			if(memCount<5 && ebookCount<5 && ebookOverlap<1){
 				String lb_idx="LB"+System.currentTimeMillis();
 				resultCount=loandao.elibLoan(lb_idx, mem_idx, el_idx, "#/page/1");
-				List<LoanDTO> loanArr=loandao.loanInfo(lb_idx);
-				endDate=loanArr.get(0).getLb_ed();
+				List<OriginalLoanDTO> loanArr=loandao.loanInfo(lb_idx);
+				endDate=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(loanArr.get(0).getLb_ed());
 			}
 		}
 		ModelAndView mav=new ModelAndView();

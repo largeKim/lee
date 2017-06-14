@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-<<<<<<< HEAD
 
 import ju.dto.BookDTO;
 import ju.dto.YeyakDTO;
@@ -23,16 +22,6 @@ import ju.model.BookDAO;
 import ju.model.LoanDAO;
 import ju.model.MemberDAO;
 import ju.model.YeyakDAO;
-=======
-import ju.dto.*;
-import ju.model.*;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import java.io.*;
-import java.net.*;
->>>>>>> Daewon
 
 @Controller
 public class adminBookController {

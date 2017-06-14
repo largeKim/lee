@@ -1,12 +1,8 @@
 package ju.model;
-<<<<<<< HEAD
 import java.util.List;
 
 import ju.dto.LoanDTO;
-=======
-import java.util.*;
-import ju.dto.*;
->>>>>>> Daewon
+import ju.dto.OriginalLoanDTO;
 
 public interface LoanDAO {
 
@@ -19,7 +15,7 @@ public interface LoanDAO {
 	public int checkInGo(String bk_idx);
 	
 	/**정보 가져오기*/
-	public List<LoanDTO> loanInfo(String lb_idx);
+	public List<OriginalLoanDTO> loanInfo(String lb_idx);
 	/**마지막 읽은 쪽 북마크 등록&삭제*/
 	public int loanBookMarkUp(String lb_idx, String lb_etc);
 	/**전자도서 회원 최대치*/
@@ -30,6 +26,7 @@ public interface LoanDAO {
 	public int elibLoan(String lb_idx, String mem_idx, String book_idx, String lb_etc);
 	/**전자도서 빌린책인지 확인*/
 	public int elibLoanCheck(String el_idx, String mem_idx);
-	
+	/**전자도서 빌린책 정보*/
+	public List<OriginalLoanDTO> elibLoanInfo(String el_idx, String mem_idx);
 	
 }

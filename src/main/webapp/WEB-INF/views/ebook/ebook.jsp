@@ -446,6 +446,7 @@
 						, data : {el_idx : el_idx}
 						, dataType : "json"
 						, success: function(data){
+							console.log(data);
 							var arr=data.elibArr;
 							var mem=data.mem;
 							var intoHeaderHTML="";
@@ -478,8 +479,8 @@
 								intoBodyHTML+='					</span> ';
 							}
 							else{
-								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(\' ' + arr.el_idx + '\' )" >대출하기 </button>';
-								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\' ' + arr.el_idx + '\' )" >추천하기</button>';
+								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(\'' + arr.el_idx + '\')" >대출하기 </button>';
+								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\'' + arr.el_idx + '\' )" >추천하기</button>';
 							}
 							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(\' ' + arr.el_idx + '\' )">';
 							intoBodyHTML+='						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span id="refreshSpan">대여 가능</span>';
@@ -560,8 +561,18 @@
 				, success: function(data){
 					var resultCount=data.resultCount;
 					var recommend=data.recommend;
-					if(resultCount>1){
+					if(resultCount>=1){
 						$("#reco").text(recommend);
+						alert("추천 되었습니다.");
+						var num=$("#contentTbody>tr").length;
+						for(var i=0 ; i<num ; i++){
+							if($("#contentTbody>tr").eq(i).data("idx")==el_idx){
+								$("#contentTbody>tr:eq(" + i + ")>td>.media>.media-body>.row>div").eq(3).text(recommend);
+							}
+						}
+					}
+					else{
+						alert("이미 추천 했습니다.");
 					}
 				}
 			}); // success: function

@@ -34,7 +34,7 @@ public class AdminElibController {
 	@RequestMapping(value="elibUpload.ju")
 	public ModelAndView adminElib(){
 		ModelAndView mav=new ModelAndView();
-		mav.setViewName("elibManage/elibUpload");
+		mav.setViewName("admin/elibManage/elibUpload");
 		return mav;
 	}
 
@@ -91,14 +91,10 @@ public class AdminElibController {
 						return ( name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".gif"));
 					}
 				});
-				
 				String changeName=Integer.toString(fileCount.length+1);
-				
 				while(changeName.length()!=4){
 					changeName="0"+changeName;
 				}
-				System.out.println(changeName);
-				
 				copyInto(files.get(i), path+el_idx+"\\", changeName);
 			}
 			else{
@@ -148,10 +144,10 @@ public class AdminElibController {
 		copyInto(cover, path, el_idx);
 		
 		int resultCount=elibDAO.elibInsert(elibDTO);
-		System.out.println(resultCount);
 		
 		ModelAndView mav=new ModelAndView();
-		mav.setViewName("elibManage/elibList");
+		mav.addObject("resultCount", resultCount);
+		mav.setViewName("admin/elibManage/elibList");
 		return mav;
 	}
 	
@@ -159,7 +155,7 @@ public class AdminElibController {
 	@RequestMapping(value="elibList.ju", method=RequestMethod.GET)
 	public ModelAndView elibList(){
 		ModelAndView mav=new ModelAndView();
-		mav.setViewName("elibManage/elibList");
+		mav.setViewName("admin/elibManage/elibList");
 		return mav;
 	}
 	
@@ -203,7 +199,6 @@ public class AdminElibController {
 				}
 			}
 			select+="</select>";
-			System.out.println(select);
 			cateMd.add(select);
 			
 		}

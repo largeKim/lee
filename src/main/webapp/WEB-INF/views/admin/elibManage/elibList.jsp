@@ -547,7 +547,7 @@
 							$("#pagingDiv>ul>li").removeClass("active");
 							$(this).addClass("active");
 						}
-						noList(page);
+						sarch(page);
 					} // click function
 				); // 페이징 click
 				

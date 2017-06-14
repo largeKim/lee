@@ -1,11 +1,15 @@
 package ju.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
 import ju.dto.LoanDTO;
+import ju.dto.OriginalLoanDTO;
 
 public class LoanDAOImple implements LoanDAO {
 
@@ -52,10 +56,18 @@ public class LoanDAOImple implements LoanDAO {
 	}
 	
 	/**정보 가져오기*/
-	public List<LoanDTO> loanInfo(String lb_idx) {
+	public List<OriginalLoanDTO> loanInfo(String lb_idx) {
 		HashMap<String, String> hmap=new HashMap<String, String>();
 		hmap.put("lb_idx", lb_idx);
-		List<LoanDTO> loanArr=sqlMap.selectList("loanSELinfo", hmap);
+		List<OriginalLoanDTO> loanArr=sqlMap.selectList("loanSELinfo", hmap);
+		List<String> lb_endList=sqlMap.selectList("loanSELed", hmap);
+		Date lb_ed=null;
+		try {
+			lb_ed = new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(lb_endList.get(0));
+			loanArr.get(0).setLb_ed(lb_ed);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return loanArr;
 	}
 	
@@ -101,8 +113,17 @@ public class LoanDAOImple implements LoanDAO {
 		HashMap<String, String> hmap=new HashMap<String, String>();
 		hmap.put("el_idx", el_idx);
 		hmap.put("mem_idx", mem_idx);
-		int resultCount=sqlMap.insert("loanSELcheck", hmap);
+		int resultCount=sqlMap.selectOne("loanSELcheck", hmap);
 		return resultCount;
+	}
+	
+	/**전자도서 빌린책 정보*/
+	public List<OriginalLoanDTO> elibLoanInfo(String el_idx, String mem_idx){
+		HashMap<String, String> hmap=new HashMap<String, String>();
+		hmap.put("el_idx", el_idx);
+		hmap.put("mem_idx", mem_idx);
+		List<OriginalLoanDTO> loanArr=sqlMap.selectList("elibLoanInfo", hmap);
+		return loanArr;
 	}
 	
 }

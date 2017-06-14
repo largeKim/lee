@@ -114,16 +114,19 @@
 				bookMakerGo();
 				bookMakerDelet();
 			}
-			bookMakerLi("#/page/1");
-			bookMakerLi("#/page/3");
 			
-			/*ebook일경우만 북마크 존재*/
 			//수정?
 			var param=document.location.search.split("=");
 			var idxName=param[1].slice(0, 2).toUpperCase();
 			if(idxName!="EB"){
 				$("#bookmarker").parent().remove();
 				$("#bookMarkUl").remove();
+			}
+			else{
+				var bkArr=$("#bookMarkUl").data("bk").split("~");
+				for(var i=0 ; i<bkArr.length ; i++){
+					if(bkArr[i]!=""){ bookMakerLi(bkArr[i]); }
+				}
 			}
 			/*북마크 등록*/
 			$("#bookmarker").click(
@@ -244,6 +247,23 @@
 			);
 			
 			/*모달*/
+			var idx=$("body").data("idx");
+			if(idx.indexOf("EB")==0){ //전자도서
+				var beforeRead=$(".modal-body").data("end");
+					if(beforeRead!="#/page/1"){
+						$("#endModal").modal("show");
+						var pages=beforeRead.split("/");
+						$(".modal-body>div>span").text(pages[pages.length-1] + " 페이지");
+						$(".modal-footer>.btn-primary").click(
+							function() {
+								location.href=beforeRead;
+								$(".modal-footer>.btn-default").click();
+							}
+						); // click
+					}
+			} // 전자도서 if
+			
+			/*마지막 페이지 저장*/
 			$(window).on("beforeunload", 
 				function() {
 					var el_idx=$("body").data("idx");
@@ -268,15 +288,15 @@
 	</script>
 	
 </head>
-<body data-subject="${elibArr.el_subject }" data-idx="${elibArr.el_idx }" data-loan="?">
+<body data-subject="${elibArr.el_subject }" data-idx="${elibArr.el_idx }" data-loan="${loanArr.lb_idx }">
 <!-- 빌린책 마지막쪽 심기 -->
 	<div class="modal fade" id="endModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			 <div class="modal-content">
-				<div class="modal-body" data-end="#/page/3">
+				<div class="modal-body" data-end="${beforeRead }">
 					<div>마지막에 읽은 페이지가 있습니다.</div> 
 					<div>이동 하시겠습니까?</div>
-					<div>마지막으로 읽은 페이지 : </div>
+					<div>마지막으로 읽은 페이지 : <span></span></div>
 				</div>
 		   <div class="modal-footer">
 				<button type="button" class="btn btn-primary">이동</button>
@@ -336,9 +356,10 @@
 			</span>
 		 </div>
 		 <div class="row text-center">
-		 	<button class="btn btn-default" type="button" name="bookmarker" id="bookmarker">북마크 등록</button>
+		 	<button class="btn btn-default" type="button" name="bookmarker" id="bookmarker" >북마크 등록</button>
 		 </div>
-		 <div class="text-center" id="bookMarkUl">
+		 <div class="text-center" id="bookMarkUl" data-bk="${bkArr }">
+		 <!-- //BM -->
 		 </div>
 	</nav>
 
