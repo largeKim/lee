@@ -63,7 +63,7 @@ public class LoanDAOImple implements LoanDAO {
 		List<String> lb_endList=sqlMap.selectList("loanSELed", hmap);
 		Date lb_ed=null;
 		try {
-			lb_ed = new SimpleDateFormat("yyy-MM-dd HH:mm:ss").parse(lb_endList.get(0));
+			lb_ed = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lb_endList.get(0));
 			loanArr.get(0).setLb_ed(lb_ed);
 		} catch (ParseException e) {
 			e.printStackTrace();

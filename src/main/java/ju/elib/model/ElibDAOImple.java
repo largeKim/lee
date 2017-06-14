@@ -153,7 +153,7 @@ public class ElibDAOImple implements ElibDAO {
 	public int elibAdminSearchCount(String where) {
 		HashMap<String, String> hmap=new HashMap<String, String>();
 		hmap.put("where", where);
-		int resultCount=sqlMap.update("elibSELadminSearchCount",  hmap);
+		int resultCount=sqlMap.selectOne("elibSELadminSearchCount",  hmap);
 		return resultCount;
 	}
 	

@@ -250,8 +250,9 @@ public class AdminElibController {
 				if("".equals(where)) where+=el_md;
 				else where+="AND "+el_md;
 			}
-			System.out.println("1 : " + where);
-			System.out.println("2 : " + order);
+			if(!"".equals(where)){
+				where="WHERE "+where;
+			}
 			
 			int startNum=(page-1)*ElibPaging.CONTENTSIZE+1;
 			int endNum=startNum+ElibPaging.CONTENTSIZE-1;
@@ -289,7 +290,6 @@ public class AdminElibController {
 					}
 				}
 				select+="</select>";
-				System.out.println(select);
 				cateMd.add(select);
 			}
 		
@@ -323,8 +323,6 @@ public class AdminElibController {
 		else if(el_idx.indexOf("EE")==0){
 			pathImg+="eEdu\\"+elibArr.get(0).getEl_idx();
 		}
-		System.out.println("pathCover : " + pathCover);
-		System.out.println("pathImg : " + pathImg);
 		
 		File cover=new File(pathCover);
 		cover.delete();

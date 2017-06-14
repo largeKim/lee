@@ -87,15 +87,15 @@
 								SELECT rownum rnum, search.* FROM (
 																					SELECT * FROM (
 																											SELECT SUBSTR(el_idx, 3) upTime, data.* FROM (SELECT * FROM elib WHERE el_idx NOT LIKE 'AB%' )data
-																											) WHERE ${where} ORDER BY ${order}
+																											) ${where} ORDER BY ${order}
 																					)search
 								) WHERE rnum BETWEEN ${startNum} AND ${endNum}
 	</select>
 	
-	<select id="elibSELadminSearchCount" parameterType="String" resultType="ju.dto.ElibDTO">
+	<select id="elibSELadminSearchCount" parameterType="String" resultType="int">
 		SELECT COUNT(*) FROM (
 											SELECT SUBSTR(el_idx, 3) upTime, data.* FROM (SELECT * FROM elib WHERE el_idx NOT LIKE 'AB%' )data
-											) WHERE ${where}
+											) ${where}
 	</select>
 	
 	<update id="elibUPDrec">

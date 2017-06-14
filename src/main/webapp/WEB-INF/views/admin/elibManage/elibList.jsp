@@ -336,6 +336,7 @@
 							, data : {el_idx : el_idx, el_subject : el_subject, el_writer : el_writer, el_pub : el_pub, el_info : el_info, groupNum : groupNum, el_lg : el_lg, el_md : el_md}
 							, dataType : "json"
 							, success: function(data){
+								$(".panel-title:eq(" +num+ ")>a").text(el_subject);
 								$(".contentTable:eq("+num+")>tbody>tr>td:eq(0)>input").val(data.change_idx).data("idx", data.change_idx);
 								$(".contentTable:eq("+num+")>tbody>tr>td:eq(1)>input").prop("disabled", "disabled");
 								$(".contentTable:eq("+num+")>tbody>tr>td:eq(2)>input").prop("disabled", "disabled");
@@ -378,6 +379,9 @@
 			} // function
 		) // click
 	} // contentGroup function
+	
+	
+	
 	/*컨텐츠 내 수정 대분류 선택*/
 	function contentLg(num) {
 		$("#cateLg_"+num).change(
@@ -419,7 +423,7 @@
 				var elibArr=data.elibArr;
 				var intoHTML="";
 				if(elibArr.length==0){
-					intoHTML=""; // 내용 없음 넣을 것!!	
+					intoHTML='<div class="alert alert-warning text-center" role="alert">검색 결과가 없습니다.</div>';
 				}
 				for(var i=0 ; i<elibArr.length ; i++){
 					intoHTML+='<div class="panel panel-default">';
@@ -547,7 +551,7 @@
 							$("#pagingDiv>ul>li").removeClass("active");
 							$(this).addClass("active");
 						}
-						sarch(page);
+						search(page);
 					} // click function
 				); // 페이징 click
 				
@@ -636,7 +640,7 @@
 				$(".btn-success").click(
 					function() {
 						var num=$(".btn-success").index(this);
-						$(".btn-success").eq(num).prop("disabled", "disabled");
+						
 						var el_idx=$(".contentTable:eq("+num+")>tbody>tr>td:eq(0)>input").val();
 						var el_subject=$(".contentTable:eq("+num+")>tbody>tr>td:eq(1)>input").val();
 						var el_writer=$(".contentTable:eq("+num+")>tbody>tr>td:eq(2)>input").val();
@@ -645,6 +649,26 @@
 						var groupNum=$(".contentTable:eq("+num+")>tbody>tr>td:eq(5)>label>input[name=contentGroup_"+num+"]:checked").val();
 						var el_lg=$("#cateLg_"+num).val();
 						var el_md=$("#cateMd_"+num).val();
+						if(el_subject.length==0){
+							alert("제목을 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(1)>input").focus();
+							return null;
+						}
+						if(el_writer.length==0){
+							alert("저자를 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(2)>input").focus();
+							return null;
+						}
+						if(el_pub.length==0){
+							alert("출판사를 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(3)>input").focus();
+							return null;
+						}
+						if(el_info.length==0){
+							alert("책정보를 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(4)>textarea").focus();
+							return null;
+						}
 						
 						$.ajax({
 							type : "GET"
@@ -652,6 +676,7 @@
 							, data : {el_idx : el_idx, el_subject : el_subject, el_writer : el_writer, el_pub : el_pub, el_info : el_info, groupNum : groupNum, el_lg : el_lg, el_md : el_md}
 							, dataType : "json"
 							, success: function(data){
+								$(".panel-title:eq(" +num+ ")>a").text(el_subject);
 								$(".contentTable:eq("+num+")>tbody>tr>td:eq(0)>input").val(data.change_idx).data("idx", data.change_idx);
 								$(".contentTable:eq("+num+")>tbody>tr>td:eq(1)>input").prop("disabled", "disabled");
 								$(".contentTable:eq("+num+")>tbody>tr>td:eq(2)>input").prop("disabled", "disabled");
@@ -668,8 +693,8 @@
 							} // success
 						});
 						
-					} // warning function
-				); // warning click
+					} // success function
+				); // success click
 				
 			} // success function
 		});
