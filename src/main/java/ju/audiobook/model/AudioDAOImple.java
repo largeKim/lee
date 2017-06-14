@@ -21,8 +21,11 @@ public class AudioDAOImple implements AudioDAO {
 		return count;
 	}
 	
-	public List<ElibDTO> selectImg(){
-		List<ElibDTO> list = sqlMap.selectList("abSELaudio");
+	public List<ElibDTO> selectImg(int page, int listSize){
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("cp", page);
+		map.put("ls", listSize);
+		List<ElibDTO> list = sqlMap.selectList("abSELaudio",map);
 		return list;
 	}
 	
@@ -31,17 +34,58 @@ public class AudioDAOImple implements AudioDAO {
 		return dto;
 	}
 	
-	public List<ElibDTO> selectlgmd(String el_lg, String el_md){
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("el_lg", el_lg);
-		map.put("el_md", el_md);
-		List<ElibDTO> list = sqlMap.selectList("abSELlgmd", map);
+	public List<ElibDTO> serchDetail(String where, String orderName, int page, int listSize) {
+		HashMap<String, String > map = new HashMap<String, String>();
+		
+		String cp=Integer.toString(page);
+		String ls= Integer.toString(listSize);
+		System.out.println("DAOcp:"+cp);
+		System.out.println("DAPls:"+ls);
+		map.put("where",where);
+		map.put("orderName", orderName);
+		map.put("cp", cp);
+		map.put("ls", ls);
+		List<ElibDTO> list = sqlMap.selectList("abSELdetail", map);
+		System.out.println("DAOlist:"+list.get(0).getEl_subject());
 		return list;
 	}
+
 
 	public ElibDTO selMplist(String el_idx) {
 		ElibDTO dto = sqlMap.selectOne("abSELmp",el_idx);
 		return dto;
+	}
+	
+	public List<ElibDTO> simpleSerch(String simpleSearchText, String orderName, int page, int listSize) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		String cp=Integer.toString(page);
+		String ls= Integer.toString(listSize);
+		
+		map.put("simpleSerchText", simpleSearchText);
+		map.put("orderName", orderName);
+		map.put("cp", cp);
+		map.put("ls", ls);
+		List<ElibDTO> list = sqlMap.selectList("abSELsimple",map);
+		return list;
+	}
+	
+	public int totalCnt() {
+		int totalCnt = sqlMap.selectOne("abSELcnt");
+		System.out.println("tcDAO:"+totalCnt);
+		return totalCnt;
+	}
+	
+	public int upAudioInfo(ElibDTO adto) {
+		int up = sqlMap.update("abUPupdate", adto);
+		
+		System.out.println("수정확인??"+up);
+		return up;
+	}
+	
+	public List<ElibDTO> selectList() {
+		List<ElibDTO> list = sqlMap.selectList("abSELlist");
+		return list;
 	}
 	
 }

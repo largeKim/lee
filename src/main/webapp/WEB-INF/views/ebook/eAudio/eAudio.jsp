@@ -9,8 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet"
-	href="/lee/resources/bootstrapk/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lee/resources/bootstrapk/css/bootstrap.min.css">
 <style type="text/css">
 #detailFind>h4>a {
 	text-decoration: none;
@@ -65,7 +64,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 			$("#eduList>ul").remove();
 			
 			/*사이드바 메뉴 클릭*/
-			$("#ebList>ul>li>a").click(
+			$("#abList>ul>li>a").click(
 				function(event) {
 					detailSubject="";
 					detailWrite="";
@@ -96,43 +95,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 				}
 			);
 			
-			/*페이지 클릭시 색칠 및 Ajax실행*/
-			$("#pagingNav>ul>li").click(
-				function() {
-					var page=$(this).data("page");
-					/*해당 버튼 사용 불가*/
-					if($(this).hasClass("disabled")==true || $(this).hasClass("active")==true){
-						alert("사용불가");
-						return null;
-					}
-					$("body").scrollTop(0);
-					/*<< >> 판단*/
-					if(page=="before"){
-						page="-1";
-						alert($(this).next().data("page")-1);
-						/*페이징을 ajax하고 page 변수로 해당 버튼을 색칠한다*/
-					}
-					else if(page=="after"){
-						page="99";
-						alert($(this).prev().data("page")+1);
-					}
-					else{
-						$("#pagingNav>ul>li").removeClass("active");
-						$(this).addClass("active");
-					}
-					var pagingNavClassName=$("#pagingNav")[0].className;
-					if(pagingNavClassName=="noSearch"){
-						audioListFirst(page, orderName);
-					}
-					else if(pagingNavClassName=="simple"){
-						audioSearchAjax(simpleSearchText, page, orderName);
-					}
-					else if(pagingNavClassName=="detail"){
-						audioDetailAjax(detailSubject, detailWrite, detailPub, cateLg, cateMd, page, orderName);
-					}
-				}
-			);
-			
+
 			$("#abList").addClass('open').children('ul').show();
 			
 			/*소 카테고리*/
@@ -150,6 +113,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							, dataType : "json"
 							, success: function(data){
 								var cateMdArr=data.cateMd;
+								console.log(cateMdArr);
 								var cateMdOption="<optgroup><option value='99'>전체</option></optgroup><optgroup>"
 								for(var i=0 ; i<cateMdArr.length ; i++){
 									cateMdOption+="<option value='" + i + "'>" + cateMdArr[i] + "</option>";
@@ -160,6 +124,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 						});
 					}
 			});
+			$("#cateLg").change();
 			
 			/*처음 Ajax 실행*/
 			audioListFirst(1, orderName);
@@ -173,17 +138,26 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 					, data : {simpleSearchText : simpleSearchText, page : page, orderName : orderName}
 					, dataType : "json"
 					, success : function(data){
+						var pageHTML="";
+						var page=data.page;
 						var arr=data.ebArr;
 						var intoHTML="";
+						if(arr.length==0){
+							intoHTML+='<tr>';
+							intoHTML+='	<td class="text-center">';
+							intoHTML+='		검색 결과가 없습니다.';
+							intoHTML+='	</td>';
+							intoHTML+='</tr>';
+						}
 						for(var i=0 ; i<arr.length ; i++){
 							intoHTML+='<tr data-idx=' + arr[i].bk_idx + '>';
 							intoHTML+='	<td>';
 							intoHTML+='		<div class="media">';
 							intoHTML+='			<div class="media-left media-middle text-center">';
-							intoHTML+='				<img class="media-object" src="/lee/resources/ebook/book.jpg" style="width: 97px; height: 110px;"><br>';
+							intoHTML+='				<img class="media-object" src="'+arr[i].el_path+'" style="width: 97px; height: 110px;"><br>';
 							intoHTML+='			</div>';
 							intoHTML+='			<div class="media-body">';
-							intoHTML+='				<h4 class="media-heading">진짜 진짜 생생한 동물 낱말 카드 TEST Count : ' + arr[i].el_subject + '</h4>';
+							intoHTML+='				<h4 class="media-heading">' + arr[i].el_subject + '</h4>';
 							intoHTML+='				<div class="row">';
 							intoHTML+='					<div class="col-md-2">저자</div>';
 							intoHTML+='						<div class="col-md-8">편집부 저</div>';
@@ -193,7 +167,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							intoHTML+='						<dl>';
 							intoHTML+='							<dt>간략소개</dt>';
 							intoHTML+='							<dd>';
-							intoHTML+=' 사람의 일생에서 가장 폭발적인 언어 습득 능력을 구사하는 나이는 생후 18개월. 이 시기의 아이들은 스펀지가 물을 빨아들이듯, 빠른 속도로 언어를 배우기 시작합니다. 사물카드는 주변에서 쉽게 볼 수 있는 사물들을 이름과 함께 보여 주어, 어린이의 어휘력과 함께 사고력의 발달을 도와줍니다.';
+							intoHTML+=arr[i].el_info;
 							intoHTML+='							</dd>';
 							intoHTML+='						</dl>';
 							intoHTML+='					</div>';
@@ -203,8 +177,41 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							intoHTML+='	</td>';
 							intoHTML+='</tr>';
 						}
+						pageHTML+=page;
+						$("#pagingNav").html(data.paging);
 						$("#contentTbody").html(intoHTML);
 						contentClick();
+						
+						$("#pagingNav>ul>li").removeClass("active");
+						var pagingLength=$("#pagingNav>ul>li").length;
+						for(var i=0 ; i<pagingLength ; i++){
+							if( $("#pagingNav>ul>li").eq(i).data("page")==page ){
+								$("#pagingNav>ul>li").eq(i).addClass("active");
+							}
+						}
+						
+						$("#pagingNav>ul>li").click(
+							function() {
+								var page=$(this).data("page");
+								/*해당 버튼 사용 불가*/
+								if($(this).hasClass("disabled")==true || $(this).hasClass("active")==true){
+									return null;
+								}
+								$("body").scrollTop(0);
+								/*<< >> 판단*/
+								if( page=="before" || page=="after" ){
+									if( page=="before" ){ page=$(this).next().data("page")-1; }
+									else if( page=="after" ){ page=$(this).prev().data("page")+1; }
+								}
+								else{
+									$("#pagingNav>ul>li").removeClass("active");
+									$(this).addClass("active");
+								}
+								/*어떤 검색인지 표기*/
+								audioSearchAjax(simpleSearchText, page, orderName);
+							} // click function
+						); // click
+						
 					}
 				});
 			}
@@ -239,8 +246,17 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 					, data : {detailSubject : detailSubject , detailWrite : detailWrite , detailPub : detailPub , cateLg : cateLg , cateMd : cateMd , page : page, orderName : orderName}
 					, dataType : "json"
 					, success: function(data){
+						var pageHTML="";
+						var page=data.page;
 						var arr=data.ebArr;
 						var intoHTML="";
+						if(arr.length==0){
+							intoHTML+='<tr>';
+							intoHTML+='	<td class="text-center">';
+							intoHTML+='		검색 결과가 없습니다.';
+							intoHTML+='	</td>';
+							intoHTML+='</tr>';
+						}
 						for(var i=0 ; i<arr.length ; i++){
 							intoHTML+='<tr data-idx=' + arr[i].el_idx + '>';
 							intoHTML+='	<td>';
@@ -269,9 +285,39 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							intoHTML+='	</td>';
 							intoHTML+='</tr>';
 						}
-						
+						pageHTML+=page;
+						$("#pagingNav").html(data.paging);
 						$("#contentTbody").html(intoHTML);
 						contentClick();
+						$("#pagingNav>ul>li").removeClass("active");
+						var pagingLength=$("#pagingNav>ul>li").length;
+						for(var i=0 ; i<pagingLength ; i++){
+							if( $("#pagingNav>ul>li").eq(i).data("page")==page ){
+								$("#pagingNav>ul>li").eq(i).addClass("active");
+							}
+						}
+						
+						$("#pagingNav>ul>li").click(
+							function() {
+								var page=$(this).data("page");
+								/*해당 버튼 사용 불가*/
+								if($(this).hasClass("disabled")==true || $(this).hasClass("active")==true){
+									return null;
+								}
+								$("body").scrollTop(0);
+								/*<< >> 판단*/
+								if( page=="before" || page=="after" ){
+									if( page=="before" ){ page=$(this).next().data("page")-1; }
+									else if( page=="after" ){ page=$(this).prev().data("page")+1; }
+								}
+								else{
+									$("#pagingNav>ul>li").removeClass("active");
+									$(this).addClass("active");
+								}
+								/*어떤 검색인지 표기*/
+								audioDetailAjax(detailSubject, detailWrite, detailPub, cateLg, cateMd, page, orderName);
+							} // click function
+						); // click
 						
 					}
 				});
@@ -285,10 +331,11 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 					detailPub=$("#detailPub").val();
 					cateLg=$("#cateLg").val();
 					if(cateLg==99){
-						cateMd="";
+						cateMd="99";
 					}
 					else{
 						cateMd=$("#cateMd").val();
+						console.log(cateMd);
 					}
 					audioDetailAjax(detailSubject, detailWrite, detailPub, cateLg, cateMd, 1, orderName);
 					$("#pagingNav").removeClass().addClass("detail");
@@ -319,7 +366,6 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							audioDetailAjax(detailSubject, detailWrite, detailPub, cateLg, cateMd, 1, orderName);
 						}
 						
-						
 					}
 					else if(fontWeight="bold"){
 						/*이미 해당 순서로 정렬됨*/
@@ -327,9 +373,6 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 					}
 				}
 			);
-			
-			
-	
 			
 		}); //기본 끝나는 곳
 		
@@ -341,8 +384,17 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 				, data : {page : page, order : order}
 				, dataType : "json"
 				, success: function(data){
+					var pageHTML="";
+					var page=data.page;
 					var arr=data.ebArr;
 					var intoHTML="";
+					if(arr.length==0){
+						intoHTML+='<tr>';
+						intoHTML+='	<td class="text-center">';
+						intoHTML+='		검색 결과가 없습니다.';
+						intoHTML+='	</td>';
+						intoHTML+='</tr>';
+					}
 					for(var i=0 ; i<arr.length ; i++){
 						intoHTML+='<tr data-idx=' + arr[i].el_idx + '>';
 						intoHTML+='	<td>';
@@ -351,7 +403,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 						intoHTML+='				<img class="media-object" src="'+arr[i].el_path+'" style="width: 97px; height: 110px;"><br>';
 						intoHTML+='			</div>';
 						intoHTML+='			<div class="media-body">';
-						intoHTML+='				<h4 class="media-heading">진짜 진짜 생생한 동물 낱말 카드 TEST Count : ' + arr[i].el_subject + '</h4>';
+						intoHTML+='				<h4 class="media-heading">' + arr[i].el_subject + '</h4>';
 						intoHTML+='				<div class="row">';
 						intoHTML+='					<div class="col-md-2">저자 '+arr[i].el_writer+'</div>';
 						intoHTML+='					<div class="col-md-8">편집부 저 '+arr[i].el_pub+'</div>';
@@ -371,10 +423,44 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 						intoHTML+='	</td>';
 						intoHTML+='</tr>';
 					}
+					
+					pageHTML+=page;
+					$("#pagingNav").html(data.paging);
+					$(".pagination").html(pageHTML);
 					$("#contentTbody").html(intoHTML);
-					$("#pagingNav>ul>li").removeClass("active");
-					$("#pagingNav>ul>li").eq(page).addClass("active");
+					/* $("#pagingNav>ul>li").removeClass("active");
+					$("#pagingNav>ul>li").eq(page).addClass("active"); */
 					contentClick();
+					
+					$("#pagingNav>ul>li").removeClass("active");
+					var pagingLength=$("#pagingNav>ul>li").length;
+					for(var i=0 ; i<pagingLength ; i++){
+						if( $("#pagingNav>ul>li").eq(i).data("page")==page ){
+							$("#pagingNav>ul>li").eq(i).addClass("active");
+						}
+					}
+					
+					$("#pagingNav>ul>li").click(
+						function() {
+							var page=$(this).data("page");
+							/*해당 버튼 사용 불가*/
+							if($(this).hasClass("disabled")==true || $(this).hasClass("active")==true){
+								return null;
+							}
+							$("body").scrollTop(0);
+							/*<< >> 판단*/
+							if( page=="before" || page=="after" ){
+								if( page=="before" ){ page=$(this).next().data("page")-1; }
+								else if( page=="after" ){ page=$(this).prev().data("page")+1; }
+							}
+							else{
+								$("#pagingNav>ul>li").removeClass("active");
+								$(this).addClass("active");
+							}
+							/*어떤 검색인지 표기*/
+							audioListFirst(page, order);
+						} // click function
+					); // click
 				}
 			});
 		}
@@ -411,16 +497,11 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							intoBodyHTML+='						<div class="col-md-2">저자</div><div class="col-md-10">'+data.ebArr.el_writer+'</div>';
 							intoBodyHTML+='						<div class="col-md-2">출판사</div><div class="col-md-10">'+data.ebArr.el_pub+'</div>';
 							intoBodyHTML+='						<div class="col-md-2">추천수</div><div class="col-md-10">'+data.ebArr.el_recocount+'</div>';
-							intoBodyHTML+='						<div class="col-md-2">대출</div><div class="col-md-10">0/5</div>';
-							intoBodyHTML+='						<div class="col-md-2">예약</div><div class="col-md-10">0</div>';
-							intoBodyHTML+='						<div class="col-md-12 text-right">';
-							intoBodyHTML+='							<button class="btn btn-default" onClick="ebookRefresh(1)">';
-							intoBodyHTML+='								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span id="refreshSpan">가능</span>';
-							intoBodyHTML+='							</button>';
-							intoBodyHTML+='							<input class="btn btn-default" type="button" onClick="aPlayer(\''+test+'\')" value="대출하기">';
-							intoBodyHTML+='							<input class="btn btn-default" type="button" onClick="ebookRecommend(1)" value="추천하기">';
-							intoBodyHTML+='						</div>';
 							intoBodyHTML+='					</div>';
+							intoBodyHTML+='				</div>';
+							intoBodyHTML+='				<div class="col-md-12 text-right">';
+							intoBodyHTML+='					<input class="btn btn-default" type="button" onClick="aPlayer(\''+test+'\')" value="재생하기">';
+							intoBodyHTML+='					<input class="btn btn-default" type="button" onClick="ebookRecommend(1)" value="추천하기">';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='			</div>';
 							intoBodyHTML+='		</div>';
@@ -445,30 +526,8 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 			);
 		}
 		
-		/*새로고침*/
-		function ebookRefresh(el_idx) {
-			$.ajax({
-				type : "GET"
-				, url : "ebookRefresh.ju"
-				, data : {el_idx : el_idx}
-				, dataType : "json"
-				, success: function(data){
-					$("#refreshSpan").text(data.msg);
-				}
-			})
-		}
-		/*대출*/
-		function ebookLoan(el_idx) {
-			$.ajax({
-				type : "GET"
-				, url : "ebookLoan.ju"
-				, data : {el_idx : el_idx}
-				, dataType : "json"
-				, success: function(data){
-					alert(data.loan);
-				}
-			})
-		}
+
+
 		/*추천*/
 		function ebookRecommend(el_idx) {
 			$.ajax({
@@ -478,6 +537,17 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 				, dataType : "json"
 				, success: function(data){
 					alert(data.recommend);
+				}
+			})
+		}
+		function audioPaging(page){
+			$.ajax({
+				type: "GET"
+				, url : "audioPaing.ju"
+				, data:{page : page}
+				, dataType:"json"
+				, success: function(data){
+					
 				}
 			})
 		}
@@ -503,7 +573,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 					<input type="text" class="form-control" placeholder="책 검색..."
 						name="simpleSearchText" id="simpleSearchText"> <span
 						class="input-group-btn">
-						<button class="btn btn-default" type="button" id="ebookSearch">
+						<button class="btn btn-default" type="button" id="audioSearch">
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</button>
 					</span>
@@ -553,13 +623,13 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 										<tr>
 											<th class="col-md-1 text-right">카테고리</th>
 											<td class="col-md-2">${bookLgSelect }</td>
-											<td class="col-md-2"><select id="cateMd"
-												class="form-control">
+											<td class="col-md-2">
+											<select id="cateMd" class="form-control">
 											</select></td>
 										</tr>
 										<tr>
-											<td class="text-center" colspan="3"><button
-													class="btn btn-default" id="detailSearch">상세검색</button></td>
+											<td class="text-center" colspan="3">
+											<button class="btn btn-default" id="detailSearch">상세검색</button></td>
 										</tr>
 									</tbody>
 								</table>
@@ -606,8 +676,9 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 										</p>
 									</div>
 									<ul class="pagination">
-										<li data-page="before"><a href="#" onclick="return false"
-											aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+									<!-- 	 <li data-page="before">
+											<a href="#" onclick="return false" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+										</li>
 										<li data-page="1"><a href="#" onclick="return false">1</a></li>
 										<li data-page="2"><a href="#" onclick="return false">2</a></li>
 										<li data-page="3"><a href="#" onclick="return false">3</a></li>
@@ -615,17 +686,19 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 										<li data-page="5"><a href="#" onclick="return false">5</a></li>
 										<li data-page="after"><a href="#" onclick="return false"
 											aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-										</li>
+										</li> -->
+							<!-- <div class="testPage">페이징 부분</div> -->
 									</ul>
 								</nav>
 							</td>
 						</tr>
 					</tfoot>
 				</table>
-									<div><a href="/lee/eAudioAdd.ju">임시 오디오 관리</a></div>
+				<div><a href="/lee/eAudioAdd.ju">임시 오디오 관리</a></div>
+				<div><a href="/lee/eAudioVoice.ju">임시 오디오 인식</a></div>
+				<div><a href="/lee/eAudioListAdmin.ju">임시 오디오 수정 관리</a></div>
 			</div>
 			<!-- 검색리스트 End-->
-
 		</div>
 		<!-- 컨텐츠 End-->
 	</div>
