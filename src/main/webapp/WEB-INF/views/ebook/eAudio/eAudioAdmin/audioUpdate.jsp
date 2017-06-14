@@ -109,71 +109,16 @@ $(document).ready(function(){
 				<th>책 정보</th>
 				<td><textarea class="form-control" rows="3" name="el_info" required="required"></textarea></td>
 			</tr>
+			
+			<tr>
+				<td>
+					<input type="submit" id="btnSubmit" value="수정" />
+					<br/>
+				</td>
+			</tr>
 		</tbody>
 	</table>
-	
-	<input type="submit" id="btnSubmit" value="수정" /><br/>
 </form>	
-
-<script>
-
-/*jQuery form 플러그인을 사용하여 폼데이터를 ajax로 전송*/
-
-var downGroupCnt =0; //다운로드그룹 개수카운트
-
-$(function(){
-    
-	//폼전송 : 해당폼의 submit 이벤트가 발생했을경우 실행  
-    $('#multiform').ajaxForm({
-       cache: false,
-       dataType:"json",
-       //보내기전 validation check가 필요할경우
-       beforeSubmit: function (data, frm, opt) {
-	       console.log(data);
-	       alert("전송중");
-           return true;
-       },
-       //submit이후의 처리
-       success: function(data, statusText){
-    	   
-    	   alert("전송성공!!");
-           console.log(data); //응답받은 데이터 콘솔로 출력         
-           
-           output(data); //받은 정보를 화면 출력하는 함수 호출
-       },
-       //ajax error
-       error: function(e){
-           console.log(e);
-       }                               
-	});
-});
-
-//전달받은 정보를 가지고 화면에 보기 좋게 출력
-function output(data) {
-	//업로드한 파일을 다운로드할수있도록 화면 구성
-	$("#result").append("<h3>("+(++downGroupCnt)+") 다운로드</h3>");
-    $("#result").append("제목:"+data.title+"<br/>");
-    $("#result").append("설명:"+data.description+"<br/>");
-  
-    if(data.photo){
-        $("#result").append("포토:<br/>");           
-        $.each(data.photo, function(index, item){
-     	   var link = "FileDownload?f="+item.uploadedFileName+"&of="+item.fileName;
-     	   $("#result").append("<a href='"+ link +"' download>"+item.fileName+"</a>");
-            $("#result").append("<br/>");	               
-        });
-    }           
-	 /*
- 	if(data.file){
-        var link = "FileDownload?f="+data.file.uploadedFileName+"&of="+data.file.fileName;
-        $("#result").append("파일 :<a href='"+ link +"' download>"+data.file.fileName+"</a>");
-        $("#result").append("<br/>");
-    } */
-    
-    $('#multiform')[0].reset(); //폼 초기화(리셋); 
-    $('#multiform input:file').MultiFile('reset'); //멀티파일 초기화        
-}
-</script>
 
 </body>
 </html>

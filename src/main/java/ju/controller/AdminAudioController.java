@@ -190,7 +190,7 @@ public class AdminAudioController {
 				){
 			ModelAndView mav = new ModelAndView();
 			
-			System.out.println("??????"+idx);
+			System.out.println("??????"+subject);
 			//int updateOk = audioDao.audioUp(dto);
 			
 			return mav;
