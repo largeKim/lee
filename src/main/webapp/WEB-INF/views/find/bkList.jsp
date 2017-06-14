@@ -52,24 +52,25 @@
 	
 
 	<!-- info -->
-	<div class="row">
+	<div class="container">
+		<div class="row-fluid">
 	<!-- side -->
-		<div class="col-md-3">
-			<jsp:include page="/WEB-INF/views/find/bkSide.jsp"></jsp:include>
+			<div class="col-md-3">
+				<jsp:include page="/WEB-INF/views/find/bkSide.jsp"></jsp:include>
 
-		</div>
-		<div class="col-md-9">
-			<div class="row-fluid">
+			</div>
+			<div class="col-md-9">
+				<div class="row-fluid">
 	<!--search -->
-				<jsp:include page="/WEB-INF/views/find/searchBar.jsp"></jsp:include>
-				<h4 id="a">자료검색</h4>
+					<jsp:include page="/WEB-INF/views/find/searchBar.jsp"></jsp:include>
+					<h4 id="a">자료검색</h4>
 
-				<table class="table table-hover">
-					<tbody id="tbody">
-					
-					</tbody>
-				</table>
-				<div class="text-center" id="page"></div>
+					<table class="table table-hover">
+						<tbody id="tbody">
+						
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

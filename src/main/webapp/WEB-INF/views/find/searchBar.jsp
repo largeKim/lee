@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- search -->
-<div class="container-fluid" style="background-image: url('/lee/resources/find/img/bookImg2.jpg'); padding: 50px 10px;">
+<div class="container-fluid" style="background-image: url('/lee/resources/find/img/bookImg2.jpg');">
 	<div class="row-fluid">
 		<form class="col-md" name="submit" onsubmit="return false;">
 		  <div class="input-group">

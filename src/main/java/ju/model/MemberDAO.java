@@ -32,7 +32,7 @@ public interface MemberDAO {
 		public List<AboutMyBookDTO> aboutMybookfedex(String mem_idx);
 		public List<AboutMyBookDTO> aboutMybookYeyak(String mem_idx);
 		public List<AboutMyBookDTO> aboutEbookLoan(String mem_idx);
-		public List<AboutMyBookDTO> aboutAudiobook(String mem_idx);
+
 		
 		public List<AboutMyQnaDTO> memQna(String mem_idx);
 	//캘린더 관련

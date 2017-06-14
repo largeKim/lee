@@ -16,7 +16,7 @@
 	}
 	#mainImg{
 		height: 100px;
-		background: yellow;
+		/* background: yellow; */
 	}
 	
 	.main-menu-btn {
@@ -128,7 +128,9 @@
 <header>
 	
 	<div class="row">
-		<div id="mainImg" class="col-md-3">3</div>
+		<div id="mainImg" class="col-md-3">
+			<img src="/lee/resources/index/logo2.png" style="width:130%;height:100%;">
+		</div>
 		<div class="col-md-2 col-md-offset-7 loginClass">		
 				<c:set var="sid" value="${sessionScope.sid}"/>
 				<c:choose>
