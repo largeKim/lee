@@ -6,12 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
->>>>>>> origin/sanghoon
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import ju.dto.AboutMyBookDTO;
-<<<<<<< HEAD
 import ju.dto.AboutMyQnaDTO;
-=======
->>>>>>> origin/sanghoon
 import ju.dto.HolidayDTO;
 import ju.dto.LoanDTO;
 import ju.dto.MemberDTO;
@@ -443,11 +435,6 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
-	
-
-=======
->>>>>>> origin/sanghoon
 	@RequestMapping(value="/loginLog.ju")
  	public ModelAndView loginLog(HttpSession session){
 		List<String> totalIp = new ArrayList<String>();
