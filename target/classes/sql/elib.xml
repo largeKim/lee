@@ -102,4 +102,8 @@
 		UPDATE elib SET el_recommend=#{el_recommend}, el_recocount=el_recocount+1 WHERE el_idx=#{el_idx}
 	</update>
 	
+	<select id="elibSELrecoOrder" resultType="ju.dto.ElibDTO">
+		SELECT SUBSTR(el_idx, 3) upTime, data.* FROM (SELECT * FROM elib)data ORDER BY el_recocount DESC, upTime DESC
+	</select>
+	
 </mapper>

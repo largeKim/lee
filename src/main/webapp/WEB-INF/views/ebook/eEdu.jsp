@@ -546,7 +546,7 @@
 		<div class="col-md-8">
 		
 			<!-- 검색바 -->
-			<div class="row" style="background: #3cdbde; padding: 80px 0;">
+			<div class="row" style="background: url('/lee/resources/elib/EEback.jpg'); background-size : cover; padding: 80px 0;">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="e-교육" name="simpleSearchText" id="simpleSearchText">
 					<span class="input-group-btn">

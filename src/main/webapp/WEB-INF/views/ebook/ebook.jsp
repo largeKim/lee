@@ -542,7 +542,7 @@
 				, success: function(data){
 					var resultCount=data.resultCount;
 					if(resultCount==0){
-						alert("대출이 불가능 합니다.");
+						alert("대출이 불가능 합니다."+data.msg);
 					}
 					else if(resultCount>0){
 						ebookRefresh(el_idx);
@@ -594,7 +594,7 @@
 		<div class="col-md-8">
 			
 			<!-- 검색바 -->
-			<div class="row" style="background: #3cdbde; padding: 80px 0;">
+			<div class="row" style="background: url('/lee/resources/elib/EBback.jpg'); background-size : cover; padding: 80px 0;">
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="전자도서" name="simpleSearchText" id="simpleSearchText">
 					<span class="input-group-btn">

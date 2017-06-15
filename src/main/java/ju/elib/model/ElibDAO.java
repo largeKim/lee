@@ -53,4 +53,7 @@ public interface ElibDAO {
 
 	/**관리자 검색 갯수*/
 	public int elibAdminSearchCount(String where);
+	
+	/**전자도서 전체 중 추천 순서*/
+	public ElibDTO elibReccoOrder();
 }

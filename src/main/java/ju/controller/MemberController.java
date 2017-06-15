@@ -295,7 +295,6 @@ public class MemberController {
 		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
 		
 		if(dto==null || dto.getMem_name().equals("black")){
-			
 			mav.setViewName("member/memberLogin");
 			return mav;
 			
