@@ -465,7 +465,11 @@
 							intoBodyHTML+='					<div class="text-left">';
 							intoBodyHTML+='						<div class="col-md-2">저자</div><div class="col-md-10">' + arr.el_writer + '</div>';
 							intoBodyHTML+='						<div class="col-md-2">출판사</div><div class="col-md-10">' + arr.el_pub + '</div>';
+<<<<<<< HEAD
 							intoBodyHTML+='						<div class="col-md-2">추천 수</div><div class="col-md-10" id="reco"">' + arr.el_recocount + '</div>';
+=======
+							intoBodyHTML+='						<div class="col-md-2">추천 수</div><div class="col-md-10" id="reco">' + arr.el_recocount + '</div>';
+>>>>>>> SangWon3
 							intoBodyHTML+='						<div class="col-md-2">대출</div><div class="col-md-10" id="loan">0/5</div>';
 							intoBodyHTML+='					</div>';
 							intoBodyHTML+='				</div>';
@@ -482,7 +486,11 @@
 								intoBodyHTML+='					<button class="btn btn-default" id="loanButton" type="button" onClick="ebookLoan(\'' + arr.el_idx + '\')" >대출하기 </button>';
 								intoBodyHTML+='					<button class="btn btn-default" id="recommendButton" type="button" onClick="elibRecommend(\'' + arr.el_idx + '\' )" >추천하기</button>';
 							}
+<<<<<<< HEAD
 							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(\' ' + arr.el_idx + '\' )">';
+=======
+							intoBodyHTML+='					<button class="btn btn-default" onClick="ebookRefresh(\'' + arr.el_idx + '\')">';
+>>>>>>> SangWon3
 							intoBodyHTML+='						<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span><span id="refreshSpan">대여 가능</span>';
 							intoBodyHTML+='					</button>';
 							intoBodyHTML+='				</div>';
@@ -523,6 +531,10 @@
 				, dataType : "json"
 				, success: function(data){
 					var resultCount=data.resultCount;
+<<<<<<< HEAD
+=======
+					alert("rc : " + resultCount);
+>>>>>>> SangWon3
 					if(resultCount==5){
 						$("#refreshSpan").text("대여 불가능");
 					}
@@ -546,6 +558,10 @@
 						alert("대출이 불가능 합니다.");
 					}
 					else if(resultCount>0){
+<<<<<<< HEAD
+=======
+						ebookRefresh(el_idx);
+>>>>>>> SangWon3
 						alert("대여기간은 " + data.endDate + "까지 입니다.");
 					}
 				} // success: function

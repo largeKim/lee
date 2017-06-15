@@ -103,7 +103,11 @@
 				var elibArr=data.elibArr;
 				var intoHTML="";
 				if(elibArr.length==0){
+<<<<<<< HEAD
 					intoHTML=""; // 내용 없음 넣을 것!!	
+=======
+					intoHTML='<div class="alert alert-warning text-center" role="alert">등록 자료가 없습니다.</div>';
+>>>>>>> SangWon3
 				}
 				for(var i=0 ; i<elibArr.length ; i++){
 					intoHTML+='<div class="panel panel-default">';
@@ -320,7 +324,11 @@
 				$(".btn-success").click(
 					function() {
 						var num=$(".btn-success").index(this);
+<<<<<<< HEAD
 						$(".btn-success").eq(num).prop("disabled", "disabled");
+=======
+						
+>>>>>>> SangWon3
 						var el_idx=$(".contentTable:eq("+num+")>tbody>tr>td:eq(0)>input").val();
 						var el_subject=$(".contentTable:eq("+num+")>tbody>tr>td:eq(1)>input").val();
 						var el_writer=$(".contentTable:eq("+num+")>tbody>tr>td:eq(2)>input").val();
@@ -329,6 +337,29 @@
 						var groupNum=$(".contentTable:eq("+num+")>tbody>tr>td:eq(5)>label>input[name=contentGroup_"+num+"]:checked").val();
 						var el_lg=$("#cateLg_"+num).val();
 						var el_md=$("#cateMd_"+num).val();
+<<<<<<< HEAD
+=======
+						if(el_subject.length==0){
+							alert("제목을 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(1)>input").focus();
+							return null;
+						}
+						if(el_writer.length==0){
+							alert("저자를 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(2)>input").focus();
+							return null;
+						}
+						if(el_pub.length==0){
+							alert("출판사를 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(3)>input").focus();
+							return null;
+						}
+						if(el_info.length==0){
+							alert("책정보를 입력하지 않으셨습니다.");
+							$(".contentTable:eq("+num+")>tbody>tr>td:eq(4)>textarea").focus();
+							return null;
+						}
+>>>>>>> SangWon3
 						
 						$.ajax({
 							type : "GET"
@@ -353,8 +384,13 @@
 							} // success
 						});
 						
+<<<<<<< HEAD
 					} // warning function
 				); // warning click
+=======
+					} // success function
+				); // success click
+>>>>>>> SangWon3
 				
 			} // success function
 		});
