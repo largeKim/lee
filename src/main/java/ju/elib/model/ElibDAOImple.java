@@ -167,5 +167,11 @@ public class ElibDAOImple implements ElibDAO {
 		int resultCount=sqlMap.update("elibUPDrec",  hmap);
 		return resultCount;
 	}
+	
+	/**전자도서 전체 중 추천 순서*/
+	public ElibDTO elibReccoOrder(){
+		List<ElibDTO>elibArr=sqlMap.selectList("elibSELrecoOrder");
+		return elibArr.get(0);
+	}
 
 }

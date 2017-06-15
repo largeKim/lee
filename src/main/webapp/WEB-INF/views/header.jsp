@@ -15,11 +15,6 @@
 			margin: 0 10%;
 		}
 	}
-	#mainImg{
-		height: 100px;
-		background: yellow;
-	}
-	
 	.main-menu-btn {
 		position: relative;
 		display: inline-block;
@@ -129,7 +124,9 @@
 <header>
 	
 	<div class="row">
-		<div id="mainImg" class="col-md-3">3</div>
+		<div id="mainImg" class="col-md-3">
+			<img src="/lee/resources/lbs-1.png" width="450px">
+		</div>
 		<div class="col-md-2 col-md-offset-7 loginClass">		
 				<c:set var="sid" value="${sessionScope.sid}"/>
 				<c:choose>
