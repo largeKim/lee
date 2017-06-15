@@ -23,6 +23,7 @@ import ju.model.LoanDAO;
 import ju.model.MemberDAO;
 import ju.model.YeyakDAO;
 
+
 @Controller
 public class adminBookController {
 
@@ -33,7 +34,9 @@ public class adminBookController {
 	public LoanDAO loanDao;
 	
 	@Autowired
+
 	public MemberDAO memberDao;
+
 	
 	@Autowired
 	public YeyakDAO yeyakDao;

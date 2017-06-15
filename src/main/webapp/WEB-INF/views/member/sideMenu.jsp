@@ -47,6 +47,13 @@
 					나의 문의
 					</a>
 				</li>
+				<li class="" id="myQna">
+					
+					<a href='loginLog.ju'>
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+					로그인정보
+					</a>
+				</li>
 				<li class="" id="memberOut">
 					<a href='memberOut.ju'>
 						<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>

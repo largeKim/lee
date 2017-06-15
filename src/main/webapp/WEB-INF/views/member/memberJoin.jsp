@@ -479,7 +479,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-회원가입 페이지
+<div style="text-align:center;">
+	<div style="display: inline-block;">
+<img src="/lee/resources/index/logo2.png" style="width:500px;height:;"><br>
+	</div>
+</div>
+<h1 style="color:#6f6f6f;">회원가입</h1>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-bottom: 5px;">
   <div class="panel panel-default row">
     <div class="panel-heading" role="tab" id="headingOne">
@@ -994,7 +999,7 @@
   <div class="panel panel-default row">
     <div class="panel-heading" role="tab" id="headingThree">
       <h4 class="panel-title">
-        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="" aria-expanded="false" aria-controls="collapseThree">
           이메일 인증
         </a>
       </h4>

@@ -42,6 +42,7 @@ public class AboutMyBookDTO {
 	private int lb_return;
 	private int lb_delay;
 	
+	
 	//예약
 	private String ye_idx;
 	

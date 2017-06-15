@@ -72,15 +72,7 @@ where b.book_idx = a.bk_idx
 and b.book_idx = c.bk_idx
 </select>
 
-<select id="memSELaboutebookLoan" parameterType="String" resultType="ju.dto.ElibDTO">
-select a.*, b.*
-from
-elib a, (select * from loanbook where mem_idx=#{mem_idx} and lb_return=1)b
-where
-b.book_idx = a.el_idx
-</select>
-
-<select id="memSELaboutabbookLoan" parameterType="String" resultType="ju.dto.ElibDTO">
+<select id="memSELaboutebookLoan" parameterType="String" resultType="ju.dto.AboutMyBookDTO">
 select a.*, b.*
 from
 elib a, (select * from loanbook where mem_idx=#{mem_idx} and lb_return=1)b
@@ -109,6 +101,7 @@ a.qu_idx = b.qu_qidx
 	where
 	${wh}
 </select>
+
 <insert id="holidayINSadd" parameterType="map">
 	insert into holiday
 	values(
@@ -140,3 +133,4 @@ memo = #{memo}
 
 
   </mapper>
+

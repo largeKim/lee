@@ -40,7 +40,9 @@ public class adminLoanBookController {
 	public FedexDAO fedexDao;
 	
 	@Autowired
+
 	public MemberDAO memberDao;
+
 	
 	
 	// 대출관리 메인페이지로 이동

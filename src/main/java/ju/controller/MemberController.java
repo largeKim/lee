@@ -2,16 +2,24 @@ package ju.controller;
 
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import ju.dto.AboutMyBookDTO;
@@ -19,12 +27,17 @@ import ju.dto.AboutMyQnaDTO;
 import ju.dto.HolidayDTO;
 import ju.dto.LoanDTO;
 import ju.dto.MemberDTO;
+
+//import ju.dto.*;
 import ju.model.EmailDAO;
 import ju.model.LoanDAO;
 import ju.model.MemberDAO;
 
+
+
 @Controller
 public class MemberController {
+	Logger log = Logger.getLogger(this.getClass());
 	
 	@Autowired
 	MemberDAO memberDao;
@@ -65,11 +78,11 @@ public class MemberController {
 			HttpSession session){
 		String mem_idx = (String)session.getAttribute("sidx");
 		List<AboutMyBookDTO> eblist =  memberDao.aboutEbookLoan(mem_idx);
-		List<AboutMyBookDTO> ablist =  memberDao.aboutAudiobook(mem_idx);
+		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("eblist", eblist);
-		mav.addObject("ablist", ablist);
+		
 		mav.setViewName("member/aboutEbook");
 		return mav;
 	}
@@ -262,6 +275,23 @@ public class MemberController {
 	
 	@RequestMapping(value="/memberJoinOk.ju")
 	public String joinSubmit(MemberDTO dto) throws InterruptedException{
+        //client ip
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null)
+            ip = req.getRemoteAddr();
+		
+		//log 넣는 부분
+		if( dto.getMem_id()!=null ){
+			//mail파싱
+			String mail[] = dto.getMem_id().split("@");
+			mail = mail[1].split("\\.");
+			//birth 파싱
+			String birth[] = dto.getMem_birth().split("~");
+			
+			String s = "join{ip:"+ip+",mail:"+mail[0]+",birth:"+birth[0]+",gender:"+birth[1]+",like:"+dto.getMem_like()+"}";
+			log.info(s);
+		}
 		String idx = "";
 		Long unixTime=System.currentTimeMillis();
         idx="MB"+unixTime;
@@ -285,11 +315,19 @@ public class MemberController {
 		return "member/memberLogin";
 		
 	}
+
 	@RequestMapping(value="/memberLoginOk.ju")
 	public ModelAndView loginOk(
 			@RequestParam(value="mem_id",defaultValue="")String mem_id,
 			@RequestParam(value="mem_pwd",defaultValue="")String mem_pwd,
 			HttpSession session){
+
+		//get client ip
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null){
+        	ip = req.getRemoteAddr();
+        }
 		
 		ModelAndView mav = new ModelAndView();
 		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
@@ -297,8 +335,10 @@ public class MemberController {
 		if(dto==null || dto.getMem_name().equals("black")){
 			mav.setViewName("member/memberLogin");
 			return mav;
-			
 		}else{
+			String s = "login{ip:"+ip+",id:"+dto.getMem_id()+"}";
+			log.info(s);
+
 			session.setAttribute("sid", dto.getMem_id());
 			session.setAttribute("sname", dto.getMem_name());
 			session.setAttribute("sidx", dto.getMem_idx());
@@ -361,7 +401,9 @@ public class MemberController {
 		return mav; 
 	}
 	
+
 	@RequestMapping(value="/addHoliday.ju")
+
 	public void addHoliday(@RequestParam(value="memo",defaultValue="")String memo,
 			@RequestParam(value="solar_date",defaultValue="")String solar_date,
 			HttpServletResponse response){
@@ -381,6 +423,7 @@ public class MemberController {
 	}
 	
 	
+
 	@RequestMapping(value="/delHoliday.ju")
 	public void delHoliday(
 			@RequestParam(value="memo",defaultValue="")String memo,
@@ -400,27 +443,108 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
-	
-	@RequestMapping(value="/moveHolidayFC.ju")
-	public void moveHoliday(
-			@RequestParam(value="memo",defaultValue="")String memo,
-			@RequestParam(value="beforedate",defaultValue="")String beforeDate,
-			@RequestParam(value="afterdate",defaultValue="")String afterDate,
-			HttpServletResponse response){
-		
-		int result = memberDao.moveHoliday(memo, beforeDate, afterDate);
-		
-		try{
-			
-			if(result > 0){
-				response.getWriter().print("삭제성공");
-			}else{
-				response.getWriter().print("삭제실패");
+
+	@RequestMapping(value="/loginLog.ju")
+ 	public ModelAndView loginLog(HttpSession session){
+		List<String> totalIp = new ArrayList<String>();
+		List<String> totalDate = new ArrayList<String>();
+		List<String> totalCty = new ArrayList<String>();
+ 		if(session.getAttribute("sid") != null){
+ 			String sid = (String)session.getAttribute("sid");
+ 			
+ 			File f = new File("../LOG/member/memberInfo.log");
+ 	        String country = "";
+ 			if(f.exists()){
+ 				try {
+ 					BufferedReader in = new BufferedReader(new FileReader(f));
+ 					String s;
+ 					while ((s = in.readLine()) != null) {
+ 						if(s.contains("login") && s.contains(sid)){
+ 							String arr[] = s.split("login");
+ 							String dayArr[] = arr[0].split(",");
+ 							//접속 일시
+ 							String day = dayArr[0];
+ 							arr = arr[1].split(",");
+ 							//접속 IP
+ 							String ip = arr[0].substring(4);
+ 							//IP 국가
+ 							country = getGlobalIp(ip);
+ 							
+ 							if( "KR".equals(country) ){
+ 								country = "대한한국";
+ 							}else if( "KP".equals(country) ){
+ 								country = "북한";
+							}else if( "CN".equals(country) ){
+								country = "중국";
+							}else if( "JP".equals(country) ){
+								country = "일본";
+							}else{
+								country = "그 외 국가";
+							}
+							
+							System.out.println("접속일 : " + day + ", 접속 IP : " + ip + ", 국가 : " + country);
+							totalDate.add(day);
+							totalIp.add(ip);
+							totalCty.add(country);
+						}
+					}
+					in.close();
+				} catch (Exception e) {
+				}
 			}
-		}catch (Exception e) {
+		}
+ 		
+ 		
+		ModelAndView mav = new ModelAndView("member/loginLog");
+		mav.addObject("date", totalDate);
+		mav.addObject("ip", totalIp);
+		mav.addObject("country", totalCty);
+		return mav;
+	}
+		
+	/* ip 국가 비교 */
+	public String getGlobalIp(String ipAddress){
+		try {
+			File f = new File("../LOG/ip/ip.csv");
+			
+			BufferedReader in = new BufferedReader(new FileReader(f));
+			String s;
+			while( (s=in.readLine()) != null ){
+				String arr[] = s.split(",");
+				long min = 0;
+				long max = 0;
+				long ipAddr = 0;
+				String minIpArr[] = arr[0].split("\\.");
+				String maxIpArr[] = arr[1].split("\\.");
+				String ipArr[] = ipAddress.split("\\.");
+				
+				for (int i = 0; i < ipArr.length; i++) {
+					int power = 3-i;
+					int ip = Integer.parseInt(ipArr[i]);
+					ipAddr += ip * Math.pow(256, power);
+				}
+				for (int i = 0; i < minIpArr.length; i++) {
+					int power = 3-i;
+					int ip = Integer.parseInt(minIpArr[i]);
+					min += ip * Math.pow(256, power);
+				}
+				for (int i = 0; i < maxIpArr.length; i++) {
+					int power = 3-i;
+					int ip = Integer.parseInt(maxIpArr[i]);
+					max += ip * Math.pow(256, power);
+				}
+				for (long i = min; i <= max; i++) {
+					if(i==ipAddr){
+						return arr[2];
+					}
+				}
+			}//end while
+		in.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
+		return "Etc";
+	}// end method
 	
 }
+

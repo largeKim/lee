@@ -137,10 +137,12 @@ public class MemberDAOImple implements MemberDAO {
 		map.put("mem_id", mem_id);
 		map.put("mem_pwd", mem_pwd);
 		MemberDTO dto = sqlMap.selectOne("memSELlogin", map);
+
 		
 		if(dto==null){
 			
 			return null;
+
 		}else{
 			
 			System.out.println("로그인 성공");
@@ -162,6 +164,7 @@ public class MemberDAOImple implements MemberDAO {
 		
 	}
 	
+
 	public MemberDTO pwCheck(String mem_idx) {
 		MemberDTO dto = sqlMap.selectOne("memSELgetpwd", mem_idx);
 		System.out.println("디비로부터 가져온 pwd :"+ dto.getMem_pwd());
@@ -229,16 +232,13 @@ public class MemberDAOImple implements MemberDAO {
 		List<AboutMyBookDTO> eblist = sqlMap.selectList("memSELaboutebookLoan", mem_idx);
 		return eblist;
 	}
-	public List<AboutMyBookDTO> aboutAudiobook(String mem_idx){
-		List<AboutMyBookDTO> ablist = sqlMap.selectList("memSELaboutabbookLoan", mem_idx);
-		return ablist;
-	}
-	
+
 	public List<AboutMyQnaDTO> memQna(String mem_idx) {
 			List<AboutMyQnaDTO> qnalist = sqlMap.selectList("memSELmyqnalist", mem_idx);
 		return qnalist;
 	}
 	
+
 	public List<HolidayDTO> getHoliday(int yr, int mon) {
 		String wh = "";
 		if(mon==12){
@@ -285,6 +285,7 @@ public class MemberDAOImple implements MemberDAO {
 		return result;
 	}
 	
+
 	public int moveHoliday(String memo, String beforeDate, String afterDate) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("memo", memo);
@@ -293,6 +294,7 @@ public class MemberDAOImple implements MemberDAO {
 		int result = sqlMap.update("holidayUPDmove", map);
 		return result;
 	}
+
 	
 //	대원 추가 6월 11일 일 끝
 }

@@ -15,6 +15,7 @@
 			margin: 0 10%;
 		}
 	}
+
 	.main-menu-btn {
 		position: relative;
 		display: inline-block;
@@ -124,8 +125,10 @@
 <header>
 	
 	<div class="row">
-		<div id="mainImg" class="col-md-3">
-			<img src="/lee/resources/lbs-1.png" width="450px">
+
+		<div id="mainImg" class="col-md-3"> 
+			<img src="/lee/resources/index/logo2.png" style=" width:250px;">
+
 		</div>
 		<div class="col-md-2 col-md-offset-7 loginClass">		
 				<c:set var="sid" value="${sessionScope.sid}"/>
@@ -159,6 +162,7 @@
 						<li><a href="/lee/libMap.ju">오시는길</a></li>
 						<li><a href="/lee/libStatus.ju">장서정보(소장도서정보)</a></li>
 						<li><a href="/lee/libGuide.ju">이용안내</a></li>
+						<li><a href="/lee/analSearch.ju">도서관 통계</a></li>
 					</ul>
 				</li>
 				<li><a href="/lee/bkList.ju">일반도서 검색</a></li>
