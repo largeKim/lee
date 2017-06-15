@@ -14,8 +14,14 @@
 <script src="/lee/resources/audio/js/jquery.MultiFile.js"></script>
 
 <script>
+
+var idx = location.search;
+var idxArray = idx.split("=");
+var elIdx = idxArray[1];
+
 $(document).ready(function(){
 	
+	console.log(elIdx);
 	
 	$("#cateLg").change(
 			function() {
@@ -91,23 +97,23 @@ $(document).ready(function(){
 		<tbody>
 			<tr>
 				<th>책 이름</th>
-				<td><input type="text" class="form-control" placeholder="책이름" name="el_subject" required="required"></td>
+				<td><input type="text" class="form-control" placeholder="책이름" name="el_subject" value="${ablist.el_subject }" required="required"></td>
 			</tr>
 			<tr>
 				<th>저자</th>
-				<td><input type="text" class="form-control" placeholder="저자" name="el_writer" required="required"></td>
+				<td><input type="text" class="form-control" placeholder="저자" name="el_writer" value="${ablist.el_writer }" required="required"></td>
 			</tr>
 			<tr>
 				<th>출판사</th>
-				<td><input type="text" class="form-control" placeholder="출판사" name="el_pub" required="required"></td>
+				<td><input type="text" class="form-control" placeholder="출판사" name="el_pub" value="${ablist.el_pub }" required="required"></td>
 			</tr>
 			<tr>
 				<td>${cateLg }</td>
-				<td><select id="cateMd" name="cateMd" class="form-control" required="required"></select></td>
+				<td><select id="cateMd" name="cateMd" class="form-control"  required="required"></select></td>
 			</tr>
 			<tr>
 				<th>책 정보</th>
-				<td><textarea class="form-control" rows="3" name="el_info" required="required"></textarea></td>
+				<td><textarea class="form-control" rows="3" name="el_info" required="required">${ablist.el_info }</textarea></td>
 			</tr>
 		</tbody>
 	</table>
@@ -126,19 +132,20 @@ $(function(){
 	//폼전송 : 해당폼의 submit 이벤트가 발생했을경우 실행  
     $('#multiform').ajaxForm({
        cache: false,
+       url:"eAudioUpdateGo.ju",
        dataType:"json",
+       data:{elIdx :elIdx},
        //보내기전 validation check가 필요할경우
        beforeSubmit: function (data, frm, opt) {
-	       console.log(data);
 	       alert("전송중");
            return true;
        },
        //submit이후의 처리
-       success: function(data, statusText){
+       success: function(data){
     	   
     	   alert("전송성공!!");
            console.log(data); //응답받은 데이터 콘솔로 출력         
-           
+           location.href='eAudioListAdmin.ju';
            output(data); //받은 정보를 화면 출력하는 함수 호출
        },
        //ajax error

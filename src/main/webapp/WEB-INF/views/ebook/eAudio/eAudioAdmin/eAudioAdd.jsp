@@ -136,24 +136,27 @@ $(function(){
     
 	//폼전송 : 해당폼의 submit 이벤트가 발생했을경우 실행  
     $('#multiform').ajaxForm({
-       cache: false,
-       dataType:"json",
+        cache: false,
+        url:"eAudioAdd2.ju",
+        dataType:"json",
+        data:{},
        //보내기전 validation check가 필요할경우
        beforeSubmit: function (data, frm, opt) {
-	       console.log(data);
+	      // console.log(data);
 	       alert("전송중");
            return true;
        },
        //submit이후의 처리
-       success: function(data, statusText){
+       success: function(data){
     	   
     	   alert("전송성공!!");
-           console.log(data); //응답받은 데이터 콘솔로 출력         
-           
+          // console.log(data); //응답받은 데이터 콘솔로 출력         
+            
            output(data); //받은 정보를 화면 출력하는 함수 호출
        },
        //ajax error
        error: function(e){
+    	   alert("전송 실패");
            console.log(e);
        }                               
 	});

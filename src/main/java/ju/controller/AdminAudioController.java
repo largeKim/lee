@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,7 +33,6 @@ public class AdminAudioController {
 		@RequestMapping(value="audioCate.ju")
 		public ModelAndView audioCate(@RequestParam(value="cateLgVal", defaultValue="0")int cateLgVal) {
 			BookCateModul bcm=new BookCateModul();
-			System.out.println("LG??"+cateLgVal);
 			ArrayList<String> cateMd=bcm.BookMdArr(cateLgVal);
 			ModelAndView mav=new ModelAndView();
 			mav.addObject("cateMd", cateMd);
@@ -53,13 +53,15 @@ public class AdminAudioController {
 		}
 	
 		//전송 submit 버튼을 클릭했을시 반응
-		@RequestMapping(value="eAudioAdd2.ju")
-		public String fileUpload(@RequestParam(value="audio") List<MultipartFile> audiosUp
+		@RequestMapping(value="eAudioAdd2.ju",method=RequestMethod.POST)
+		public ModelAndView fileUpload(@RequestParam(value="audio") List<MultipartFile> audiosUp
 								, @RequestParam(value="abimg") MultipartFile img 
 								, @RequestParam(value="cateLg", defaultValue="0")int cateLg
 						        , @RequestParam(value="cateMd", defaultValue="0")int cateMd
 								, HttpServletRequest req
 								, @ModelAttribute("edto")ElibDTO edto){
+			
+			ModelAndView mav = new ModelAndView();
 			
 			String cAuPath = req.getSession().getServletContext().getRealPath("/")+"resources\\elib\\cover\\";
 			String path = req.getSession().getServletContext().getRealPath("/resources/elib/eAudio/");
@@ -104,7 +106,10 @@ public class AdminAudioController {
 			edto.setEl_recocount(0);
 			
 			audioDao.audioUp(edto);
-			return path;
+			
+			mav.setViewName("juJson");
+			
+			return mav;
 		}
 	
 	
@@ -166,13 +171,10 @@ public class AdminAudioController {
 		public ModelAndView eAudioUpdate(@RequestParam(value="el_idx")String el_idx){
 			ModelAndView mav = new ModelAndView();
 			BookCateModul bcm = new BookCateModul();
-			List<ElibDTO> ablist = audioDao.selectList();
-			for(int i=0; i<ablist.size(); i++){
-				
-				
-			}
-			
+			ElibDTO ablist=audioDao.selContent(el_idx);
+			 
 			String cate = bcm.BookLgSelect(0, 7, false);
+			mav.addObject("ablist",ablist);
 			mav.addObject("cateLg",cate);
 			mav.setViewName("ebook/eAudio/eAudioAdmin/audioUpdate");
 			return mav;
@@ -185,13 +187,15 @@ public class AdminAudioController {
 				,@RequestParam(value="cateLg")String lg
 				,@RequestParam(value="cateMd")String md
 				,@RequestParam(value="el_info")String info
-				,@RequestParam(value="el_idx")String idx
+				,@RequestParam(value="elIdx")String idx
 				,@ModelAttribute("edto")ElibDTO dto
 				){
 			ModelAndView mav = new ModelAndView();
-			
-			System.out.println("??????"+idx);
-			//int updateOk = audioDao.audioUp(dto);
+			dto.setEl_idx(idx);
+			dto.setEl_lg(lg);
+			dto.setEl_md(md);
+			audioDao.upAudioInfo(dto);
+			mav.setViewName("juJson");
 			
 			return mav;
 		}

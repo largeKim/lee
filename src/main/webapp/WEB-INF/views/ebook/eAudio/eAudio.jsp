@@ -479,10 +479,11 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 						, dataType : "json"
 						, success: function(data){
 							
-							var test = data.ebArr.el_idx;
+							var idx = data.ebArr.el_idx;
+							//var memIdx=data.
 							var intoHeaderHTML="";
 							intoHeaderHTML+='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-							intoHeaderHTML+='<h4 class="modal-title" id="myModalLabel">서울역' + data.ebArr.el_idx + '</h4>';
+							intoHeaderHTML+='<h4 class="modal-title" id="myModalLabel">' + data.ebArr.el_idx + '</h4>';
 							
 							var intoBodyHTML="";
 							intoBodyHTML+='<div class="panel panel-default" >';
@@ -500,8 +501,8 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 							intoBodyHTML+='					</div>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='				<div class="col-md-12 text-right">';
-							intoBodyHTML+='					<input class="btn btn-default" type="button" onClick="aPlayer(\''+test+'\')" value="재생하기">';
-							intoBodyHTML+='					<input class="btn btn-default" type="button" onClick="ebookRecommend(1)" value="추천하기">';
+							intoBodyHTML+='					<input class="btn btn-default" type="button" onClick="aPlayer(\''+idx+'\')" value="재생하기">';
+							intoBodyHTML+='					<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="로그인 필수">추천하기</button>';
 							intoBodyHTML+='				</div>';
 							intoBodyHTML+='			</div>';
 							intoBodyHTML+='		</div>';
@@ -525,14 +526,12 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 				}
 			);
 		}
-		
-
 
 		/*추천*/
 		function ebookRecommend(el_idx) {
 			$.ajax({
 				type : "GET"
-				, url : "ebookRecommend.ju"
+				, url : "eAudioRecommend.ju"
 				, data : {el_idx : el_idx}
 				, dataType : "json"
 				, success: function(data){
@@ -540,7 +539,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 				}
 			})
 		}
-		function audioPaging(page){
+/* 		function audioPaging(page){
 			$.ajax({
 				type: "GET"
 				, url : "audioPaing.ju"
@@ -550,7 +549,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 					
 				}
 			})
-		}
+		} */
 		
 	</script>
 

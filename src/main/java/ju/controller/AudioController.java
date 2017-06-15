@@ -2,6 +2,9 @@ package ju.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,8 +62,8 @@ public class AudioController {
 		int pageSize = 2;
 		
 		String pagNum = ju.audio.module.ModulePage.guestPageMake("eAudio.ju", totalCnt, page, pageSize, listSize);
-		System.out.println("paging:"+pagNum);
-		System.out.println("firstPage:"+page);
+		/*System.out.println("paging:"+pagNum);
+		System.out.println("firstPage:"+page);*/
 		
 		List<ElibDTO> list = audioDao.selectImg(page,listSize);
 		
@@ -73,9 +76,13 @@ public class AudioController {
 	
 	/**오디오책 컨텐츠 선택*/
 	@RequestMapping(value="audioContent.ju")
-	public ModelAndView ebookContent(@RequestParam(value="el_idx", defaultValue="0")String el_idx) {
+	public ModelAndView ebookContent(@RequestParam(value="el_idx", defaultValue="0")String el_idx
+		, HttpServletRequest request) {
 		
 		ModelAndView mav=new ModelAndView();
+		HttpSession session=request.getSession();
+		String mem_idx=(String) session.getAttribute("sidx");
+		
 		ElibDTO dto = audioDao.selContent(el_idx);
 		mav.addObject("ebArr", dto);
 		mav.setViewName("juJson");
@@ -95,7 +102,6 @@ public class AudioController {
 		) {
 		
 		orderName="new".equals(orderName)?"el_idx DESC":"el_recocount DESC, el_idx DESC";
-		System.out.println("page : "+page);
 		String where="";
 		
 		/*System.out.println("cateMd 1:"+cateMd);
@@ -182,6 +188,23 @@ public class AudioController {
 		List<ElibDTO> absArr = audioDao.simpleSerch(simpleSearchText, orderName, page, listSize); 
 		mav.addObject("page",pagNum);
 		mav.addObject("ebArr", absArr);
+		mav.setViewName("juJson");
+		return mav;
+	}
+	
+	//오디오 북 추천하기
+	@RequestMapping(value="eAudioRecommend.ju")
+	public ModelAndView eAudioRecom(@RequestParam(value="el_idx")String el_idx
+			, HttpServletRequest request){
+		ModelAndView mav = new ModelAndView();
+		
+		HttpSession session=request.getSession();
+		String mem_idx=(String) session.getAttribute("sidx");
+		
+		
+		//세션 idx 넘어오는지 확인
+		System.out.println("memidx:"+mem_idx);
+		
 		mav.setViewName("juJson");
 		return mav;
 	}

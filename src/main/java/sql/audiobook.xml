@@ -9,7 +9,7 @@
   	</insert>
   	
   	<update id="abUPupdate" parameterType="ju.dto.ElibDTO">
-  		UPDATE elib SET el_lg=#{el_lg}, el_md=#{el_md}, el_subject=#{el_subject}, el_writer=#{el_writer}, el_pub=#{el_pub}, el_info=#{el_info} where el_idx like 'AB%'
+  		UPDATE elib SET el_lg=#{el_lg}, el_md=#{el_md}, el_subject=#{el_subject}, el_writer=#{el_writer}, el_pub=#{el_pub}, el_info=#{el_info} where el_idx=#{el_idx}
   	</update>
   	
   	<select id="abSELlist" parameterType="String" resultType="ju.dto.ElibDTO">
