@@ -28,9 +28,15 @@ import ju.dto.HolidayDTO;
 import ju.dto.LoanDTO;
 import ju.dto.MemberDTO;
 //import ju.dto.*;
+<<<<<<< HEAD
 import ju.model.EmailDAO;
 import ju.model.LoanDAO;
 import ju.model.MemberDAO;
+=======
+import ju.model.*;
+
+import ju.dto.*;
+>>>>>>> youngju
 
 @Controller
 public class MemberController {
@@ -312,11 +318,16 @@ public class MemberController {
 		return "member/memberLogin";
 		
 	}
+<<<<<<< HEAD
 	@RequestMapping(value="/memberLoginOk.ju")
+=======
+	@RequestMapping("/memberLoginOk.ju")
+>>>>>>> youngju
 	public ModelAndView loginOk(
 			@RequestParam(value="mem_id",defaultValue="")String mem_id,
 			@RequestParam(value="mem_pwd",defaultValue="")String mem_pwd,
 			HttpSession session){
+<<<<<<< HEAD
 		//get client ip
 		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
         String ip = req.getHeader("X-FORWARDED-FOR");
@@ -334,6 +345,18 @@ public class MemberController {
 		}else{
 			String s = "login{ip:"+ip+",id:"+dto.getMem_id()+"}";
 			log.info(s);
+=======
+		ModelAndView mav = new ModelAndView();
+		MemberDTO dto = memberDao.loginSubmit(mem_id, mem_pwd);
+		
+		
+		if(dto.getMem_name().equals("nolog")||dto.getMem_name().equals("black")){
+			
+			mav.setViewName("member/memberLogin");
+			return mav;
+			
+		}else{
+>>>>>>> youngju
 			session.setAttribute("sid", dto.getMem_id());
 			session.setAttribute("sname", dto.getMem_name());
 			session.setAttribute("sidx", dto.getMem_idx());
@@ -379,7 +402,7 @@ public class MemberController {
 	
 	@RequestMapping(value="/getHolidayFC.ju")
 	public ModelAndView getHolidayFC(
-			@RequestParam(value="yr")String yr_s){
+			@RequestParam(value="yr",defaultValue="2017")String yr_s){
 		
 		ModelAndView mav = new ModelAndView();
 		int yr = Integer.parseInt(yr_s);
@@ -396,7 +419,11 @@ public class MemberController {
 		return mav; 
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping(value="/addHoliday.ju")
+=======
+	@RequestMapping("/addHoliday.ju")
+>>>>>>> youngju
 	public void addHoliday(@RequestParam(value="memo",defaultValue="")String memo,
 			@RequestParam(value="solar_date",defaultValue="")String solar_date,
 			HttpServletResponse response){
@@ -416,7 +443,11 @@ public class MemberController {
 	}
 	
 	
+<<<<<<< HEAD
 	@RequestMapping(value="/delHoliday.ju")
+=======
+	@RequestMapping("/delHoliday.ju")
+>>>>>>> youngju
 	public void delHoliday(
 			@RequestParam(value="memo",defaultValue="")String memo,
 			@RequestParam(value="solar_date",defaultValue="")String solar_date,
@@ -435,6 +466,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 	@RequestMapping(value="/loginLog.ju")
  	public ModelAndView loginLog(HttpSession session){
 		List<String> totalIp = new ArrayList<String>();
@@ -538,3 +570,7 @@ public class MemberController {
 	}// end method
 	
 }
+=======
+	
+}
+>>>>>>> youngju

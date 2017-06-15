@@ -101,6 +101,7 @@ a.qu_idx = b.qu_qidx
 	where
 	${wh}
 </select>
+<<<<<<< HEAD
 <insert id="holidayINSadd" parameterType="map">
 	insert into holiday
 	values(
@@ -132,3 +133,6 @@ memo = #{memo}
 
 
   </mapper>
+=======
+</mapper>
+>>>>>>> youngju

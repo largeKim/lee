@@ -25,7 +25,11 @@ public class adminBookController {
 	public LoanDAO loanDao;
 	
 	@Autowired
+<<<<<<< HEAD
 	public MemberDAO memberDao;
+=======
+	public ju.model.MemberDAO memberDao;
+>>>>>>> youngju
 	
 	@Autowired
 	public YeyakDAO yeyakDao;
