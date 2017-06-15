@@ -41,7 +41,6 @@ public class ElibController {
 	public ModelAndView ebook() {
 		BookCateModul bcm=new BookCateModul();
 		String bookLgSelect=bcm.BookLgSelect(0, 7, true);
-		
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("bookLgSelect", bookLgSelect);
 		mav.setViewName("ebook/ebook");
@@ -92,7 +91,6 @@ public class ElibController {
 		, @RequestParam(value="idxParam", defaultValue="EB" )String idxParam
 		) {
 		orderName="new".equals(orderName)?"el_idx DESC":"el_recocount DESC, el_idx DESC";
-		
 		int startNum=(page-1)*ElibPaging.CONTENTSIZE+1;
 		int endNum=startNum+ElibPaging.CONTENTSIZE-1;
 		
