@@ -540,9 +540,10 @@
 				, data : {el_idx : el_idx}
 				, dataType : "json"
 				, success: function(data){
+					console.log(data);
 					var resultCount=data.resultCount;
 					if(resultCount==0){
-						alert("대출이 불가능 합니다.");
+						alert("대출이 불가능 합니다."+data.msg);
 					}
 					else if(resultCount>0){
 						ebookRefresh(el_idx);

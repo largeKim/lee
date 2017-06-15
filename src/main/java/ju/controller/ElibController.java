@@ -263,6 +263,8 @@ public class ElibController {
 	/**전자도서 대출신청 기능 Ajax*/
 	@RequestMapping(value="ebookLoan.ju")
 	public ModelAndView ebookLoan(@RequestParam(value="el_idx", defaultValue="0")String el_idx, HttpServletRequest request) {
+		ModelAndView mav=new ModelAndView();
+		
 		HttpSession session=request.getSession();
 		String mem_idx=(String) session.getAttribute("sidx");
 		int resultCount=0;
@@ -272,16 +274,23 @@ public class ElibController {
 			int memCount=loandao.memCount(mem_idx); // 회원 최대치
 			int ebookCount=loandao.loanOne(el_idx); // 책 최대치
 			int ebookOverlap=loandao.ebookOverlap(mem_idx, el_idx); // 중복 대여 (0이면 미대여, 1이면 대여)
-			if(memCount<5 && ebookCount<5 && ebookOverlap<1){
+			if(memCount<5 && ebookCount<5 && ebookOverlap==0){
 				String lb_idx="LB"+System.currentTimeMillis();
 				resultCount=loandao.elibLoan(lb_idx, mem_idx, el_idx, "#/page/1");
 				List<OriginalLoanDTO> loanArr=loandao.loanInfo(lb_idx);
 				endDate=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(loanArr.get(0).getLb_ed());
+				
+				mav.addObject("endDate", endDate);
+			}
+			else{
+				String msg="\n";
+				if(memCount>=5){ msg+="\n - 회원 최대 대여수를 초과하였습니다."; }
+				if(ebookCount>=5){ msg+="\n - 모두 대여되어 더이상 대여 할 수 없습니다."; }
+				if(ebookOverlap==1){ msg+="\n - 중복 도서를 대출 신청 하였습니다."; }
+				mav.addObject("msg", msg);
 			}
 		}
-		ModelAndView mav=new ModelAndView();
 		mav.addObject("resultCount", resultCount);
-		mav.addObject("endDate", endDate);
 		mav.setViewName("juJson");
 		return mav;
 	}
