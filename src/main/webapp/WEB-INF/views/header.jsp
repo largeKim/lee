@@ -128,8 +128,8 @@
 <header>
 	
 	<div class="row">
-		<div id="mainImg" class="col-md-3">
-			<img src="/lee/resources/index/logo2.png" style="width:130%;height:100%;">
+		<div id="mainImg" class="col-md-3"> 
+			<img src="/lee/resources/index/logo2.png" style=" width:250px;">
 		</div>
 		<div class="col-md-2 col-md-offset-7 loginClass">		
 				<c:set var="sid" value="${sessionScope.sid}"/>
