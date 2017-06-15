@@ -19,14 +19,18 @@ public class LoanDTO {
 	private String bk_isbn;
 	private int bk_yeyak;
 	private String lb_returnStr;
+	private String lb_sday;
+	private String lb_eday;
 	
 	public LoanDTO() {
 		super();
 	}
 
+	
+
 	public LoanDTO(String lb_idx, String mem_idx, String book_idx, Date lb_sd, Date lb_ed, String lb_etc, int lb_return,
-			int lb_delay, String bk_subject, String mem_name, String mem_id, String bk_idx, String bk_isbn, int bk_yeyak,
-			String lb_returnStr) {
+			int lb_delay, String mem_name, String bk_subject, String mem_id, String bk_idx, String bk_isbn,
+			int bk_yeyak, String lb_returnStr, String lb_sday, String lb_eday) {
 		super();
 		this.lb_idx = lb_idx;
 		this.mem_idx = mem_idx;
@@ -36,14 +40,18 @@ public class LoanDTO {
 		this.lb_etc = lb_etc;
 		this.lb_return = lb_return;
 		this.lb_delay = lb_delay;
-		this.bk_subject = bk_subject;
 		this.mem_name = mem_name;
+		this.bk_subject = bk_subject;
 		this.mem_id = mem_id;
 		this.bk_idx = bk_idx;
 		this.bk_isbn = bk_isbn;
 		this.bk_yeyak = bk_yeyak;
 		this.lb_returnStr = lb_returnStr;
+		this.lb_sday = lb_sday;
+		this.lb_eday = lb_eday;
 	}
+
+
 
 	public String getLb_idx() {
 		return lb_idx;
@@ -163,6 +171,30 @@ public class LoanDTO {
 
 	public void setLb_returnStr(String lb_returnStr) {
 		this.lb_returnStr = lb_returnStr;
+	}
+
+
+
+	public String getLb_sday() {
+		return lb_sday;
+	}
+
+
+
+	public void setLb_sday(String lb_sday) {
+		this.lb_sday = lb_sday;
+	}
+
+
+
+	public String getLb_eday() {
+		return lb_eday;
+	}
+
+
+
+	public void setLb_eday(String lb_eday) {
+		this.lb_eday = lb_eday;
 	}
 	
 }

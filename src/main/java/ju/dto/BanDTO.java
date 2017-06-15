@@ -10,12 +10,18 @@ public class BanDTO {
 	private int ban_reason;
 	private int ban_day;
 	private int ban_period;
+	private String mem_name;
+	private String mem_id;
+	private String ban_sday;
+	private String ban_eday;
+	private String ban_str;
 	
 	public BanDTO() {
 		super();
 	}
 
-	public BanDTO(String ban_idx, String mem_idx, Date ban_start, Date ban_end, int ban_reason, int ban_day, int ban_period) {
+	public BanDTO(String ban_idx, String mem_idx, Date ban_start, Date ban_end, int ban_reason, int ban_day,
+			int ban_period, String mem_name, String mem_id, String ban_sday, String ban_eday, String ban_str) {
 		super();
 		this.ban_idx = ban_idx;
 		this.mem_idx = mem_idx;
@@ -24,6 +30,11 @@ public class BanDTO {
 		this.ban_reason = ban_reason;
 		this.ban_day = ban_day;
 		this.ban_period = ban_period;
+		this.mem_name = mem_name;
+		this.mem_id = mem_id;
+		this.ban_sday = ban_sday;
+		this.ban_eday = ban_eday;
+		this.ban_str = ban_str;
 	}
 
 	public String getBan_idx() {
@@ -80,6 +91,46 @@ public class BanDTO {
 
 	public void setBan_period(int ban_period) {
 		this.ban_period = ban_period;
+	}
+
+	public String getMem_name() {
+		return mem_name;
+	}
+
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
+	}
+
+	public String getMem_id() {
+		return mem_id;
+	}
+
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
+
+	public String getBan_sday() {
+		return ban_sday;
+	}
+
+	public void setBan_sday(String ban_sday) {
+		this.ban_sday = ban_sday;
+	}
+
+	public String getBan_eday() {
+		return ban_eday;
+	}
+
+	public void setBan_eday(String ban_eday) {
+		this.ban_eday = ban_eday;
+	}
+
+	public String getBan_str() {
+		return ban_str;
+	}
+
+	public void setBan_str(String ban_str) {
+		this.ban_str = ban_str;
 	}
 	
 	

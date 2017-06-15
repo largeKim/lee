@@ -30,69 +30,79 @@
     </div>
   </div>
 </div>
-<form name="fedex">
-<h2>택배대출 신청확인 페이지</h2>
-	<table>
-	<thead>
-		<tr>
-			<th>신청자</th>
-			<th>도서명</th>
-			<th>택배요청지</th>
-			<th>연락처</th>
-			<th>대출확인</th>
-		</tr>
-	<thead>
-	<tbody>
-		<c:if test="${empty list}">
-			<tr>
-				<td colspan="4">요청된 택배대출도서가 없습니다.</td>
-			</tr>
-		</c:if>
-		<c:forEach var="dto" items="${list}">
-			<tr>
-				<td>${dto.mem_name}<input type="hidden" id="memIdx" value="${dto.mem_idx}"></td>
-				<td>${dto.bk_subject}<input type="hidden" id="bkIdx" value="${dto.bk_idx}"></td>
-				<td>${dto.mem_addr}<input type="hidden" id="fdIdx" value="${dto.fedex_idx}"></td>
-				<td>${dto.mem_hp}</td>
-				<td><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="modalOpen('${dto.bk_idx}')" id="fedexInfo">정보 확인</button></td>
-			</tr>
-		</c:forEach>
-	</tbody>
-	</table>
-</form>
-	<hr>
-	
-	<h2>택배대출 완료 리스트</h2>
-	<table>
-	<thead>
-		<tr>
-			<th>신청자</th>
-			<th>도서명</th>
-			<th>택배지</th>
-			<th>연락처</th>
-			<th>대출일</th>
-			<th>반납예정일</th>
-		</tr>
-	<thead>
-	<tbody>
-		<c:if test="${empty list2}">
-			<tr>
-				<td colspan="6">보낸 택배대출도서가 없습니다.</td>
-			</tr>
-		</c:if>
-		<c:forEach var="dto2" items="${list2}">
-			<tr>
-				<td>${dto2.mem_name}</td>
-				<td>${dto2.bk_subject}</td>
-				<td>${dto2.mem_addr}</td>
-				<td>${dto2.mem_hp}</td>
-				<td>${dto2.lb_sd}</td>
-				<td>${dto2.lb_ed}</td>
-			</tr>
-		</c:forEach>
-	</tbody>
-	</table>
 
+<%@include file="/WEB-INF/views/admin/adminHeader.jsp" %>
+
+<div class="row">
+	<div class="col-md-2">
+		<%@include file="/WEB-INF/views/admin/adminSideMenu.jsp"%>
+	</div>
+	
+	<div class="col-md-8" >
+		<form name="fedex">
+		<h2>택배대출 신청확인 페이지</h2>
+			<table class="table">
+			<thead>
+				<tr>
+					<th>신청자</th>
+					<th>도서명</th>
+					<th>택배요청지</th>
+					<th>연락처</th>
+					<th>대출확인</th>
+				</tr>
+			<thead>
+			<tbody>
+				<c:if test="${empty list}">
+					<tr>
+						<td colspan="4">요청된 택배대출도서가 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:forEach var="dto" items="${list}">
+					<tr>
+						<td>${dto.mem_name}<input type="hidden" id="memIdx" value="${dto.mem_idx}"></td>
+						<td>${dto.bk_subject}<input type="hidden" id="bkIdx" value="${dto.bk_idx}"></td>
+						<td>${dto.mem_addr}<input type="hidden" id="fdIdx" value="${dto.fedex_idx}"></td>
+						<td>${dto.mem_hp}</td>
+						<td><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="modalOpen('${dto.bk_idx}')" id="fedexInfo">정보 확인</button></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+			</table>
+		</form>
+		<hr>
+		
+			<h2>택배대출 완료 리스트</h2>
+			<table class="table">
+			<thead>
+				<tr>
+					<th>신청자</th>
+					<th>도서명</th>
+					<th>택배지</th>
+					<th>연락처</th>
+					<th>대출일</th>
+					<th>반납예정일</th>
+				</tr>
+			<thead>
+			<tbody>
+				<c:if test="${empty list2}">
+					<tr>
+						<td colspan="6">보낸 택배대출도서가 없습니다.</td>
+					</tr>
+				</c:if>
+				<c:forEach var="dto2" items="${list2}">
+					<tr>
+						<td>${dto2.mem_name}</td>
+						<td>${dto2.bk_subject}</td>
+						<td>${dto2.mem_addr}</td>
+						<td>${dto2.mem_hp}</td>
+						<td>${dto2.lb_sday}</td>
+						<td>${dto2.lb_eday}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+			</table>
+		</div>
+	</div>
 <script>
 function modalOpen(idx){
 	var params = new Object();
@@ -109,20 +119,6 @@ function modalOpen(idx){
 	})
 }
 
-/* $("#fedexInfo").click(function() {
-	var params = new Object();
-	params.bk_idx = document.getElementById("bkIdx").value;
-	params.mem_idx = document.getElementById("memIdx").value;
-	params.fedex_idx = document.getElementById("fdIdx").value;
-	$.ajax({
-		type : "GET",
-		url : "fedexInfo.ju",
-		data : params,
-		success : function(args) {
-			$(".modal-body").html(args);
-		}
-	});
-}); */
 </script>
 </body>
 </html>

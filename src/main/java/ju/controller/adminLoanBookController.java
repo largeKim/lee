@@ -36,7 +36,7 @@ public class adminLoanBookController {
 	public FedexDAO fedexDao;
 	
 	@Autowired
-	public ju.member.model.MemberDAO memberDao;
+	public MemberDAO memberDao;
 	
 	
 	// 대출관리 메인페이지로 이동
@@ -46,14 +46,11 @@ public class adminLoanBookController {
 			List<LoanDTO> list2 = loanDao.loanListAfter();
 			String dateFormat="yyyy-MM-dd";
 			SimpleDateFormat sdf=new SimpleDateFormat(dateFormat);
-			List<String> sdList = new ArrayList<String>();
 			for(int i=0; i<list.size(); i++){
-				/*list.add((sdf.format(list.get(i).getLb_sd(i))));
-				list.get(i).setLb_sd(sdList.get(i));*/
-			}
-			List<String> edList = new ArrayList<String>();
-			for(int i=0; i<list.size(); i++){
-				edList.add((sdf.format(list.get(i).getLb_ed())));
+				String sdDay = sdf.format(list.get(i).getLb_sd());
+				list.get(i).setLb_sday(sdDay);
+				String edDay = sdf.format(list.get(i).getLb_ed());
+				list.get(i).setLb_eday(edDay);
 			}
 			
 			for(int i=0; i<list.size(); i++){
@@ -83,10 +80,18 @@ public class adminLoanBookController {
 				case 2: list2.get(i).setLb_returnStr("택배대출중"); break;
 				}
 			}
+			List<String> sdList2 = new ArrayList<String>();
+			for(int i=0; i<list2.size(); i++){
+				String sdDay = sdf.format(list2.get(i).getLb_sd());
+				list2.get(i).setLb_sday(sdDay);
+			}
+			List<String> edList2 = new ArrayList<String>();
+			for(int i=0; i<list2.size(); i++){
+				String edDay = sdf.format(list2.get(i).getLb_ed());
+				list2.get(i).setLb_eday(edDay);
+			}
 			
 			ModelAndView mav = new ModelAndView("admin/loanbookManage/loanbookList","list",list);
-			mav.addObject("sdList",sdList);
-			mav.addObject("edList",edList);
 			mav.addObject("list2",list2);
 			return mav;
 		}
@@ -112,7 +117,13 @@ public class adminLoanBookController {
 		@RequestMapping(value="/loanbookInfo2.ju",method=RequestMethod.GET)
 		public ModelAndView loanbookInfo2(String bk_idx){
 			BookDTO dto = bookDao.bookReInfo(bk_idx);
-			ModelAndView mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
+			ModelAndView mav = null;
+			if(dto==null){
+				String msg = "대출된 책이 아닙니다. 다시 확인해 주세요";
+				 mav = new ModelAndView("admin/adminMsg","msg",msg);
+			}else{
+				mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
+			}
 			return mav;
 		}
 				
@@ -193,6 +204,7 @@ public class adminLoanBookController {
 			int result = bookDao.bookReUpdate(bk_idx);
 			if(lb_return==2){
 				int re = fedexDao.fedexDel(bk_idx);
+				System.out.println("택배반납됨");
 			}
 			int count = loanDao.checkInGo(bk_idx);
 			int yeyak = yeyakDao.yeyakOne(bk_isbn);
@@ -212,6 +224,7 @@ public class adminLoanBookController {
 		public ModelAndView yeyakList(
 				@RequestParam(value="bk_isbn",defaultValue="0")String bk_isbn){
 			List<YeyakDTO> list = yeyakDao.yeyakList(bk_isbn);
+			System.out.println(list.size());
 			ModelAndView mav = new ModelAndView("admin/loanbookManage/yeyakList","list",list);
 			return mav;
 		}

@@ -17,7 +17,7 @@
 			   <li><a href='/lee/ebookMain.ju' class="mainGo">전자 도서관</a></li>
 			   
 			   <li class="has-sub" id="ebList"><a href='/lee/ebook.ju'>전자 도서</a><!-- 1단 -->
-			   	  <ul>
+			   	 <ul>
 			   	  	<li class='has-sub'><a href="#" onclick="return false" data-lg="0">철학</a> <!-- 2단 -->
 				   		<ul>
 				   			<li><a href="#" onclick="return false" data-md="0" class="subpro">미학/예술철학</a></li> <!-- 3단 -->

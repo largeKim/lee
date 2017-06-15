@@ -1,7 +1,6 @@
 (function($){
 $(document).ready(function(){
 
-//$('#eduList').addClass('open').children('ul').show();
 
 
 	$('#cssmenu li.has-sub>a').on('click', function(){

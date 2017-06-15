@@ -28,7 +28,7 @@ public class adminBookController {
 	public LoanDAO loanDao;
 	
 	@Autowired
-	public ju.member.model.MemberDAO memberDao;
+	public MemberDAO memberDao;
 	
 	@Autowired
 	public YeyakDAO yeyakDao;
@@ -39,7 +39,7 @@ public class adminBookController {
 			@RequestParam(value="cp",defaultValue="1")int cp){
 		int totalCnt = bookDao.getTotlaCnt(); // 페이징을 위해
 		totalCnt = totalCnt==0?1:totalCnt; // 0이면 1을 반환해주도록 검증
-		int listSize = 5;
+		int listSize = 10;
 		int pageSize = 5;
 		String pageStr = ju.page.PageModule.pageMake("bookList.ju", totalCnt, listSize, pageSize, cp); // 페이징을 위해 저장
 		List<BookDTO> list = bookDao.bookList(cp, listSize);
@@ -61,7 +61,7 @@ public class adminBookController {
 	}
 	
 	// 셀렉트박스로 클릭했을시 검색결과를 바뀌게 출력하는 구문
-	@RequestMapping(value="/bookList.ju",method=RequestMethod.POST)
+	@RequestMapping(value="/bookSelList.ju",method=RequestMethod.GET)
 	public ModelAndView bookListPOST(
 			@RequestParam(value="cp",defaultValue="1")int cp,
 			@RequestParam(value="tagNum",defaultValue="0")int value){
@@ -69,9 +69,9 @@ public class adminBookController {
 		System.out.println(value);
 		int totalCnt = bookDao.getTotlaCnt(); // 페이징을 위해
 		totalCnt = totalCnt==0?1:totalCnt; // 0이면 1을 반환해주도록 검증
-		int listSize = 5;
+		int listSize = 10;
 		int pageSize = 5;
-		String pageStr = ju.page.PageModule.pageMake("bookList.ju", totalCnt, listSize, pageSize, cp); // 페이징을 위해 저장
+		String pageStr = ju.page.PageModule.pageMake("bookSelList.ju", totalCnt, listSize, pageSize, cp); // 페이징을 위해 저장
 		List<BookDTO> list = null;
 		switch(value){
 		case 0: list = bookDao.bookList(cp, listSize); break;
@@ -80,7 +80,6 @@ public class adminBookController {
 		}
 		for(int i=0; i<list.size(); i++){
 			int info = list.get(i).getBk_break();
-			
 			switch(info){
 			case 0: list.get(i).setBk_breakStr("정상"); break;
 			case 1: list.get(i).setBk_breakStr("분실"); break;
@@ -90,8 +89,6 @@ public class adminBookController {
 			}
 		}
 		ModelAndView mav = new ModelAndView("admin/bookManage/bookList","list",list);
-		System.out.println("list : "+ list.get(0).getBk_subject());
-		System.out.println("list : "+ list.get(1).getBk_subject());
 		mav.addObject("pageStr",pageStr);
 		return mav;
 	}
@@ -141,49 +138,50 @@ public class adminBookController {
 	public ModelAndView loanbookInfo(String bk_idx,String mem_idx){
 		ModelAndView mav = null;
 		BookDTO dto = bookDao.bookInfo(bk_idx,mem_idx);
-		String isbn = dto.getBk_isbn();
-		YeyakDTO dto2 = yeyakDao.yeyakSunbun(isbn);
-		System.out.println(dto2.getMem_idx());
-		System.out.println(mem_idx);
-		if(dto2.getMem_idx()==null){ //예약된 도서가 아닌 책
-			System.out.println("예약도서가 아닌책");
-			int count = loanDao.loanOne(bk_idx);
-			if(count==0){
-				System.out.println("대출중아닌책");
-				dto.setMem_idx(mem_idx);
-				mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
-				mav.addObject("mem_idx",mem_idx);
-			}else{
-				System.out.println("대출중인책");
-				String msg = "이미 대출중인 도서입니다. 다른도서를 빌려주세요";
-				mav = new ModelAndView("admin/adminMsg","msg",msg);
-				mav.addObject("page","checkOut.ju");
-			}
-		}else{
-			System.out.println("예약도서인경우");
-			if(dto2.getMem_idx().equals(mem_idx)){ // 예약자와 검색한 사람이 일치
-				dto.setMem_idx(mem_idx);
-				mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
-				mav.addObject("mem_idx",mem_idx);
-			}else{ // 예약자와 검색한 사람이 다른 경우
-				String msg = "예약도서의 해당 예약자가 아닙니다.";
-				mav = new ModelAndView("admin/adminMsg","msg",msg);
-				mav.addObject("page","checkOut.ju");
-			}
-		}
-		
-		/*int count = loanDao.loanOne(bk_idx);
-		if(count==0){
-			dto.setMem_idx(mem_idx);
-			mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
-			mav.addObject("mem_idx",mem_idx);
-		}else{
-			String msg = "이미 대출중인 도서입니다. 다른도서를 빌려주세요";
+		if(dto==null){
+			String msg = "올바른 도서 코드가 아닙니다. 다시 확인해 주세요";
 			mav = new ModelAndView("admin/adminMsg","msg",msg);
-			mav.addObject("page","loanbookInfo.ju?mem_idx="+mem_idx);
-		}*/
-		
-		
+		}else{
+			String isbn = dto.getBk_isbn();
+			System.out.println("예약순번치기전");
+			YeyakDTO dto2 = yeyakDao.yeyakSunbun(isbn);
+			System.out.println(dto2.getMem_idx());
+			System.out.println(mem_idx);
+			if(dto2.getMem_idx()==null){ //예약된 도서가 아닌 책
+				System.out.println("예약도서가 아닌책");
+				int count = loanDao.loanOne(bk_idx);
+				if(count==0){
+					System.out.println("대출중아닌책");
+					dto.setMem_idx(mem_idx);
+					mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
+					mav.addObject("mem_idx",mem_idx);
+				}else{
+					System.out.println("대출중인책");
+					String msg = "이미 대출중인 도서입니다. 다른도서를 빌려주세요";
+					mav = new ModelAndView("admin/adminMsg","msg",msg);
+					mav.addObject("page","checkOut.ju");
+				}
+			}else{
+				System.out.println("예약도서인경우");
+				if(dto2.getMem_idx().equals(mem_idx)){ // 예약자와 검색한 사람이 일치
+					dto.setMem_idx(mem_idx);
+					mav = new ModelAndView("admin/loanbookManage/loanbookInfo","dto",dto);
+					mav.addObject("mem_idx",mem_idx);
+				}else{ // 예약자와 검색한 사람이 다른 경우
+					String msg = "예약도서의 해당 예약자가 아닙니다.";
+					mav = new ModelAndView("admin/adminMsg","msg",msg);
+					mav.addObject("page","checkOut.ju");
+				}
+			}		
+		}
+		return mav;
+	}
+	
+	// 책 바코드
+	@RequestMapping("/bookBarcode")
+	public ModelAndView bookBarcode(String bk_idx){
+		ModelAndView mav = new ModelAndView("admin/bookManage/bookBarcode");
+		mav.addObject("barcode_input",bk_idx);
 		return mav;
 	}
 	

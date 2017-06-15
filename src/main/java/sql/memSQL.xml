@@ -25,6 +25,18 @@
  	<select id="memtotalCnt" resultType="int">
 		SELECT COUNT(*) AS totalCnt FROM MEMBER
 	</select>
+	
+	<select id="memtotalCntBan" resultType="int">
+		SELECT COUNT(*) AS totalCnt FROM BANLIST
+	</select>
+	
+	<select id="banSELList" resultType="ju.dto.BanDTO">
+ 		select * from
+		(select rownum as rnum, b.* from
+		(select member.mem_name, member.mem_id, a.* from
+		(select * from banlist order by ban_start desc)a, member where member.mem_idx = a.mem_idx)b)c
+		where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}
+ 	</select>
  	
  	<select id="banSELInfo" resultType="ju.dto.BanDTO">
 		select a.*,(ban_end-SYSDATE) as ban_day from

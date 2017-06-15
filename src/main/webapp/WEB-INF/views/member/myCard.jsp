@@ -18,9 +18,7 @@
 	src="/lee/resources/sideMenu/sideScript.js"></script>
 	<!-- 바코드 생성기 시작 -->
 <link rel="stylesheet" href="/lee/resources/member/barcode2/code128.css" type="text/css">
-
 <script src="/lee/resources/member/barcode2/base2-jsb-fp.js" type="text/javascript" charset="utf-8"></script>
-
 <script src="/lee/resources/member/barcode2/code128-base2.js" type="text/javascript"></script>
 <script src="/lee/resources/member/barcode2/get.js" type="text/javascript"></script>
 <!-- 바코드 생성기 끝 -->
@@ -181,23 +179,15 @@ if(qs.barcode) {
 						
 						<div id="memberIdcard" style="margin:10px; padding:50px; ">
 						</div>
-							
-							
 					</div>
-					
-					
-					
-			</div>	
+				</div>	
 			<div class="col-md-12" style="margin: 50px;">
-					
-					</div>
-			
+			</div>
 		</div>
 	</div>
 	
 	<div class="col-md-12">
 	<%@include file="../footer.jsp"%>
 	</div>
-	
 </body>
 </html>

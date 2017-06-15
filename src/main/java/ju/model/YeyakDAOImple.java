@@ -27,10 +27,12 @@ private SqlSessionTemplate sqlMap;
 	}
 	
 	public YeyakDTO yeyakSunbun(String bk_isbn) {
+		System.out.println("예약된책확인");
 		YeyakDTO dto = sqlMap.selectOne("yeSELIsbn",bk_isbn);
 		System.out.println("첫번째dto:"+dto);
-		if(dto==null)
+		if(dto==null){
 			dto = new YeyakDTO();
+		}
 		System.out.println("생성dto:"+dto);
 		return dto;
 	}

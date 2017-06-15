@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 //import ju.dto.*;
-import ju.member.model.*;
-import ju.member.model.MemberDAO;
+
 import ju.model.*;
 import ju.dto.*;
 

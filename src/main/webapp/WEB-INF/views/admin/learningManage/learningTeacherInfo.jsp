@@ -28,8 +28,8 @@
 			<tr>
 				<td>${dto.sj_name}</td>
 				<td>${dto.sj_loc}</td>
-				<td>${dto.sj_sd}</td>
-				<td>${dto.sj_ed}</td>
+				<td>${dto.sj_sday}</td>
+				<td>${dto.sj_eday}</td>
 			</tr>
 		</c:forEach>
     </tbody>

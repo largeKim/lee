@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 import ju.dto.*;
 import ju.model.*;
@@ -16,7 +18,7 @@ public class adminFedexController {
 	public FedexDAO fedexDao;
 	
 	@Autowired
-	public ju.member.model.MemberDAO memberDao;
+	public MemberDAO memberDao;
 	
 	@Autowired
 	public BookDAO bookDao;
@@ -28,6 +30,18 @@ public class adminFedexController {
 	public ModelAndView fedexList(){
 		List<FedexDTO> list = fedexDao.fedexBeforeList();
 		List<FedexDTO> list2 = fedexDao.fedexAfterList();
+		String dateFormat="yyyy-MM-dd";
+		SimpleDateFormat sdf=new SimpleDateFormat(dateFormat);
+		List<String> sdList = new ArrayList<String>();
+		for(int i=0; i<list2.size(); i++){
+			String sdDay = sdf.format(list2.get(i).getLb_sd());
+			list2.get(i).setLb_sday(sdDay);
+		}
+		List<String> edList = new ArrayList<String>();
+		for(int i=0; i<list2.size(); i++){
+			String edDay = sdf.format(list2.get(i).getLb_ed());
+			list2.get(i).setLb_eday(edDay);
+		}
 		ModelAndView mav = new ModelAndView("admin/fedexManage/fedexList","list",list);
 		mav.addObject("list2",list2);
 		return mav;

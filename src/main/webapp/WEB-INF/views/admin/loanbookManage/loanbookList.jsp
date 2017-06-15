@@ -8,6 +8,14 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="resources/js/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+body{
+	width:90%;
+}
+table>tbody>tr>td{
+	font-size: 120%;
+}
+</style>
 </head>
 <body>
 
@@ -31,95 +39,99 @@
   </div>
 </div>
 
-<h2>대출중인 도서 리스트</h2>
-<table>
-	<tr>
-		<td><a>대출중인 도서관리</a></td>
-		<td><a href="checkOut.ju">대출/반납</a></td>
-	</tr>
-</table>
+<%@include file="/WEB-INF/views/admin/adminHeader.jsp" %>
 
-<form name="loanList">
-<table id="t1">
-<thead>
-	<tr>
-		<td>구분</td>
-		<th>도서코드</th>
-		<th>도서명</th>
-		<th>대출자</th>
-		<th>대출일</th>
-		<th>반납예정일</th>
-		<th>연장횟수</th>
-		<th>반납여부</th>
-		<th>예약자 수</th>
-		<th>예약자 관리</th>
-	</tr>
-</thead>
-<tbody>
-	<c:if test="${empty list}">
-		<tr>
-			<td colspan="8" align="center">
-				등록된 도서가 없습니다.
-			</td>
-		</tr>
-	</c:if>
-	<c:forEach var="dto" items="${list}">
-		<tr>
-			<td><input type="checkbox" name="cb" id="cb" value="${dto.mem_id}"><input type="hidden" name="mem_id" value="${dto.mem_id}"></td>
-			<td>${dto.book_idx}<input type="hidden" id="bk_isbn" value="${dto.bk_isbn}"></td>
-			<td>${dto.bk_subject}</td>
-			<td>${dto.mem_name}</td>
-			<td>${dto.lb_sd}</td>
-			<td>${dto.lb_ed}</td>
-			<td>${dto.lb_delay}</td>
-			<td>${dto.lb_returnStr}</td>
-			<td>${dto.bk_yeyak}</td>
-			<td><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="modalOpen('${dto.bk_isbn}')" id="yeyakInfo">정보 확인</button></td>
-		</tr>
-	</c:forEach>
-</tbody>
-</table>	
-<input type="button" value="메일보내기" onclick="mailSend('${dto.mem_id}')">
-</form>
-
-<hr>
-<h2>반납 도서 리스트</h2>
-<table>
-<thead>
-	<tr>
-		<th>도서코드</th>
-		<th>도서명</th>
-		<th>대출자</th>
-		<th>대출일</th>
-		<th>반납일</th>
-		<th>연장횟수</th>
-		<th>반납여부</th>
-	</tr>
-</thead>
-<tbody>
-	<c:if test="${empty list2}">
-		<tr>
-			<td colspan="7" align="center">
-				대출 완료된 도서가 없습니다.
-			</td>
-		</tr>
-	</c:if>
-	<c:set var="sdList" value="${sdList}"></c:set>
-	<c:set var="edList" value="${edList}"></c:set>
-	<c:forEach var="dto" items="${list2}">
-		<tr>
-			<td>${dto.book_idx}<input type="hidden" name="mem_id" value="${dto.mem_id}"></td>
-			<td>${dto.bk_subject}</td>
-			<td>${dto.mem_name}</td>
-			<td>${sdList}</td>
-			<td>${edList}</td>
-			<td>${dto.lb_delay}</td>
-			<td>${dto.lb_returnStr}</td>
-		</tr>
-	</c:forEach>
-</tbody>
-</table>
+<div class="row">
+	<div class="col-md-2">
+		<%@include file="/WEB-INF/views/admin/adminSideMenu.jsp"%>
+	</div>
+	
+	<div class="col-md-9" >
+		<h2>대출중인 도서 리스트</h2>
+		
+		
+		<form name="loanList">
+		<table id="t1" class="table">
+		<thead>
+			<tr>
+				<td>구분</td>
+				<th>도서코드</th>
+				<th>도서명</th>
+				<th>대출자</th>
+				<th>대출일</th>
+				<th>반납예정일</th>
+				<th>연장횟수</th>
+				<th>반납여부</th>
+				<th>예약자 수</th>
+				<th>예약자 관리</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:if test="${empty list}">
+				<tr>
+					<td colspan="8" align="center">
+						등록된 도서가 없습니다.
+					</td>
+				</tr>
+			</c:if>
+			<c:forEach var="dto" items="${list}">
+				<tr>
+					<td><input type="checkbox" name="cb" id="cb" value="${dto.mem_id}"><input type="hidden" name="mem_id" value="${dto.mem_id}"></td>
+					<td>${dto.book_idx}<input type="hidden" id="bk_isbn" value="${dto.bk_isbn}"></td>
+					<td>${dto.bk_subject}</td>
+					<td>${dto.mem_name}</td>
+					<td>${dto.lb_sday}</td>
+					<td>${dto.lb_eday}</td>
+					<td>${dto.lb_delay}</td>
+					<td>${dto.lb_returnStr}</td>
+					<td>${dto.bk_yeyak}</td>
+					<td><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="modalOpen('${dto.bk_isbn}')" id="yeyakInfo">정보 확인</button></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+		</table>	
+		<input type="button" value="메일보내기" onclick="mailSend('${dto.mem_id}')">
+		</form>
+		
+		<hr>
+		<h2>반납 도서 리스트</h2>
+		<table class="table">
+		<thead>
+			<tr>
+				<th>도서코드</th>
+				<th>도서명</th>
+				<th>대출자</th>
+				<th>대출일</th>
+				<th>반납일</th>
+				<th>연장횟수</th>
+				<th>반납여부</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:if test="${empty list2}">
+				<tr>
+					<td colspan="7" align="center">
+						대출 완료된 도서가 없습니다.
+					</td>
+				</tr>
+			</c:if>
+			<c:forEach var="dto" items="${list2}">
+				<tr>
+					<td>${dto.book_idx}<input type="hidden" name="mem_id" value="${dto.mem_id}"></td>
+					<td>${dto.bk_subject}</td>
+					<td>${dto.mem_name}</td>
+					<td>${dto.lb_sday}</td>
+					<td>${dto.lb_eday}</td>
+					<td>${dto.lb_delay}</td>
+					<td>${dto.lb_returnStr}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+		</table>
+		</div>
+	</div>
 <script>
+$("#loanList").addClass('open').children('ul').show();
 function modalOpen(k){
 	var params = new Object();
 	params.bk_isbn = k;

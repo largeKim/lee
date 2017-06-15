@@ -9,7 +9,7 @@
 <form name="check">
          <table>
 				<tr>
-					<td rowspan="6"><img src="${dto.bk_url}"><input type="hidden" id="mem_idx" name="mem_idx" value="${dto.mem_idx}"></td>
+					<td rowspan="6" width="300px"><img src="${dto.bk_url}" width="300px"><input type="hidden" id="mem_idx" name="mem_idx" value="${dto.mem_idx}"></td>
 					<th>도서코드</th>
 					<td>${dto.bk_idx}<input type="hidden" name="bk_idx" id="bk_idx" value="${dto.bk_idx}"></td>
 				</tr>
@@ -19,7 +19,7 @@
 				</tr>
 				<tr>
 					<th>저자명</th>
-					<td>${dto.bk_writer}${dto.lb_return}<input type="hidden" id="lb_return" value="${dto.lb_return}"></td>
+					<td>${dto.bk_writer}<input type="hidden" id="lb_return" value="${dto.lb_return}"></td>
 				</tr>
 				<tr>
 					<th>출판사명</th>
@@ -28,10 +28,6 @@
 				<tr>
 					<th>출판일</th>
 					<td>${dto.bk_writedate}</td>
-				</tr>
-				<tr>
-					<th>대출자</th>
-					<td>${dto.mem_idx}</td>
 				</tr>
 			</table>
 			<table>

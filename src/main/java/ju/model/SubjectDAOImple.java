@@ -28,5 +28,20 @@ private SqlSessionTemplate sqlMap;
 		List<SubjectDTO> list = sqlMap.selectList("classSELMember",sj_idx);
 		return list;
 	}
+	
+	public List<SubjectDTO> teacherInfo(String tc_idx){
+		List<SubjectDTO> list = sqlMap.selectList("classSELInfo",tc_idx);
+		return list;
+	}
+	
+	public int classNum(String tc_idx){
+		int result = sqlMap.selectOne("classSELNum",tc_idx);
+		return result;
+	}
+	
+	public int classEnd(String tc_idx){
+		int result = sqlMap.selectOne("classSELEnd",tc_idx);
+		return result;
+	}
 
 }

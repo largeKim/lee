@@ -15,13 +15,16 @@ public class FedexDTO {
 	private Date lb_sd;
 	private Date lb_ed;
 	private String dto2;
+	private String lb_sday;
+	private String lb_eday;
 	
 	public FedexDTO() {
 		super();
 	}
-	
+
 	public FedexDTO(String fedex_idx, String mem_idx, String bk_idx, int fedex_num, String lb_idx, String mem_name,
-			String bk_subject, String mem_addr, String mem_hp, Date lb_sd, Date lb_ed,String dto2) {
+			String bk_subject, String mem_addr, String mem_hp, Date lb_sd, Date lb_ed, String dto2, String lb_sday,
+			String lb_eday) {
 		super();
 		this.fedex_idx = fedex_idx;
 		this.mem_idx = mem_idx;
@@ -35,6 +38,8 @@ public class FedexDTO {
 		this.lb_sd = lb_sd;
 		this.lb_ed = lb_ed;
 		this.dto2 = dto2;
+		this.lb_sday = lb_sday;
+		this.lb_eday = lb_eday;
 	}
 
 	public String getFedex_idx() {
@@ -131,6 +136,22 @@ public class FedexDTO {
 
 	public void setDto2(String dto2) {
 		this.dto2 = dto2;
+	}
+
+	public String getLb_sday() {
+		return lb_sday;
+	}
+
+	public void setLb_sday(String lb_sday) {
+		this.lb_sday = lb_sday;
+	}
+
+	public String getLb_eday() {
+		return lb_eday;
+	}
+
+	public void setLb_eday(String lb_eday) {
+		this.lb_eday = lb_eday;
 	}
 	
 	
